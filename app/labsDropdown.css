@@ -1,0 +1,56 @@
+/* Labs Dropdown CSS */
+.labs-dropdown-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+.labs-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(22, 59, 94, 0.12);
+  border-top: none;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 1000;
+  padding: 10px 0;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+.labs-dropdown-wrapper:hover .labs-dropdown-menu {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+.labs-dropdown-menu a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-decoration: none;
+  padding: 12px 24px;
+  transition: background 0.2s, color 0.2s;
+}
+.labs-dropdown-menu a:hover {
+  background: rgba(69, 168, 161, 0.1);
+  color: var(--teal);
+}
+body.dark-mode .labs-dropdown-menu {
+  background: rgba(10, 10, 14, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+body.dark-mode .labs-dropdown-menu a {
+  color: #e8e6e1;
+}
+body.dark-mode .labs-dropdown-menu a:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--teal);
+}

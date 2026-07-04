@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | BIG – Bjarke Ingels Group</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #fff;
+            color: #000;
+            font-size: 13px;
+            overflow-x: hidden
+        }
+
+        /* ═══════════════ NAV ═══════════════ */
+        #nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 44px;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+        }
+
+        #logo {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #000;
+            text-decoration: none;
+            border: 2.5px solid #000;
+            padding: 1px 8px 2px;
+            margin: 0 20px;
+            flex-shrink: 0;
+            line-height: 1.1;
+        }
+
+        #nav-tabs {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            justify-content: center
+        }
+
+        .ntab {
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #999;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0 28px;
+            height: 44px;
+            white-space: nowrap;
+            transition: color .15s;
+        }
+
+        .ntab:hover {
+            color: #000
+        }
+
+        .ntab.active {
+            color: #000;
+            font-weight: 600
+        }
+
+        .ntab.active::before {
+            content: '■ ';
+            font-size: 7px;
+            vertical-align: 1px
+        }
+
+        #nav-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-right: 20px;
+            flex-shrink: 0
+        }
+
+        .nav-srch {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #bbb;
+            padding: 4px;
+            transition: color .15s
+        }
+
+        .nav-srch:hover {
+            color: #000
+        }
+
+        #nav-word {
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #bbb
+        }
+
+        /* ═══════════════ SUB NAV ═══════════════ */
+        #subnav {
+            position: fixed;
+            top: 44px;
+            left: 0;
+            right: 0;
+            height: 36px;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            z-index: 899;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-left: 0;
+        }
+
+        #subnav::-webkit-scrollbar {
+            display: none
+        }
+
+        /* subnav items aligned to match where image starts = left panel width */
+        .stab {
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            color: #bbb;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0 16px;
+            height: 36px;
+            white-space: nowrap;
+            transition: color .12s;
+            flex-shrink: 0;
+        }
+
+        .stab:hover {
+            color: #000
+        }
+
+        .stab.active {
+            color: #000;
+            font-weight: 500
+        }
+
+        /* ═══════════════ MAIN ═══════════════ */
+        #main {
+            margin-top: 80px
+        }
+
+        /* ═══════════════ PROJECT BLOCK ═══════════════ */
+        .pblock {
+            border-bottom: 1px solid #e5e5e5;
+            position: relative
+        }
+
+        /* ─── COLLAPSED ROW ─── */
+        .prow {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            transition: background .12s;
+            position: relative;
+        }
+
+        .prow:not(.open):hover {
+            background: #fafafa
+        }
+
+        .prow:not(.open):hover .thumb-img {
+            transform: scale(1.04)
+        }
+
+        /* Left info column — fixed 560px, right-aligned content */
+        .row-left {
+            width: 560px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: flex-start;
+            padding: 36px 44px 36px 20px;
+            text-align: right;
+        }
+
+        .row-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            display: block;
+            margin-bottom: 13px;
+            margin-left: auto;
+            background: #000;
+            padding: 5px;
+        }
+
+        .row-title {
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+            margin-bottom: 4px
+        }
+
+        .row-loc {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #aaa
+        }
+
+        /* Thumbnail — square, sits immediately after left col */
+        .row-right {
+            flex: 1;
+            padding: 24px 0 24px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .thumb-wrap {
+            width: 390px;
+            height: 390px;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .thumb-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: transform .5s cubic-bezier(.25, .46, .45, .94);
+        }
+
+        .thumb-ph {
+            width: 100%;
+            height: 100%;
+            display: block
+        }
+
+        /* ─── EXPANDED STATE ─── */
+        /* The expanded view replaces the row content entirely */
+        .prow.open {
+            cursor: default;
+            flex-direction: row;
+            align-items: stretch;
+            min-height: 0;
+        }
+
+        /* Sidebar (left, ~300px, right-aligned text) */
+        .exp-sidebar {
+            width: 300px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+            padding: 36px 32px 36px 16px;
+            border-right: 1px solid #e5e5e5;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .exp-sidebar::-webkit-scrollbar {
+            display: none
+        }
+
+        .exp-icon {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            display: block;
+            margin-bottom: 16px;
+            margin-left: auto;
+            background: #000;
+            padding: 7px;
+        }
+
+        .exp-title {
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 4px
+        }
+
+        .exp-loc {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 28px
+        }
+
+        .exp-year {
+            font-size: 12px;
+            color: #000;
+            margin-bottom: 24px
+        }
+
+        .exp-meta {
+            margin-bottom: 16px
+        }
+
+        .exp-meta-lbl {
+            font-size: 9px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 2px
+        }
+
+        .exp-meta-val {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            line-height: 1.3
+        }
+
+        .exp-share-lbl {
+            font-size: 9px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-top: auto;
+            padding-top: 20px;
+            margin-bottom: 8px
+        }
+
+        .exp-share {
+            display: flex;
+            gap: 5px;
+            justify-content: flex-end
+        }
+
+        .exp-share a {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 700;
+            color: #000;
+            text-decoration: none;
+            transition: background .12s, color .12s;
+        }
+
+        .exp-share a:hover {
+            background: #000;
+            color: #fff
+        }
+
+        /* Horizontal scroll zone */
+        .exp-scroll {
+            flex: 1;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            cursor: grab;
+            position: relative;
+        }
+
+        .exp-scroll:active {
+            cursor: grabbing
+        }
+
+        .exp-scroll::-webkit-scrollbar {
+            display: none
+        }
+
+        .exp-track {
+            display: inline-flex;
+            align-items: stretch;
+            height: 100%;
+            min-width: 100%;
+        }
+
+        /* Image panel inside scroll */
+        .ep-img {
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+        }
+
+        .ep-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block
+        }
+
+        .ep-img-ph {
+            width: 100%;
+            height: 100%;
+            display: block
+        }
+
+        /* Text panel inside scroll */
+        .ep-txt {
+            flex-shrink: 0;
+            width: 360px;
+            padding: 36px 44px 36px 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow-y: auto;
+            scrollbar-width: none;
+            background: #fff;
+        }
+
+        .ep-txt::-webkit-scrollbar {
+            display: none
+        }
+
+        .ep-txt p {
+            font-size: 13px;
+            font-weight: 300;
+            line-height: 1.85;
+            color: #111
+        }
+
+        .ep-txt p+p {
+            margin-top: 1.4em
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav id="nav">
+        <a id="logo" href="#">BIG</a>
+        <div id="nav-tabs">
+            <button class="ntab active" data-cat="architecture">Architecture</button>
+            <button class="ntab" data-cat="interiors">Interiors</button>
+            <button class="ntab" data-cat="landscape">Landscape</button>
+            <button class="ntab" data-cat="planning">Planning</button>
+            <button class="ntab" data-cat="products">Products</button>
+        </div>
+        <div id="nav-right">
+            <button class="nav-srch">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="5.5" cy="5.5" r="4" />
+                    <line x1="9" y1="9" x2="12.5" y2="12.5" />
+                </svg>
+            </button>
+            <span id="nav-word">France</span>
+        </div>
+    </nav>
+
+    <div id="subnav"></div>
+    <div id="main"></div>
+
+    <script>
+        /* ═══════════════════ DATA ═══════════════════ */
+        const DATA = {
+            architecture: {
+                subs: ['Culture', 'Education', 'Work', 'Hospitality', 'Residential', 'Infrastructure', 'Space', 'Sports', 'Health'],
+                projects: [
+                    {
+                        id: 'tpac', title: 'Tennessee Performing Arts Center', loc: 'Nashville, United States', sub: 'Culture', year: '2027',
+                        icon: 'https://media.big.dk/TPAC_ICON-01.svg',
+                        imgs: ['https://images.adsttc.com/media/images/6423/3c20/c7de/5601/652e/04d2/large_jpg/tennessee-performing-arts-center-big-bjarke-ingels-group_1.jpg', 'https://images.adsttc.com/media/images/6423/3c87/c7de/5601/652e/04d8/large_jpg/tennessee-performing-arts-center-big-bjarke-ingels-group_7.jpg', 'https://images.adsttc.com/media/images/6423/3cb4/c7de/5601/652e/04db/large_jpg/tennessee-performing-arts-center-big-bjarke-ingels-group_10.jpg'],
+                        client: 'Tennessee Performing Arts Center', typology: 'Culture', size: '28521 / 307000', status: 'In Design',
+                        texts: ['The new Tennessee Performing Arts Center (TPAC) – designed by BIG, William Rawn Associates, and HASTINGS Architecture – extends the vibrancy of downtown Nashville across the Cumberland River, emerging as a cultural anchor for the city\'s reenergized East Bank. Construction is expected to begin in 2027, with a projected opening in 2030.', 'Situated on a waterfront site neighboring Cumberland Park and the Tennessee Titans Nissan Stadium, the new TPAC includes four performance spaces – the multi-function Grand Broadway theater; a dance and opera hall; a flexible black box theater; and an intimate cabaret space – as well as rehearsal studios and classrooms.']
+                    },
+                    {
+                        id: 'jhu', title: 'Bloomberg Student Center at Johns Hopkins University', loc: 'Baltimore, United States', sub: 'Education', year: '2025',
+                        icon: 'https://media.big.dk/JHOP_LOGO.svg',
+                        imgs: ['https://images.adsttc.com/media/images/6204/6be1/3e4b/3101/6500/00c2/large_jpg/bloomberg-student-center-johns-hopkins-big-5.jpg', 'https://images.adsttc.com/media/images/6204/6c3e/3e4b/3101/6500/00c8/large_jpg/bloomberg-student-center-johns-hopkins-big-12.jpg', 'https://images.adsttc.com/media/images/6204/6c6e/3e4b/3101/6500/00cb/large_jpg/bloomberg-student-center-johns-hopkins-big-15.jpg'],
+                        client: 'Johns Hopkins University', typology: 'Education', size: '13935 / 150000', status: 'Completed',
+                        texts: ['The Bloomberg Student Center is a 150,000-sq-ft, cascading village of timber pavilions that stands as the new hub of student life at Johns Hopkins University. The light-filled structure features a roof integrated with nearly 1,000 photovoltaic panels and provides a central gathering space for the Homewood campus, connecting it to the neighboring Charles Village.', 'Supporting over 200 student organizations, the four-story Bloomberg Student Center serves as a welcoming front door to the campus. The building combines spaces for meeting and student resources, a digital media center, a performance space with seating for 250 people, art and dance studios, music rehearsal spaces, and a dining hall all under one roof.']
+                    },
+                    {
+                        id: 'sam', title: 'Suzhou Museum of Contemporary Art', loc: 'Suzhou, China', sub: 'Culture', year: '2026',
+                        icon: 'https://media.big.dk/2024/04/SAM_ICON-web-1.svg',
+                        imgs: ['', '', ''],
+                        client: 'Suzhou Industrial Park', typology: 'Culture', size: '40000 / 430556', status: 'In Design',
+                        texts: ['The Suzhou Museum of Contemporary Art emerges from the city\'s famous garden culture, reinterpreting the traditional Chinese scholars\' garden through contemporary architectural language.', 'The museum creates a sequence of indoor and outdoor spaces that guide visitors through the collection.']
+                    },
+                    {
+                        id: 'nah', title: 'NOT A HOTEL Setouchi', loc: 'Sagishima, Japan', sub: 'Hospitality', year: '2025',
+                        icon: 'https://media.big.dk/2024/05/NAH_ICON.svg',
+                        imgs: ['https://live.staticflickr.com/65535/53563247164_33219aeba8_b.jpg', '', ''],
+                        client: 'NOT A HOTEL', typology: 'Hospitality', size: '3200 / 34445', status: 'In Design',
+                        texts: ['NOT A HOTEL Setouchi is situated on Sagishima, a small island in the Seto Inland Sea, Japan. The project envisions a resort that dissolves into the natural landscape of the island.', 'The design draws from the island\'s terraced topography and traditional Japanese spatial sensibilities.']
+                    },
+                    {
+                        id: 'goe', title: 'Gastronomy Open Ecosystem', loc: 'San Sebastian, Spain', sub: 'Culture', year: '2027',
+                        icon: 'https://media.big.dk/2022/06/19_22302_N34.svg',
+                        imgs: ['', '', ''],
+                        client: 'Basque Culinary Center', typology: 'Culture', size: '15000 / 161459', status: 'In Design',
+                        texts: ['The Gastronomy Open Ecosystem in San Sebastian is a landmark culinary institution that celebrates the rich food culture of the Basque Country.', 'The building creates a porous, open environment where gastronomy, research, education and public life intersect.']
+                    },
+                    {
+                        id: 'copenhill', title: 'CopenHill', loc: 'Copenhagen, Denmark', sub: 'Infrastructure', year: '2019',
+                        icon: 'https://media.big.dk/2022/06/19_A_220303_N16.svg',
+                        imgs: ['', '', ''],
+                        client: 'ARC', typology: 'Infrastructure', size: '41000 / 441320', status: 'Completed',
+                        texts: ['CopenHill is a waste-to-energy plant with a year-round ski slope on its roof. The building transforms industrial infrastructure into a recreational destination, making Copenhagen\'s commitment to sustainable urban life tangible and accessible.']
+                    },
+                    {
+                        id: 'twist', title: 'The Twist', loc: 'Jevnaker, Norway', sub: 'Culture', year: '2019',
+                        icon: 'https://media.big.dk/2022/06/A_220303_N75-4.svg',
+                        imgs: ['', '', ''],
+                        client: 'Kistefos', typology: 'Culture', size: '1000 / 10764', status: 'Completed',
+                        texts: ['The Twist is a museum bridge that crosses the Randselva River at the Kistefos sculpture park in Norway. The building twists 90 degrees as it spans the river, creating a dramatic and disorienting interior experience.']
+                    },
+                    {
+                        id: 'via57', title: 'VIA 57 West', loc: 'New York, United States', sub: 'Residential', year: '2016',
+                        icon: 'https://media.big.dk/2022/06/19_A_220303_N164.svg',
+                        imgs: ['', '', ''],
+                        client: 'Durst Organization', typology: 'Residential', size: '90000 / 968752', status: 'Completed',
+                        texts: ['VIA 57 West combines the density of a European perimeter block with the openness of an American courtyard building on Manhattan\'s West Side. The result is a new typology: the courtscraper.']
+                    },
+                    {
+                        id: 'googlebv', title: 'Google Bay View', loc: 'Mountain View, United States', sub: 'Work', year: '2022',
+                        icon: 'https://media.big.dk/2022/06/19_A_220303_N50.svg',
+                        imgs: ['', '', ''],
+                        client: 'Google', typology: 'Work', size: '100000 / 1076391', status: 'Completed',
+                        texts: ['Google Bay View is Google\'s first ground-up campus, designed to be the most energy-efficient office building at this scale. The distinctive dragonscale canopy generates solar power.']
+                    },
+                    {
+                        id: '8house', title: '8 House', loc: 'Copenhagen, Denmark', sub: 'Residential', year: '2010',
+                        icon: 'https://media.big.dk/2022/06/A_220303_N3-3.svg',
+                        imgs: ['', '', ''],
+                        client: 'Per Aarsleff', typology: 'Residential', size: '61000 / 656595', status: 'Completed',
+                        texts: ['8 House combines the qualities of a horizontal city with the density of a vertical building. The figure-8 shaped building allows residents to cycle from the rooftop all the way down to ground level.']
+                    },
+                ]
+            },
+            interiors: {
+                subs: ['Office', 'Residential', 'Hospitality', 'Retail'],
+                projects: [
+                    {
+                        id: 'galeries', title: 'Galeries Lafayette Champs Élysées', loc: 'Paris, France', sub: 'Retail', year: '2019',
+                        icon: 'https://media.big.dk/2022/06/19_A_220303_N55.svg',
+                        imgs: ['https://images.adsttc.com/media/images/5e3c/7b9e/6ee6/7e12/a700/01ca/large_jpg/Galeries-Lafayette-Champs-Elysees-BIG-1.jpg', '', ''],
+                        client: 'Galeries Lafayette', typology: 'Retail Interior', size: '', status: 'Completed',
+                        texts: ['The Galeries Lafayette on the Champs-Élysées is a landmark retail destination redesigned by BIG. The interior creates a series of interlocking spaces that reveal the building\'s grand historical structure.']
+                    },
+                    {
+                        id: 'noma', title: 'Noma 2.0', loc: 'Copenhagen, Denmark', sub: 'Hospitality', year: '2018',
+                        icon: 'https://media.big.dk/2022/06/19_A_220303_N103.svg',
+                        imgs: ['', '', ''],
+                        client: 'Noma', typology: 'Hospitality Interior', size: '', status: 'Completed',
+                        texts: ['Noma 2.0 is a campus of pavilions set within a kitchen garden. Each pavilion has its own character — fermentation lab, seafood hall, vegetable kitchen — creating a village-like atmosphere.']
+                    },
+                    {
+                        id: 'houseboat', title: 'Houseboat Bukken Bruse', loc: 'Copenhagen, Denmark', sub: 'Residential', year: '2022',
+                        icon: 'https://media.big.dk/BUKKEN-LOGO.svg',
+                        imgs: ['', '', ''],
+                        client: 'Private', typology: 'Residential Interior', size: '', status: 'Completed',
+                        texts: ['Houseboat Bukken Bruse is a floating home in Copenhagen\'s inner harbor. The interior maximizes light and space within the compact hull, using warm timber and bespoke joinery throughout.']
+                    },
+                ]
+            },
+            landscape: {
+                subs: ['Civic Spaces', 'Parks', 'Gardens', 'Balconies & Terraces'],
+                projects: [
+                    {
+                        id: 'superkilen', title: 'Superkilen', loc: 'Copenhagen, Denmark', sub: 'Parks', year: '2012',
+                        icon: 'https://media.big.dk/2022/06/SUK-icon.svg',
+                        imgs: ['', '', ''],
+                        client: 'Realdania', typology: 'Landscape', size: '33000 / 355209', status: 'Completed',
+                        texts: ['Superkilen is a public park in Copenhagen\'s Nørrebro neighborhood that celebrates the diversity of its surrounding community. The park features objects collected from 60 different countries.']
+                    },
+                    {
+                        id: 'harborbath', title: 'Copenhagen Harbor Bath', loc: 'Copenhagen, Denmark', sub: 'Parks', year: '2002',
+                        icon: 'https://media.big.dk/2022/06/A_220303_N20-1.svg',
+                        imgs: ['', '', ''],
+                        client: 'Copenhagen Municipality', typology: 'Landscape', size: '2500 / 26910', status: 'Completed',
+                        texts: ['The Copenhagen Harbor Bath is a floating public swimming facility in the inner harbor of Copenhagen, creating a series of pools at different depths for swimmers of all abilities.']
+                    },
+                    {
+                        id: 'glu', title: 'Gelephu International Airport', loc: 'Gelephu, Bhutan', sub: 'Civic Spaces', year: '2028',
+                        icon: 'https://media.big.dk/GLU_ICON_SVG.svg',
+                        imgs: ['', '', ''],
+                        client: 'Gelephu Mindfulness City', typology: 'Infrastructure / Landscape', size: '', status: 'In Design',
+                        texts: ['Gelephu International Airport integrates the terminal with the surrounding forest landscape through a series of timber pavilions, serving as gateway to the new Gelephu Mindfulness City.']
+                    },
+                ]
+            },
+            planning: {
+                subs: ['Campus', 'City', 'Region'],
+                projects: [
+                    {
+                        id: 'gmc', title: 'Gelephu Mindfulness City', loc: 'Gelephu, Bhutan', sub: 'City', year: '2027',
+                        icon: 'https://media.big.dk/2023/12/BHUTAN_ICON-1.svg',
+                        imgs: ['', '', ''],
+                        client: 'Gelephu Mindfulness City', typology: 'Planning', size: '', status: 'In Design',
+                        texts: ['Gelephu Mindfulness City is a planned city in southern Bhutan designed around principles of mindfulness, sustainability, and cultural identity, serving as a gateway between South and Southeast Asia.']
+                    },
+                    {
+                        id: 'toyota', title: 'Toyota Woven City', loc: 'Susono, Japan', sub: 'Campus', year: '2025',
+                        icon: 'https://media.big.dk/2022/07/19_A_220303_N150.svg',
+                        imgs: ['', '', ''],
+                        client: 'Toyota', typology: 'Planning', size: '', status: 'In Progress',
+                        texts: ['Toyota Woven City is a prototype community at the base of Mt. Fuji, designed to test and develop technologies for future living, mobility, and smart infrastructure.']
+                    },
+                ]
+            },
+            products: {
+                subs: ['Lighting', 'Furniture', 'Objects', 'Installations'],
+                projects: [
+                    {
+                        id: 'gople', title: 'Gople Lamps', loc: 'Artemide', sub: 'Lighting', year: '2017',
+                        icon: 'https://media.big.dk/2022/08/P-Gople-icon_web.svg',
+                        imgs: ['', '', ''],
+                        client: 'Artemide', typology: 'Product / Lighting', size: '', status: 'Available',
+                        texts: ['The Gople lamp is inspired by the biological structure of a jellyfish. The organic form distributes light through its diffuse body, creating a warm and intimate atmosphere.']
+                    },
+                    {
+                        id: 'alphabet', title: 'Alphabet of Light', loc: 'Artemide', sub: 'Lighting', year: '2019',
+                        icon: 'https://media.big.dk/2022/08/P-Alphabet-icon_web.svg',
+                        imgs: ['', '', ''],
+                        client: 'Artemide', typology: 'Product / Lighting', size: '', status: 'Available',
+                        texts: ['Alphabet of Light is a modular lighting system that allows users to create letters, numbers, and abstract shapes with light using bare LED strips.']
+                    },
+                ]
+            }
+        };
+
+        const PH = ['#1a2535', '#1f1010', '#0e1a0e', '#1c1a0a', '#0a0a1a', '#151c25', '#1c1010', '#101a10'];
+        let activeCat = 'architecture', activeSub = 'all', openId = null;
+
+        /* ── subnav ── */
+        function buildSubnav() {
+            const sn = document.getElementById('subnav');
+            sn.innerHTML = '';
+            // spacer to align with image start
+            const sp = document.createElement('div');
+            sp.style.cssText = 'width:560px;flex-shrink:0';
+            sn.appendChild(sp);
+            DATA[activeCat].subs.forEach(s => {
+                const b = document.createElement('button');
+                b.className = 'stab' + (activeSub === s ? ' active' : '');
+                b.textContent = s;
+                b.onclick = () => {
+                    activeSub = s; openId = null;
+                    document.querySelectorAll('.stab').forEach(x => x.classList.remove('active'));
+                    b.classList.add('active');
+                    buildList();
+                };
+                sn.appendChild(b);
+            });
+        }
+
+        /* ── list ── */
+        function buildList() {
+            const main = document.getElementById('main');
+            main.innerHTML = '';
+            const projs = DATA[activeCat].projects.filter(p => activeSub === 'all' || p.sub === activeSub);
+            projs.forEach((p, i) => main.appendChild(makeBlock(p, i)));
+        }
+
+        function makeBlock(p, idx) {
+            const block = document.createElement('div');
+            block.className = 'pblock';
+            block.id = 'block-' + p.id;
+            block.appendChild(makeCollapsedRow(p, idx));
+            return block;
+        }
+
+        function makeCollapsedRow(p, idx) {
+            const row = document.createElement('div');
+            row.className = 'prow';
+            row.id = 'row-' + p.id;
+
+            // left info
+            const left = document.createElement('div');
+            left.className = 'row-left';
+            const ic = mkImg(p.icon, p.title, 'row-icon');
+            const tt = mk('div', 'row-title', p.title);
+            const ll = mk('div', 'row-loc', p.loc.toUpperCase());
+            left.appendChild(ic); left.appendChild(tt); left.appendChild(ll);
+
+            // right thumbnail
+            const right = document.createElement('div');
+            right.className = 'row-right';
+            const tw = document.createElement('div');
+            tw.className = 'thumb-wrap';
+            tw.id = 'tw-' + p.id;
+            if (p.imgs[0]) {
+                const img = mkImg(p.imgs[0], p.title, 'thumb-img');
+                img.loading = 'lazy';
+                img.onerror = () => { tw.innerHTML = ''; addPh(tw, idx) };
+                tw.appendChild(img);
+            } else { addPh(tw, idx); }
+            right.appendChild(tw);
+
+            row.appendChild(left); row.appendChild(right);
+
+            row.addEventListener('click', () => {
+                if (row.classList.contains('open')) return;
+                openProject(p, idx, row);
+            });
+            return row;
+        }
+
+        function addPh(el, idx) {
+            const ph = document.createElement('div');
+            ph.className = 'thumb-ph';
+            ph.style.background = PH[idx % PH.length];
+            el.appendChild(ph);
+        }
+
+        function mk(tag, cls, txt) {
+            const el = document.createElement(tag);
+            el.className = cls;
+            if (txt) el.textContent = txt;
+            return el;
+        }
+        function mkImg(src, alt, cls) {
+            const img = document.createElement('img');
+            img.src = src; img.alt = alt; img.className = cls;
+            img.onerror = () => { img.style.opacity = 0 };
+            return img;
+        }
+
+        /* ── open / close ── */
+        function openProject(p, idx, row) {
+            if (openId && openId !== p.id) closeProject(openId);
+            openId = p.id;
+
+            // Expanded height = ~590px (matches video — image fills this height comfortably)
+            const H = 590;
+
+            row.innerHTML = '';
+            row.classList.add('open');
+            row.style.height = H + 'px';
+
+            /* Sidebar */
+            const sb = document.createElement('div');
+            sb.className = 'exp-sidebar';
+            sb.style.height = H + 'px';
+            sb.innerHTML = `
+    <img class="exp-icon" src="${p.icon}" alt="${p.title}" onerror="this.style.opacity=0">
+    <div class="exp-title">${p.title}</div>
+    <div class="exp-loc">${p.loc.toUpperCase()}</div>
+    ${p.year ? `<div class="exp-year">${p.year}</div>` : ''}
+    ${p.client ? `<div class="exp-meta"><div class="exp-meta-lbl">Client</div><div class="exp-meta-val">${p.client.toUpperCase()}</div></div>` : ''}
+    <div class="exp-meta"><div class="exp-meta-lbl">Typology</div><div class="exp-meta-val">${(p.typology || p.sub).toUpperCase()}</div></div>
+    ${p.size ? `<div class="exp-meta"><div class="exp-meta-lbl">Size M2/FT2</div><div class="exp-meta-val">${p.size}</div></div>` : ''}
+    <div class="exp-meta"><div class="exp-meta-lbl">Status</div><div class="exp-meta-val">${p.status.toUpperCase()}</div></div>
+    <div class="exp-share-lbl">Share</div>
+    <div class="exp-share"><a href="#">✉</a><a href="#">f</a><a href="#">in</a><a href="#">𝕏</a></div>
+  `;
+            row.appendChild(sb);
+
+            /* Horizontal scroll zone */
+            const hs = document.createElement('div');
+            hs.className = 'exp-scroll';
+            hs.style.height = H + 'px';
+
+            const track = document.createElement('div');
+            track.className = 'exp-track';
+
+            // Build panels: img → text → img → text ...
+            const imgs = p.imgs || [];
+            const texts = p.texts || [];
+            const count = Math.max(imgs.length, texts.length, 1);
+
+            for (let i = 0; i < count; i++) {
+                // Image panel — width chosen so it looks like ~55% of viewport at 1440px
+                const imgW = Math.round(H * 1.44); // 16:10 approx
+                const ip = document.createElement('div');
+                ip.className = 'ep-img';
+                ip.style.width = imgW + 'px';
+                ip.style.height = H + 'px';
+                if (imgs[i]) {
+                    const img = document.createElement('img');
+                    img.src = imgs[i]; img.alt = p.title;
+                    img.onerror = () => { ip.innerHTML = ''; const ph = document.createElement('div'); ph.className = 'ep-img-ph'; ph.style.cssText = `width:100%;height:100%;background:${PH[(idx + i) % PH.length]}`; ip.appendChild(ph) };
+                    ip.appendChild(img);
+                } else {
+                    const ph = document.createElement('div');
+                    ph.className = 'ep-img-ph';
+                    ph.style.cssText = `width:100%;height:100%;background:${PH[(idx + i) % PH.length]}`;
+                    ip.appendChild(ph);
+                }
+                track.appendChild(ip);
+
+                // Text panel
+                if (texts[i]) {
+                    const tp = document.createElement('div');
+                    tp.className = 'ep-txt';
+                    tp.style.height = H + 'px';
+                    texts[i].split('\n').forEach(t => { const para = document.createElement('p'); para.textContent = t; tp.appendChild(para); });
+                    track.appendChild(tp);
+                }
+            }
+
+            hs.appendChild(track);
+            row.appendChild(hs);
+
+            // Drag scroll
+            let drag = false, sx = 0, sl = 0;
+            hs.addEventListener('mousedown', e => { drag = true; sx = e.clientX; sl = hs.scrollLeft; hs.style.userSelect = 'none' });
+            document.addEventListener('mouseup', () => { drag = false; hs.style.userSelect = '' });
+            hs.addEventListener('mousemove', e => { if (!drag) return; e.preventDefault(); hs.scrollLeft = sl - (e.clientX - sx) * 1.1 });
+            hs.addEventListener('click', e => { if (Math.abs(hs.scrollLeft - sl) > 5) e.stopPropagation() });
+
+            // Scroll into view — align top of expanded row with top of visible area
+            setTimeout(() => row.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
+        }
+
+        function closeProject(id) {
+            const row = document.getElementById('row-' + id);
+            if (!row || !row.classList.contains('open')) return;
+            row.classList.remove('open');
+            row.style.height = '';
+            row.innerHTML = '';
+            const projs = DATA[activeCat].projects.filter(p => activeSub === 'all' || p.sub === activeSub);
+            const idx = projs.findIndex(p => p.id === id);
+            if (idx < 0) { if (openId === id) openId = null; return; }
+            const p = projs[idx];
+            // rebuild collapsed
+            const left = document.createElement('div'); left.className = 'row-left';
+            const ic = mkImg(p.icon, p.title, 'row-icon');
+            const tt = mk('div', 'row-title', p.title);
+            const ll = mk('div', 'row-loc', p.loc.toUpperCase());
+            left.appendChild(ic); left.appendChild(tt); left.appendChild(ll);
+            const right = document.createElement('div'); right.className = 'row-right';
+            const tw = document.createElement('div'); tw.className = 'thumb-wrap';
+            if (p.imgs[0]) { const img = mkImg(p.imgs[0], p.title, 'thumb-img'); img.loading = 'lazy'; img.onerror = () => { tw.innerHTML = ''; addPh(tw, idx) }; tw.appendChild(img); }
+            else addPh(tw, idx);
+            right.appendChild(tw);
+            row.appendChild(left); row.appendChild(right);
+            row.addEventListener('click', () => { if (row.classList.contains('open')) return; openProject(p, idx, row); });
+            if (openId === id) openId = null;
+        }
+
+        /* ── nav tabs ── */
+        document.querySelectorAll('.ntab').forEach(b => {
+            b.addEventListener('click', () => {
+                activeCat = b.dataset.cat; activeSub = 'all'; openId = null;
+                document.querySelectorAll('.ntab').forEach(x => x.classList.remove('active'));
+                b.classList.add('active');
+                buildSubnav(); buildList();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && openId) closeProject(openId) });
+
+        buildSubnav();
+        buildList();
+    </script>
+</body>
+
+</html>

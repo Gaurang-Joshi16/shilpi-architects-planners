@@ -1,0 +1,2464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shilpi Architecture & Planners | SAP Portfolio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- CHANGE 6: Updated Google Fonts to include Jost + JetBrains Mono -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Fraunces:opsz,ital,wght@9..144,0,300..600;9..144,1,300..600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <style>
+        /* ─── CSS VARIABLES ─── */
+        :root {
+            /* CHANGE 1: Pure white background + brand ivory tones */
+            --paper: #FFFFFF;
+            --paper-2: #f8f6f1;
+            --paper-3: #E8E4DC;
+            --ink: #0E0E12;
+            --ink-2: #2A2A2F;
+            --ink-3: #57564F;
+            --ink-mute: #8A887D;
+            --line: rgba(14, 14, 18, 0.08);
+            --line-strong: rgba(14, 14, 18, 0.15);
+            --line-deep: rgba(14, 14, 18, 0.35);
+            /* CHANGE 1: Brand accent colors — teal/navy/orange palette */
+            --navy: #163B5E;
+            --navy-light: #1E4F7A;
+            --navy-dark: #0F2A44;
+            --teal: #45A8A1;
+            --teal-light: #5CBDB6;
+            --teal-dark: #368A84;
+            --orange: #C87D30;
+            --orange-light: #D99545;
+            --orange-dark: #A86520;
+            --uv: #45A8A1;
+            --uv-soft: #5CBDB6;
+            --uv-deep: #368A84;
+            --uv-glow: rgba(69, 168, 161, 0.20);
+            --grid: rgba(22, 59, 94, 0.08);
+            --grid-2: rgba(22, 59, 94, 0.04);
+            --border-color: rgba(14, 14, 18, 0.12);
+            --muted-gray: #8A887D;
+            --transition-smooth: cubic-bezier(0.76, 0, 0.24, 1);
+            /* CHANGE 6: Updated font stack — Jost as primary display */
+            --display: "Jost", "Space Grotesk", "Inter", sans-serif;
+            --mono: "JetBrains Mono", "Space Mono", ui-monospace, monospace;
+            --serif: "Fraunces", serif;
+            --pad: clamp(20px, 2.6vw, 36px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            background-color: var(--paper);
+            color: var(--ink);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+            font-family: var(--display);
+            cursor: none;
+        }
+
+        ::selection {
+            background: var(--uv);
+            color: var(--paper);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ─── CHANGE 3: PURE DOT GRID BACKGROUND — radial-gradient dots only ─── */
+        .bp-grid {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background-image: radial-gradient(circle,
+                    rgba(22, 59, 94, 0.18) 1px,
+                    transparent 1px);
+            background-size: 28px 28px;
+        }
+
+        .vignette {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 3;
+            display: none !important;
+            background: radial-gradient(ellipse at 50% 50%, transparent 60%, rgba(14, 14, 18, 0.05) 100%);
+        }
+
+        .grain {
+            position: fixed;
+            inset: -50%;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
+            opacity: .05;
+            mix-blend-mode: multiply;
+            animation: grain 1.2s steps(6) infinite;
+        }
+
+        @keyframes grain {
+            0% {
+                transform: translate(0, 0)
+            }
+
+            20% {
+                transform: translate(-3%, 2%)
+            }
+
+            40% {
+                transform: translate(2%, -3%)
+            }
+
+            60% {
+                transform: translate(-2%, 1%)
+            }
+
+            80% {
+                transform: translate(3%, 2%)
+            }
+
+            100% {
+                transform: translate(0, 0)
+            }
+        }
+
+        .sheet-frame {
+            position: fixed;
+            inset: 14px;
+            pointer-events: none;
+            z-index: 4;
+            border: 1px solid var(--line);
+            mix-blend-mode: multiply;
+        }
+
+        .sheet-frame::before,
+        .sheet-frame::after {
+            content: "";
+            position: absolute;
+            background: var(--ink);
+            opacity: .6;
+        }
+
+        .sheet-frame::before {
+            top: -1px;
+            left: 32px;
+            width: 42px;
+            height: 1px;
+        }
+
+        .sheet-frame::after {
+            bottom: -1px;
+            right: 32px;
+            width: 42px;
+            height: 1px;
+        }
+
+        /* ─── LOADER ─── */
+        .loader-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--paper);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            overflow: hidden;
+            transition: opacity 0.8s var(--transition-smooth);
+        }
+
+        .loader-logo-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: loaderLogoIn 0.8s cubic-bezier(.2, .7, .1, 1) 0.3s forwards;
+        }
+
+        .loader-logo-img {
+            width: clamp(64px, 12vw, 120px);
+            height: clamp(64px, 12vw, 120px);
+            object-fit: contain;
+            display: block;
+        }
+
+        @keyframes loaderLogoIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .morph-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(1.4rem, 3.8vw, 3.8rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+            text-transform: uppercase;
+            white-space: nowrap;
+            width: 100%;
+            padding: 0 20px;
+            font-family: var(--display);
+        }
+
+        .word-block {
+            display: flex;
+            align-items: center;
+            margin: 0 clamp(4px, 1vw, 12px);
+            transition: margin 0.85s var(--transition-smooth);
+        }
+
+        .root-letter {
+            font-weight: 800;
+            display: inline-block;
+        }
+
+        .suffix-letters {
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            display: inline-block;
+            white-space: nowrap;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--ink);
+            transition: max-width 0.85s var(--transition-smooth), opacity 0.6s var(--transition-smooth);
+        }
+
+        .ampersand-block {
+            display: flex;
+            align-items: center;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            font-weight: 800;
+            color: var(--ink);
+            transition: max-width 0.85s var(--transition-smooth), opacity 0.6s var(--transition-smooth);
+        }
+
+        .morph-container.is-expanded .word-block {
+            margin: 0 clamp(8px, 1.8vw, 25px);
+        }
+
+        .morph-container.is-expanded .suffix-letters {
+            max-width: 500px;
+            opacity: 1;
+        }
+
+        .morph-container.is-expanded .ampersand-block {
+            max-width: 80px;
+            opacity: 1;
+            margin: 0 clamp(6px, 1.2vw, 15px);
+        }
+
+        .morph-container.is-settling {
+            position: fixed;
+            z-index: 10000;
+            font-size: 1.8rem;
+            letter-spacing: -0.03em;
+            transition: transform 0.95s cubic-bezier(0.25, 1, 0.5, 1), font-size 0.95s ease;
+            padding: 0;
+            width: auto;
+        }
+
+        .morph-container.is-settling .word-block {
+            margin: 0 1px;
+        }
+
+        /* ─── MAIN CONTENT ─── */
+        .main-content {
+            opacity: 0;
+            transition: opacity 1.2s var(--transition-smooth);
+            min-height: 100vh;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* ─── NAVBAR ─── */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 24px;
+            padding: 18px var(--pad);
+            /* CHANGE 1: Updated header gradient to pure white */
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .logo-box-destination {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sap-logo-img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            flex: none;
+        }
+
+        .nav-mark {
+            width: 22px;
+            height: 22px;
+            border: 1px solid var(--ink);
+            position: relative;
+            flex: none;
+        }
+
+        .nav-mark::before {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border: 1px solid var(--uv);
+            transform: rotate(45deg);
+        }
+
+        /* CHANGE 2: Updated nav logo placeholder styling */
+        .nav-logo-placeholder {
+            font-family: "Jost", "Space Grotesk", "Inter", sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.10em;
+            color: var(--ink);
+            line-height: 1;
+            text-transform: uppercase;
+            opacity: 0;
+        }
+
+        .nav-logo-placeholder small {
+            display: block;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 8px;
+            color: var(--ink-mute);
+            letter-spacing: 0.22em;
+            margin-top: 4px;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            list-style: none;
+        }
+
+        /* CHANGE 6: JetBrains Mono for nav links */
+        .nav-link {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 11px;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--ink-3);
+            padding: 6px 0;
+            transition: color .25s;
+            display: inline-flex;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .nav-link .n {
+            color: var(--ink-mute);
+        }
+
+        .nav-link:hover {
+            color: var(--ink);
+        }
+
+        .nav-link:hover .n {
+            color: var(--uv);
+        }
+
+        .right-nav-group {
+            display: flex;
+            gap: 18px;
+            justify-content: flex-end;
+            align-items: center;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 11px;
+            color: var(--ink-3);
+            letter-spacing: .1em;
+        }
+
+        /* CHANGE 6: JetBrains Mono for live indicator */
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--ink);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 11px;
+            letter-spacing: .1em;
+        }
+
+        .live-indicator::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--uv);
+            box-shadow: 0 0 10px var(--uv-glow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            50% {
+                opacity: .35;
+            }
+        }
+
+        .commission-btn {
+            padding: 7px 12px;
+            border: 1px solid var(--ink);
+            color: var(--ink);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 11px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            transition: background .3s, color .3s, border-color .3s;
+        }
+
+        /* CHANGE 6: JetBrains Mono for theme toggle */
+        .theme-toggle {
+            padding: 7px 12px;
+            border: 1px solid var(--ink);
+            color: var(--ink);
+            font-family: "JetBrains Mono", monospace;
+            font-size: 11px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background .3s, color .3s, border-color .3s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--uv);
+            border-color: var(--uv);
+            color: var(--paper);
+        }
+
+        .toggle-icon {
+            font-size: 13px;
+            line-height: 1;
+        }
+
+        /* ─── DARK MODE OVERRIDES ─── */
+        body.dark-mode {
+            --paper: #07070A;
+            --paper-2: #0E0E12;
+            --paper-3: #15151A;
+            --ink: #ECE8DC;
+            --ink-2: #9F9C92;
+            --ink-3: #57564F;
+            --ink-mute: #3A3935;
+            --line: rgba(236, 232, 220, 0.10);
+            --line-strong: rgba(236, 232, 220, 0.22);
+            --line-deep: rgba(236, 232, 220, 0.42);
+            /* CHANGE 1: Dark mode uv stays teal */
+            --uv: #45A8A1;
+            --uv-soft: #5CBDB6;
+            --uv-glow: rgba(69, 168, 161, 0.50);
+            --grid: rgba(69, 168, 161, 0.12);
+            --border-color: rgba(236, 232, 220, 0.15);
+        }
+
+        /* CHANGE 3: Dark mode dot grid */
+        body.dark-mode .bp-grid {
+            background-image: radial-gradient(circle,
+                    rgba(236, 232, 220, 0.12) 1px,
+                    transparent 1px);
+            background-size: 28px 28px;
+        }
+
+        body.dark-mode .site-header {
+            background: linear-gradient(to bottom, rgba(7, 7, 10, 0.94), rgba(7, 7, 10, 0));
+        }
+
+        body.dark-mode .hero-text-overlay {
+            background: linear-gradient(to bottom, rgba(7, 7, 10, 0.15) 0%, rgba(7, 7, 10, 0.05) 50%, rgba(7, 7, 10, 0.25) 100%);
+        }
+
+        body.dark-mode .hero-title {
+            color: #ECE8DC;
+        }
+
+        body.dark-mode .vignette {
+            background: radial-gradient(ellipse at 50% 50%, transparent 38%, rgba(0, 0, 0, 0.7) 100%);
+        }
+
+        body.dark-mode .theme-toggle {
+            border-color: rgba(236, 232, 220, 0.4);
+            color: #ECE8DC;
+        }
+
+        body.dark-mode .nav-link {
+            color: #9F9C92;
+        }
+
+        body.dark-mode .nav-logo-placeholder {
+            color: #ECE8DC;
+        }
+
+        body.dark-mode #clk {
+            color: #ECE8DC;
+        }
+
+        body.dark-mode .map-interactive-wrapper {
+            border-color: rgba(236, 232, 220, 0.15);
+        }
+
+        body.dark-mode .newsletter-signup-box {
+            background: #0E0E12;
+            border-color: rgba(236, 232, 220, 0.22);
+        }
+
+        body.dark-mode .input-inline-row {
+            border-bottom-color: #ECE8DC;
+        }
+
+        body.dark-mode .input-inline-row input {
+            color: #ECE8DC;
+        }
+
+        body.dark-mode .submit-btn {
+            background: #ECE8DC;
+            color: #07070A;
+        }
+
+        body.dark-mode .submit-btn:hover {
+            background: var(--uv);
+            color: #ECE8DC;
+        }
+
+        body.dark-mode .site-footer {
+            background-color: #0E0E12;
+        }
+
+        .commission-btn:hover {
+            background: var(--uv);
+            border-color: var(--uv);
+            color: var(--paper);
+        }
+
+        .hamburger-menu {
+            width: 30px;
+            height: 22px;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .hamburger-menu span {
+            width: 100%;
+            height: 2px;
+            background: var(--ink);
+            border-radius: 2px;
+        }
+
+        /* ─── HERO SECTION ─── */
+        .hero-reel-section {
+            width: 100%;
+            height: 92vh;
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-container-box {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .video-container-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-text-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 var(--pad);
+            background: linear-gradient(to bottom,
+                    rgba(255, 255, 255, 0.10) 0%,
+                    rgba(255, 255, 255, 0.04) 50%,
+                    rgba(255, 255, 255, 0.15) 100%);
+        }
+
+        /* CHANGE 6: Jost for hero title */
+        .hero-title {
+            font-family: "Jost", "Space Grotesk", sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            font-size: clamp(48px, 10vw, 160px);
+            line-height: .88;
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 0 2px 40px rgba(14, 14, 18, 0.4);
+        }
+
+        .hero-title .line {
+            display: block;
+            overflow: hidden;
+            padding: 0 .05em;
+        }
+
+        .hero-title .line span.txt {
+            display: inline-block;
+            transform: translateY(110%);
+            opacity: 0;
+            animation: rise 1.2s cubic-bezier(.2, .7, .1, 1) forwards;
+        }
+
+        .hero-title .line:nth-child(1) span.txt {
+            animation-delay: .3s;
+        }
+
+        .hero-title .line:nth-child(2) span.txt {
+            animation-delay: .5s;
+        }
+
+        .hero-title em {
+            font-family: var(--serif);
+            font-style: italic;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .hero-title .blue {
+            color: #7BE8E2;
+        }
+
+        @keyframes rise {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .hero-sub {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 11px;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.75);
+            margin-top: 32px;
+            text-align: center;
+            opacity: 0;
+            animation: fade 1s ease-out 1.2s forwards;
+        }
+
+        .hero-sub span {
+            color: #7BE8E2;
+            padding: 0 12px;
+        }
+
+        @keyframes fade {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ─── STATEMENT SECTION ─── */
+        .statement-section {
+            padding: 100px var(--pad) 60px;
+            max-width: 100%;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* CHANGE 4: Updated statement text — no uppercase, new font, new sizing */
+        .statement-text {
+            font-size: clamp(1.6rem, 3.2vw, 3rem);
+            font-weight: 400;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            text-transform: none;
+            max-width: 85%;
+            font-family: "Jost", "Space Grotesk", "Inter", sans-serif;
+            color: var(--ink);
+        }
+
+        /* ─── FOUR LABS SECTION ─── */
+        .labs-section {
+            padding: 20px var(--pad) 80px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .section-head {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 24px;
+            align-items: end;
+            padding: clamp(40px, 6vw, 80px) 0 40px;
+        }
+
+        /* CHANGE 6: Jost for section headings */
+        .section-head h2 {
+            font-family: "Jost", "Space Grotesk", sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            font-size: clamp(36px, 6vw, 90px);
+            line-height: .9;
+            color: var(--ink);
+        }
+
+        .section-head h2 em {
+            font-family: var(--serif);
+            font-style: italic;
+            font-weight: 300;
+            color: var(--ink-3);
+        }
+
+        .section-head .meta {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 11px;
+            color: var(--ink-3);
+            text-align: right;
+            letter-spacing: .1em;
+            line-height: 1.8;
+        }
+
+        .section-head .meta strong {
+            color: var(--ink);
+            font-weight: 500;
+        }
+
+        .lab-diagram {
+            margin: 0 auto 60px;
+            max-width: 680px;
+            position: relative;
+        }
+
+        .lab-diagram svg {
+            width: 100%;
+            height: auto;
+            overflow: visible;
+        }
+
+        /* CHANGE 5: Three-column lab grid */
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--line-strong);
+            border: 1px solid var(--line-strong);
+        }
+
+        .lab {
+            background: var(--paper);
+            padding: 38px 32px;
+            position: relative;
+            min-height: 460px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            transition: background .4s;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .lab:hover {
+            background: var(--paper-2);
+        }
+
+        .lab::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--uv);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform .5s cubic-bezier(.2, .7, .1, 1);
+        }
+
+        .lab:hover::after {
+            transform: scaleY(1);
+        }
+
+        .lab .lab-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+        }
+
+        /* CHANGE 6: JetBrains Mono for lab ID */
+        .lab .id {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 10px;
+            color: var(--ink-mute);
+            letter-spacing: .18em;
+        }
+
+        /* CHANGE 6: JetBrains Mono for lab badge */
+        .lab .badge {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 9px;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            padding: 5px 9px;
+            border: 1px solid var(--line-strong);
+            color: var(--ink-3);
+        }
+
+        .lab .badge.active {
+            color: var(--uv);
+            border-color: var(--uv);
+        }
+
+        /* CHANGE 6: Jost for lab headings */
+        .lab h3 {
+            font-family: "Jost", "Space Grotesk", sans-serif;
+            font-size: clamp(24px, 2.6vw, 36px);
+            font-weight: 700;
+            letter-spacing: -.025em;
+            line-height: .95;
+            max-width: 14ch;
+            color: var(--ink);
+        }
+
+        .lab h3 em {
+            font-family: var(--serif);
+            font-style: italic;
+            color: var(--ink-3);
+        }
+
+        .lab h3 .teal {
+            color: var(--uv);
+        }
+
+        .lab .desc {
+            font-family: var(--display);
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--ink-2);
+            max-width: 42ch;
+            font-weight: 400;
+        }
+
+        .lab .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            padding: 16px 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            margin-top: 8px;
+        }
+
+        .lab .stats div {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .lab .stats .v {
+            font-family: var(--display);
+            font-size: 24px;
+            color: var(--ink);
+            letter-spacing: -.02em;
+            font-weight: 600;
+        }
+
+        /* CHANGE 6: JetBrains Mono for stats labels */
+        .lab .stats .l {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 9px;
+            color: var(--ink-mute);
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
+
+        .lab .recent {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .lab .recent .h {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 10px;
+            color: var(--ink-mute);
+            letter-spacing: .16em;
+            text-transform: uppercase;
+        }
+
+        .lab .recent ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .lab .recent li {
+            font-family: var(--display);
+            font-size: 14px;
+            color: var(--ink);
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-weight: 400;
+        }
+
+        .lab .recent li em {
+            font-family: var(--serif);
+            font-style: italic;
+            color: var(--ink-3);
+        }
+
+        .lab .recent li span {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 10px;
+            color: var(--ink-mute);
+            letter-spacing: .1em;
+        }
+
+        .lab .enter {
+            margin-top: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 11px;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--ink);
+            align-self: flex-start;
+            padding-top: 12px;
+        }
+
+        .lab .enter::after {
+            content: "→";
+            color: var(--uv);
+            transition: transform .3s;
+        }
+
+        .lab:hover .enter::after {
+            transform: translateX(8px);
+        }
+
+        .lab .corner-glyph {
+            position: absolute;
+            top: 32px;
+            right: 32px;
+            width: 64px;
+            height: 64px;
+            opacity: .5;
+            transition: opacity .4s, transform .6s cubic-bezier(.2, .7, .1, 1);
+        }
+
+        .lab:hover .corner-glyph {
+            opacity: 1;
+            transform: rotate(90deg);
+        }
+
+        .lab .corner-glyph svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .lab .corner-glyph path,
+        .lab .corner-glyph rect,
+        .lab .corner-glyph line,
+        .lab .corner-glyph circle,
+        .lab .corner-glyph polyline {
+            fill: none;
+            stroke: var(--uv);
+            stroke-width: 1.1;
+            vector-effect: non-scaling-stroke;
+        }
+
+        /* ─── METRICS SECTION ─── */
+        .metrics-section {
+            padding: 80px var(--pad);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .metrics-grid-row {
+            display: flex;
+            justify-content: center;
+            gap: 120px;
+            margin-bottom: 60px;
+        }
+
+        .metric-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 140px;
+        }
+
+        /* CHANGE 6: Jost for metric numbers */
+        .metric-number {
+            font-size: clamp(4rem, 8vw, 7.5rem);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            font-family: "Jost", "Space Grotesk", sans-serif;
+        }
+
+        /* CHANGE 6: JetBrains Mono for metric label */
+        .metric-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 700;
+            margin-top: 10px;
+            color: var(--ink);
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .metrics-sub-heading {
+            font-size: clamp(1.2rem, 2.4vw, 2rem);
+            font-weight: 400;
+            max-width: 850px;
+            margin: 0 auto 80px;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            font-family: var(--display);
+            color: var(--ink-2);
+        }
+
+        /* ─── CATEGORY GRID ─── */
+        .category-matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+
+        .category-card {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .category-img-wrapper {
+            width: 100%;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .category-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* CHANGE 6: JetBrains Mono for category tag pill */
+        .category-tag-pill {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: var(--paper);
+            padding: 6px 14px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: "JetBrains Mono", monospace;
+            color: var(--ink);
+        }
+
+        .category-count {
+            color: var(--ink-mute);
+        }
+
+        /* ─── NEWS SECTION ─── */
+        .news-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 80px var(--pad) 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* CHANGE 6: Jost for news section title */
+        .news-section-title {
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            font-family: "Jost", "Space Grotesk", sans-serif;
+        }
+
+        .news-section-title em {
+            font-family: "Fraunces", serif;
+            font-style: italic;
+            font-weight: 300;
+            color: var(--ink-3);
+        }
+
+        /* CHANGE 6: JetBrains Mono for view-all link */
+        .view-all-link {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-bottom: 10px;
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .news-matrix-carousel {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 0 var(--pad) 100px;
+        }
+
+        .news-card {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .news-img-frame {
+            width: 100%;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            background-color: var(--paper-2);
+        }
+
+        .news-img-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-info-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .news-headline {
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--ink);
+            font-family: var(--display);
+        }
+
+        /* CHANGE 6: JetBrains Mono for news date */
+        .news-date {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--ink-mute);
+            white-space: nowrap;
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        /* ─── FOOTER ─── */
+        .site-footer {
+            background-color: var(--paper);
+            padding: 100px var(--pad) 40px;
+            border-top: 1px solid var(--border-color);
+            position: relative;
+            z-index: 5;
+        }
+
+        /* CHANGE 6: Jost for footer CTA */
+        .footer-cta-text {
+            font-size: clamp(2rem, 4.5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            max-width: 85%;
+            font-family: "Jost", "Space Grotesk", sans-serif;
+        }
+
+        /* CHANGE 6: JetBrains Mono for contact trigger link */
+        .contact-trigger-link {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            color: var(--ink);
+            display: inline-block;
+            margin-bottom: 60px;
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .footer-details-map-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+            align-items: stretch;
+        }
+
+        .footer-text-side {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .studio-address-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .address-box h3,
+        .contact-box h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: -0.01em;
+            font-family: var(--display);
+        }
+
+        .address-box p,
+        .contact-box p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--ink-2);
+            font-weight: 400;
+            font-family: var(--display);
+        }
+
+        .map-interactive-wrapper {
+            width: 100%;
+            min-height: 420px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            background-color: var(--paper-3);
+            border: 1px solid var(--border-color);
+        }
+
+        #live-leaflet-map {
+            width: 100% !important;
+            height: 100% !important;
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            z-index: 5;
+        }
+
+        .leaflet-popup-content-wrapper {
+            background: var(--ink);
+            color: var(--paper);
+            font-family: "JetBrains Mono", monospace;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .leaflet-popup-tip {
+            background: var(--ink);
+        }
+
+        .footer-utility-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-nav-column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-nav-column h4 {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        /* CHANGE 6: JetBrains Mono for footer links */
+        .footer-link {
+            text-decoration: none;
+            color: var(--ink);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .footer-link:hover {
+            opacity: 0.5;
+        }
+
+        .footer-legal-block {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.68rem;
+            color: var(--ink);
+            font-weight: 500;
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .legal-row-links span {
+            margin-right: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .newsletter-signup-box {
+            background-color: var(--paper-2);
+            padding: 40px;
+            border-radius: 6px;
+            width: 100%;
+            max-width: 480px;
+            border: 1px solid var(--line-strong);
+        }
+
+        .newsletter-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            line-height: 1.4;
+            margin-bottom: 40px;
+            font-family: "JetBrains Mono", monospace;
+            color: var(--ink-2);
+        }
+
+        .input-inline-row {
+            display: flex;
+            border-bottom: 2px solid var(--ink);
+            padding-bottom: 10px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .input-inline-row input {
+            border: none;
+            background: transparent;
+            font-size: 0.85rem;
+            font-weight: 500;
+            width: 80%;
+            outline: none;
+            text-transform: uppercase;
+            font-family: "JetBrains Mono", monospace;
+            color: var(--ink);
+        }
+
+        .input-inline-row input::placeholder {
+            color: var(--ink-mute);
+        }
+
+        .submit-btn {
+            background-color: var(--ink);
+            color: var(--paper);
+            border: none;
+            padding: 10px 22px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: "JetBrains Mono", monospace;
+            transition: background .3s;
+        }
+
+        .submit-btn:hover {
+            background: var(--uv);
+        }
+
+        /* ─── REVEAL ANIMATION ─── */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 1s cubic-bezier(.2, .7, .1, 1), transform 1s cubic-bezier(.2, .7, .1, 1);
+        }
+
+        [data-reveal].in {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 980px) {
+            .site-header {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .main-nav {
+                display: none;
+            }
+
+            .hamburger-menu {
+                display: flex;
+            }
+
+            .right-nav-group {
+                justify-content: flex-end;
+            }
+
+            .live-indicator {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-nav {
+                position: fixed;
+                top: 80px;
+                right: -100%;
+                width: 240px;
+                height: calc(100vh - 80px);
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 40px 30px;
+                gap: 28px;
+                transition: right 0.4s ease;
+                z-index: 1000;
+                display: flex;
+            }
+
+            .main-nav.active {
+                right: 0;
+            }
+
+            .metrics-grid-row {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .category-matrix-grid,
+            .news-matrix-carousel {
+                grid-template-columns: 1fr;
+            }
+
+            .studio-address-block {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-details-map-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .footer-utility-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 60px;
+            }
+
+            .newsletter-signup-box {
+                max-width: 100%;
+            }
+
+            .map-interactive-wrapper {
+                min-height: 320px;
+            }
+
+            /* CHANGE 5: Mobile single column for lab grid */
+            .lab-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sheet-frame {
+                display: none;
+            }
+        }
+
+        @media (max-width: 1024px) {
+
+            .category-matrix-grid,
+            .news-matrix-carousel {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            /* CHANGE 5: Tablet single column for lab grid */
+            .lab-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ─── Cursor ─── */
+        .cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--ink);
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width .25s, height .25s, background .25s, opacity .2s;
+        }
+
+        .cursor.ring {
+            width: 42px;
+            height: 42px;
+            background: transparent;
+            border: 1px solid var(--ink);
+            transition: transform .15s ease-out, width .25s, height .25s, border-color .25s;
+        }
+
+        .cursor.hover {
+            width: 72px;
+            height: 72px;
+            border-color: var(--uv);
+        }
+
+        .cursor.hover.dot {
+            background: var(--uv);
+        }
+
+        @media (pointer: coarse) {
+            body {
+                cursor: auto;
+            }
+
+            .cursor {
+                display: none;
+            }
+        }
+
+        /* video section styling */
+        /* ─── VIDEOS SECTION ─── */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            padding: 0 var(--pad) 100px;
+        }
+
+        .video-card {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .video-thumb-wrap {
+            width: 100%;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            border-radius: 4px;
+            position: relative;
+            background: var(--paper-2);
+        }
+
+        .video-thumb-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .video-card:hover .video-thumb-wrap img {
+            transform: scale(1.04);
+        }
+
+        .video-play-btn {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.25);
+            color: #ffffff;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-play-btn svg {
+            width: 56px;
+            height: 56px;
+            filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.4));
+        }
+
+        .video-card:hover .video-play-btn {
+            opacity: 1;
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.72);
+            color: #ffffff;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            padding: 3px 7px;
+            border-radius: 2px;
+        }
+
+        .video-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .video-tag {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--uv);
+        }
+
+        .video-title {
+            font-family: "Jost", "Space Grotesk", sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            line-height: 1.4;
+            color: var(--ink);
+            letter-spacing: -0.01em;
+        }
+
+        .video-date {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            color: var(--ink-mute);
+        }
+
+        @media (max-width: 1024px) {
+            .videos-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cursor" id="cur" style="opacity:0"></div>
+    <div class="cursor ring" id="curRing" style="opacity:0"></div>
+    <div class="bp-grid" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="sheet-frame" aria-hidden="true"></div>
+
+    <div id="loader-layer" class="loader-layer">
+        <div id="loader-flight-capsule"
+            style="display: flex; flex-direction: column; align-items: center; gap: 32px; transition: transform 0.95s cubic-bezier(0.25, 1, 0.5, 1);">
+            <div class="loader-logo-wrap" style="animation: none; transform: none; opacity: 1;">
+                <img src="logo.png" alt="Shilpi" class="loader-logo-img">
+            </div>
+            <div id="morph-container" class="morph-container" style="position: relative;">
+                <div class="word-block">
+                    <span class="root-letter">S</span><span class="suffix-letters">hilpi</span>
+                </div>
+                <div class="word-block">
+                    <span class="root-letter">A</span><span class="suffix-letters">rchitects</span>
+                </div>
+                <div class="ampersand-block" id="loader-amp">&nbsp;&amp;&nbsp;</div>
+                <div class="word-block">
+                    <span class="root-letter">P</span><span class="suffix-letters">lanners</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-content" class="main-content hidden">
+
+        <header class="site-header">
+            <!-- CHANGE 2: Logo text now reads SHILPI / ARCHITECTS & PLANNERS -->
+            <div class="logo-box-destination" id="target-navbar-logo">
+                <img src="logo.png" alt="Shilpi Architects & Planners" class="sap-logo-img">
+                <div class="nav-logo-placeholder">
+                    SHILPI
+                    <small>ARCHITECTS &amp; PLANNERS</small>
+                </div>
+            </div>
+
+            <nav class="main-nav" id="main-nav">
+                <a href="#practice" class="nav-link"><span class="n">01</span> Practice</a>
+                <a href="#projects" class="nav-link"><span class="n">02</span> Projects</a>
+                <a href="#labs" class="nav-link"><span class="n">03</span> Labs</a>
+                <a href="#news" class="nav-link"><span class="n">04</span> News</a>
+                <a href="#contact" class="nav-link"><span class="n">05</span> Contact</a>
+            </nav>
+
+            <div class="right-nav-group">
+                <span class="live-indicator" id="clk">— : —&nbsp;IST</span>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <span class="toggle-icon">◑</span>
+                    <span class="toggle-label" id="toggleLabel">DARK</span>
+                </button>
+                <div class="hamburger-menu" id="hamburger-menu">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+
+            <section class="hero-reel-section">
+                <div class="video-container-box">
+                    <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1800&q=90"
+                        alt="SAP Courtyard Core Frame">
+                </div>
+                <div class="hero-text-overlay">
+                    <h1 class="hero-title">
+                        <span class="line"><span class="txt">A studio for the</span></span>
+                        <span class="line"><span class="txt"><em>architecture</em> of the <span
+                                    class="blue">not&#8209;yet</span></span></span>
+                    </h1>
+                    <div class="hero-sub">
+                        Architects <span>·</span> Planners <span>·</span> Research <span>·</span> AI Labs
+                    </div>
+                </div>
+            </section>
+
+            <!-- CHANGE 4: New statement text — not uppercase, updated copy -->
+            <section class="statement-section" data-reveal>
+                <h2 class="statement-text">Shilpi Architects &amp; Planners is a practice that designs for a
+                    resilient world. We believe that great environments are not imposed;
+                    they emerge from the intelligent relationship between people,
+                    movement, economy, and place.</h2>
+            </section>
+
+            <section class="labs-section" id="labs">
+                <div class="section-head" data-reveal>
+                    <!-- CHANGE 5: Section heading updated to "The Three Labs." -->
+                    <h2>The Three <em>Labs</em>.</h2>
+                    <div class="meta">01 / DIVISIONS<br><strong>ONE STUDIO · THREE ARMS</strong><br>PUNE · 2026</div>
+                </div>
+
+                <!-- CHANGE 5B: Equilateral triangle diagram with teal/navy arms and orange center -->
+                <div class="lab-diagram" data-reveal>
+                    <svg viewBox="0 0 500 420" preserveAspectRatio="xMidYMid meet">
+                        <!-- Triangle arms in navy -->
+                        <line x1="250" y1="60" x2="80" y2="350" stroke="#163B5E" stroke-width="1.5"
+                            stroke-dasharray="4 6" opacity="0.7" />
+                        <line x1="250" y1="60" x2="420" y2="350" stroke="#163B5E" stroke-width="1.5"
+                            stroke-dasharray="4 6" opacity="0.7" />
+                        <line x1="80" y1="350" x2="420" y2="350" stroke="#163B5E" stroke-width="1.5"
+                            stroke-dasharray="4 6" opacity="0.7" />
+
+                        <!-- Corner nodes in teal -->
+                        <circle cx="250" cy="60" r="10" fill="#FFFFFF" stroke="#45A8A1" stroke-width="1.5" />
+                        <circle cx="80" cy="350" r="10" fill="#FFFFFF" stroke="#45A8A1" stroke-width="1.5" />
+                        <circle cx="420" cy="350" r="10" fill="#FFFFFF" stroke="#45A8A1" stroke-width="1.5" />
+
+                        <!-- Center hub in orange -->
+                        <circle cx="250" cy="253" r="16" fill="#C87D30" stroke="#163B5E" stroke-width="1" />
+
+                        <!-- Hub label -->
+                        <text x="250" y="285" text-anchor="middle" font-family="JetBrains Mono, Space Mono, monospace"
+                            font-size="9" letter-spacing="0.14em" fill="#163B5E">SAP</text>
+
+                        <!-- Node labels: AI & COMPUTATION (top) -->
+                        <text x="250" y="38" text-anchor="middle" font-family="JetBrains Mono, Space Mono, monospace"
+                            font-size="9" letter-spacing="0.14em" fill="#163B5E">AI · COMPUTATION</text>
+                        <text x="250" y="25" text-anchor="middle" font-family="JetBrains Mono, Space Mono, monospace"
+                            font-size="8" letter-spacing="0.14em" fill="#45A8A1">/ 01</text>
+
+                        <!-- Node labels: CIVIC REFORM (bottom-left) -->
+                        <text x="80" y="382" text-anchor="middle" font-family="JetBrains Mono, Space Mono, monospace"
+                            font-size="9" letter-spacing="0.14em" fill="#163B5E">CIVIC REFORM</text>
+                        <text x="80" y="397" text-anchor="middle" font-family="JetBrains Mono, Space Mono, monospace"
+                            font-size="8" letter-spacing="0.14em" fill="#45A8A1">/ 02</text>
+
+                        <!-- Node labels: URBAN FUTURES (bottom-right) -->
+                        <text x="420" y="382" text-anchor="middle" font-family="JetBrains Mono, Space Mono, monospace"
+                            font-size="9" letter-spacing="0.14em" fill="#163B5E">URBAN FUTURES</text>
+                        <text x="420" y="397" text-anchor="middle" font-family="JetBrains Mono, Space Mono, monospace"
+                            font-size="8" letter-spacing="0.14em" fill="#45A8A1">/ 03</text>
+                    </svg>
+                </div>
+
+                <!-- CHANGE 5A: Three lab cards only — Atelier removed. Renumbered 01/02/03 -->
+                <div class="lab-grid">
+
+                    <!-- LAB 01: AI & Computation (was 03, now 01) -->
+                    <article class="lab" data-reveal>
+                        <div class="lab-head">
+                            <div>
+                                <div class="id">SAP · 01</div>
+                                <h3>AI &amp; <span class="teal">Computation</span></h3>
+                            </div>
+                            <span class="badge active">▌ Active · 5</span>
+                        </div>
+                        <p class="desc">Generative design, ML-aided masterplanning, computational typology. We build
+                            internal tools that learn from regional vernaculars and reason about land, climate, and
+                            policy together.</p>
+                        <div class="stats">
+                            <div><span class="v">05</span><span class="l">Tools</span></div>
+                            <div><span class="v">11</span><span class="l">Models</span></div>
+                            <div><span class="v">2</span><span class="l">Researchers</span></div>
+                        </div>
+                        <div class="recent">
+                            <span class="h">▌ Recent</span>
+                            <ul>
+                                <li>VERNA <em>/ vernacular grammar model</em><span>2026</span></li>
+                                <li>FSI Sandbox <em>/ planning tool</em><span>2025</span></li>
+                                <li>Ecosystem Urban Center<span>2024</span></li>
+                            </ul>
+                        </div>
+                        <span class="enter">Enter Lab</span>
+                        <div class="corner-glyph">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="30" />
+                                <circle cx="50" cy="50" r="18" />
+                                <line x1="20" y1="50" x2="80" y2="50" />
+                                <line x1="50" y1="20" x2="50" y2="80" />
+                                <circle cx="50" cy="50" r="3" />
+                            </svg>
+                        </div>
+                    </article>
+
+                    <!-- LAB 02: Civic Reform Studio (was 04, now 02) -->
+                    <article class="lab" data-reveal>
+                        <div class="lab-head">
+                            <div>
+                                <div class="id">SAP · 02</div>
+                                <h3>Civic <em>Reform</em> Studio</h3>
+                            </div>
+                            <span class="badge active">▌ Active · 9</span>
+                        </div>
+                        <p class="desc">Embedded engagements with municipalities and planning authorities. We design
+                            instruments — TDR frameworks, FSI bonuses, reform pilots — and teach the cadres who use
+                            them.</p>
+                        <div class="stats">
+                            <div><span class="v">09</span><span class="l">Engagements</span></div>
+                            <div><span class="v">22</span><span class="l">Officials</span></div>
+                            <div><span class="v">4</span><span class="l">States</span></div>
+                        </div>
+                        <div class="recent">
+                            <span class="h">▌ Recent</span>
+                            <ul>
+                                <li>Municipal Reform Studio<span>2024</span></li>
+                                <li>UDPFI Reading Group<span>2025</span></li>
+                                <li>Town Planning Cadre Program<span>2026</span></li>
+                            </ul>
+                        </div>
+                        <span class="enter">Enter Studio</span>
+                        <div class="corner-glyph">
+                            <svg viewBox="0 0 100 100">
+                                <rect x="20" y="20" width="60" height="60" />
+                                <line x1="20" y1="40" x2="80" y2="40" />
+                                <line x1="20" y1="60" x2="80" y2="60" />
+                                <line x1="40" y1="20" x2="40" y2="80" />
+                                <line x1="60" y1="20" x2="60" y2="80" />
+                                <rect x="40" y="40" width="20" height="20" fill="rgba(69,168,161,0.25)" />
+                            </svg>
+                        </div>
+                    </article>
+
+                    <!-- LAB 03: Urban Futures Lab (was 02, now 03) -->
+                    <article class="lab" data-reveal>
+                        <div class="lab-head">
+                            <div>
+                                <div class="id">SAP · 03</div>
+                                <h3>Urban <em>Futures</em> Lab</h3>
+                            </div>
+                            <span class="badge active">▌ Active · 7</span>
+                        </div>
+                        <p class="desc">A speculative research arm studying the Indian city in transition — corridor
+                            urbanism, climate adaptation, heritage futures. Outputs: atlases, exhibitions, white papers,
+                            occasional buildings.</p>
+                        <div class="stats">
+                            <div><span class="v">07</span><span class="l">Studies</span></div>
+                            <div><span class="v">14</span><span class="l">Published</span></div>
+                            <div><span class="v">3</span><span class="l">Fellows</span></div>
+                        </div>
+                        <div class="recent">
+                            <span class="h">▌ Recent</span>
+                            <ul>
+                                <li>Deccan Edge Atlas<span>2025</span></li>
+                                <li>The Highway as Public Realm<span>2025</span></li>
+                                <li>Monsoon Markets <em>/ field</em><span>2024</span></li>
+                            </ul>
+                        </div>
+                        <span class="enter">Enter Lab</span>
+                        <div class="corner-glyph">
+                            <svg viewBox="0 0 100 100">
+                                <polyline points="15,80 35,55 55,65 75,30 90,45" />
+                                <circle cx="35" cy="55" r="2.5" />
+                                <circle cx="75" cy="30" r="2.5" />
+                                <circle cx="55" cy="65" r="2.5" />
+                                <line x1="10" y1="85" x2="95" y2="85" />
+                                <line x1="15" y1="15" x2="15" y2="85" />
+                            </svg>
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+
+            <!-- Second statement stays exactly as-is (right-aligned methodology text) -->
+            <section class="statement-section" style="padding-top: 40px; padding-bottom: 100px;" data-reveal>
+                <h2 class="statement-text" style="text-align: right; margin-left: auto;">Our methodology for space
+                    arrangement initiates with a highly calculated, inclusive mindset.</h2>
+            </section>
+
+            <section class="metrics-section" id="about">
+                <div class="metrics-grid-row">
+                    <div class="metric-block">
+                        <span class="metric-number" data-target="9">0</span>
+                        <span class="metric-label">Million Sq.ft Built</span>
+                    </div>
+                    <div class="metric-block">
+                        <span class="metric-number" data-target="150">0</span>
+                        <span class="metric-label">Sq.Mt of Urban Space Designed</span>
+                    </div>
+                    <div class="metric-block">
+                        <span class="metric-number" data-target="70">0</span>
+                        <span class="metric-label">Lives Impacted</span>
+                    </div>
+                </div>
+                <h3 class="metrics-sub-heading">SAP introduces calculated structural paradigms to advance community
+                    environments across a global layout framework.</h3>
+
+                <div class="category-matrix-grid">
+                    <div class="category-card" data-reveal>
+                        <div class="category-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1504297050568-910d24c426d3?auto=format&fit=crop&w=600&q=80"
+                                alt="Architecture">
+                            <div class="category-tag-pill">Architecture <span class="category-count">57</span></div>
+                        </div>
+                    </div>
+                    <div class="category-card" data-reveal>
+                        <div class="category-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80"
+                                alt="Interiors">
+                            <div class="category-tag-pill">Interiors <span class="category-count">29</span></div>
+                        </div>
+                    </div>
+                    <div class="category-card" data-reveal>
+                        <div class="category-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=600&q=80"
+                                alt="Landscape">
+                            <div class="category-tag-pill">Landscape <span class="category-count">20</span></div>
+                        </div>
+                    </div>
+                    <div class="category-card" data-reveal>
+                        <div class="category-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=600&q=80"
+                                alt="Urban Design">
+                            <div class="category-tag-pill">Urban Design <span class="category-count">6</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="news">
+                <div class="news-header-row">
+                    <h2 class="news-section-title">STUDIO <em>Chronicle</em>.</h2>
+                    <a href="#all-news" class="view-all-link">View All &nearr;</a>
+                </div>
+                <div class="news-matrix-carousel">
+                    <div class="news-card" data-reveal>
+                        <div class="news-img-frame">
+                            <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=600&q=80"
+                                alt="Greenery Space">
+                        </div>
+                        <div class="news-info-meta">
+                            <p class="news-headline">SAP transforms a parking structure into an ecological civic
+                                ecosystem hub space</p>
+                            <span class="news-date">04.11</span>
+                        </div>
+                    </div>
+                    <div class="news-card" data-reveal>
+                        <div class="news-img-frame">
+                            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80"
+                                alt="Award">
+                        </div>
+                        <div class="news-info-meta">
+                            <p class="news-headline">SAP Named to Global Creative Indices for Forward-Thinking
+                                Architectural Blueprinting 2026</p>
+                            <span class="news-date">03.18</span>
+                        </div>
+                    </div>
+                    <div class="news-card" data-reveal>
+                        <div class="news-img-frame">
+                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80"
+                                alt="Development">
+                        </div>
+                        <div class="news-info-meta">
+                            <p class="news-headline">Strategic development projects mapped for luxury resort complexes
+                                in regional high terrains</p>
+                            <span class="news-date">12.10</span>
+                        </div>
+                    </div>
+                    <div class="news-card" data-reveal>
+                        <div class="news-img-frame">
+                            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80"
+                                alt="Interior">
+                        </div>
+                        <div class="news-info-meta">
+                            <p class="news-headline">First internal walk-through parameters verified inside completed
+                                clock factory conversions</p>
+                            <span class="news-date">10.11</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="videos-section" id="videos">
+                <div class="news-header-row" style="border-top: 1px solid var(--border-color);">
+                    <h2 class="news-section-title">ACOUSTIC <em>blueprints</em>.</h2>
+                    <a href="https://www.youtube.com/@shilpiarchitects" target="_blank" class="view-all-link">View
+                        Channel &nearr;</a>
+                </div>
+
+                <div class="videos-grid">
+                    <a href="https://www.youtube.com/watch?v=OgribLSWhNE" target="_blank" class="video-card"
+                        data-reveal>
+                        <div class="video-thumb-wrap">
+                            <img src="https://img.youtube.com/vi/OgribLSWhNE/maxresdefault.jpg"
+                                alt="Podcast Episode 01">
+                            <div class="video-play-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.2" />
+                                    <polygon points="10,8 17,12 10,16" fill="currentColor" />
+                                </svg>
+                            </div>
+                            <div class="video-duration">42:18</div>
+                        </div>
+                        <div class="video-meta">
+                            <span class="video-tag">Podcast · EP 01</span>
+                            <h3 class="video-title">Director's Vision: Designing for the Indian City of Tomorrow</h3>
+                            <span class="video-date">MAY 2026</span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=CF97mtu3qlE" target="_blank" class="video-card"
+                        data-reveal>
+                        <div class="video-thumb-wrap">
+                            <img src="https://img.youtube.com/vi/CF97mtu3qlE/maxresdefault.jpg"
+                                alt="Podcast Episode 02">
+                            <div class="video-play-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.2" />
+                                    <polygon points="10,8 17,12 10,16" fill="currentColor" />
+                                </svg>
+                            </div>
+                            <div class="video-duration">31:05</div>
+                        </div>
+                        <div class="video-meta">
+                            <span class="video-tag">Podcast · EP 02</span>
+                            <h3 class="video-title">Urban Futures: Climate Adaptation and Heritage in Pune</h3>
+                            <span class="video-date">APR 2026</span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=AhgtB-TqS3w" target="_blank" class="video-card"
+                        data-reveal>
+                        <div class="video-thumb-wrap">
+                            <img src="https://img.youtube.com/vi/AhgtB-TqS3w/maxresdefault.jpg" alt="Studio Walk">
+                            <div class="video-play-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.2" />
+                                    <polygon points="10,8 17,12 10,16" fill="currentColor" />
+                                </svg>
+                            </div>
+                            <div class="video-duration">12:47</div>
+                        </div>
+                        <div class="video-meta">
+                            <span class="video-tag">Studio · Walk-Through</span>
+                            <h3 class="video-title">Inside SAP: A Walk Through Our Kothrud Studio Space</h3>
+                            <span class="video-date">MAR 2026</span>
+                        </div>
+                    </a>
+
+                    <!-- <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="video-card"
+                        data-reveal>
+                        <div class="video-thumb-wrap">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Lecture">
+                            <div class="video-play-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.2" />
+                                    <polygon points="10,8 17,12 10,16" fill="currentColor" />
+                                </svg>
+                            </div>
+                            <div class="video-duration">58:22</div>
+                        </div>
+                        <div class="video-meta">
+                            <span class="video-tag">Lecture · Public</span>
+                            <h3 class="video-title">FSI, TDR & the Reform Imagination — Public Lecture Series</h3>
+                            <span class="video-date">FEB 2026</span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="video-card"
+                        data-reveal>
+                        <div class="video-thumb-wrap">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+                                alt="Podcast Episode 03">
+                            <div class="video-play-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.2" />
+                                    <polygon points="10,8 17,12 10,16" fill="currentColor" />
+                                </svg>
+                            </div>
+                            <div class="video-duration">27:33</div>
+                        </div>
+                        <div class="video-meta">
+                            <span class="video-tag">Podcast · EP 03</span>
+                            <h3 class="video-title">Vernacular Grammar: What AI Can Learn from Deccan Architecture</h3>
+                            <span class="video-date">JAN 2026</span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="video-card"
+                        data-reveal>
+                        <div class="video-thumb-wrap">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Project Reveal">
+                            <div class="video-play-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.2" />
+                                    <polygon points="10,8 17,12 10,16" fill="currentColor" />
+                                </svg>
+                            </div>
+                            <div class="video-duration">08:14</div>
+                        </div>
+                        <div class="video-meta">
+                            <span class="video-tag">Project · Reveal</span>
+                            <h3 class="video-title">Sky Pavilion Unveiled — Residential Project Documentation</h3>
+                            <span class="video-date">DEC 2025</span>
+                        </div>
+                    </a> -->
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer" id="contact">
+            <h2 class="footer-cta-text">Based in Pune and creating solutions globally, SAP shapes modern culture through
+                progressive spatial engineering frameworks.</h2>
+            <a href="#contact-us" class="contact-trigger-link">Contact Us &nearr;</a>
+
+            <div class="footer-details-map-container">
+                <div class="footer-text-side">
+                    <div class="studio-address-block">
+                        <div class="address-box">
+                            <h3>Regional Branch Office</h3>
+                            <p>Office No. - 6, K.P.C.S House,<br>Paud Road, Right Bhusari Colony,<br>Kothrud, Pune, MH
+                                411038</p>
+                            <p style="font-size: 0.8rem; color: var(--ink-mute); margin-top: 4px;">(Above Bank of
+                                Maharashtra ATM)</p>
+                        </div>
+                        <div class="contact-box">
+                            <h3>Contact</h3>
+                            <p>E: shilpi.arch.plann@gmail.com</p>
+                            <p>T: +91 98501 67681</p>
+                            <p>T: +91 92842 33161</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="map-interactive-wrapper">
+                    <div id="live-leaflet-map"></div>
+                </div>
+            </div>
+
+            <div class="footer-utility-row">
+                <div class="footer-nav-column">
+                    <h4>Connect</h4>
+                    <a href="#email" class="footer-link">Email</a>
+                    <a href="#vimeo" class="footer-link">Vimeo</a>
+                    <a href="#instagram" class="footer-link">Instagram</a>
+                    <a href="#youtube" class="footer-link">Youtube</a>
+                    <a href="#linkedin" class="footer-link">Linkedin</a>
+                </div>
+                <div class="newsletter-signup-box">
+                    <p class="newsletter-label">Stay up to date with our latest projects and news</p>
+                    <div class="input-inline-row">
+                        <input type="email" placeholder="Email Address">
+                        <button class="submit-btn">Submit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-legal-block">
+                <div class="legal-row-links">
+                    <span>© SAP Architecture 2026</span>
+                    <span>Terms</span>
+                    <span>Privacy</span>
+                </div>
+                <p style="color: var(--ink-mute); margin-top: 4px;">KOTHRUD, PUNE, MAHARASHTRA, INDIA</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            /* ── LOADER ANIMATION ── */
+            /* ── UPDATED LOADER ANIMATION SYNC FLIGHT ROUTINE ── */
+            const loaderLayer = document.getElementById("loader-layer");
+            const morphContainer = document.getElementById("morph-container");
+            const mainContent = document.getElementById("main-content");
+            const targetNavbarLogo = document.getElementById("target-navbar-logo");
+            const loaderFlightCapsule = document.getElementById("loader-flight-capsule");
+
+            setTimeout(() => {
+                morphContainer.classList.add("is-expanded");
+                setTimeout(() => {
+                    morphContainer.classList.remove("is-expanded");
+                    setTimeout(() => {
+                        const destinationRect = targetNavbarLogo.getBoundingClientRect();
+                        const originRect = morphContainer.getBoundingClientRect();
+
+                        // Track coordinates for the integrated visual system capsule
+                        const deltaX = destinationRect.left + (destinationRect.width / 2) - (window.innerWidth / 2) + 110;
+                        const deltaY = destinationRect.top + (destinationRect.height / 2) - (window.innerHeight / 2) + 60; // Compensated for logo emblem grid size height bounds
+
+                        // Freeze text size bounds parameters for the navbar home look
+                        morphContainer.style.fontSize = "16px";
+                        morphContainer.style.fontWeight = "700";
+                        morphContainer.style.letterSpacing = "0.10em";
+                        morphContainer.style.transition = "font-size 0.95s ease, font-weight 0.95s ease, letter-spacing 0.95s ease";
+
+                        // Shrink logo image block fluidly down into nav icon bounds (28px height footprint profile specifications)
+                        const loaderLogoImg = document.querySelector(".loader-logo-img");
+                        if (loaderLogoImg) {
+                            loaderLogoImg.style.width = "28px";
+                            loaderLogoImg.style.height = "28px";
+                            loaderLogoImg.style.transition = "width 0.95s cubic-bezier(0.25, 1, 0.5, 1), height 0.95s cubic-bezier(0.25, 1, 0.5, 1)";
+                        }
+
+                        // Fly the unified framework straight to the top navigation header bar tracking index bounds
+                        loaderFlightCapsule.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+
+                        loaderLayer.style.opacity = "0";
+                        mainContent.classList.remove("hidden");
+                        void mainContent.offsetWidth;
+                        mainContent.classList.add("visible");
+
+                        setTimeout(() => {
+                            loaderLayer.style.display = "none";
+                            const actualNavText = targetNavbarLogo.querySelector(".nav-logo-placeholder");
+                            actualNavText.style.opacity = "1";
+                            const logoImage = document.querySelector(".sap-logo-img");
+                            if (logoImage) logoImage.style.opacity = "1";
+
+                            // Remove temporary execution tokens safely once safely initialized into workspace context views
+                            loaderFlightCapsule.remove();
+
+                            initCounters();
+                            generatePerfectMap();
+                            initHamburger();
+                            initReveal();
+                            startClock();
+                            /* ── Cursor ── */
+                            const cur = document.getElementById("cur");
+                            const ring = document.getElementById("curRing");
+                            /* Hide cursor until first mouse move to avoid top-left stuck position */
+                            let cursorReady = false;
+                            window.addEventListener("mousemove", e => {
+                                if (!cursorReady) {
+                                    cursorReady = true;
+                                    cur.style.opacity = "1";
+                                    ring.style.opacity = "1";
+                                }
+                                mx = e.clientX; my = e.clientY;
+                                cur.style.left = mx + "px"; cur.style.top = my + "px";
+                            });
+                            let mx = 0, my = 0, rx = 0, ry = 0;
+                            window.addEventListener("mousemove", e => {
+                                mx = e.clientX; my = e.clientY;
+                                cur.style.left = mx + "px"; cur.style.top = my + "px";
+                            });
+                            function cursorLoop() {
+                                rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+                                ring.style.left = rx + "px"; ring.style.top = ry + "px";
+                                requestAnimationFrame(cursorLoop);
+                            }
+                            cursorLoop();
+                            document.querySelectorAll("a, .lab, .news-card, .category-card, .commission-btn, button").forEach(el => {
+                                el.addEventListener("mouseenter", () => { ring.classList.add("hover"); cur.classList.add("hover", "dot"); });
+                                el.addEventListener("mouseleave", () => { ring.classList.remove("hover"); cur.classList.remove("hover", "dot"); });
+                            });
+                            /* ── Dark Mode Toggle ── */
+                            const themeToggle = document.getElementById("themeToggle");
+                            const toggleLabel = document.getElementById("toggleLabel");
+                            const toggleIcon = document.querySelector(".toggle-icon");
+
+                            if (localStorage.getItem("sap-theme") === "dark") {
+                                document.body.classList.add("dark-mode");
+                                toggleLabel.textContent = "LIGHT";
+                                toggleIcon.textContent = "○";
+                            }
+
+                            themeToggle.addEventListener("click", () => {
+                                document.body.classList.toggle("dark-mode");
+                                const isDark = document.body.classList.contains("dark-mode");
+                                toggleLabel.textContent = isDark ? "LIGHT" : "DARK";
+                                toggleIcon.textContent = isDark ? "○" : "◑";
+                                localStorage.setItem("sap-theme", isDark ? "dark" : "light");
+                            });
+                        }, 950);
+                    }, 1000);
+                }, 2500);
+            }, 1000);
+
+            /* ── CLOCK ── */
+            function startClock() {
+                function tick() {
+                    const d = new Date();
+                    const opts = { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hour12: false };
+                    const t = new Intl.DateTimeFormat("en-GB", opts).format(d);
+                    const el = document.getElementById("clk");
+                    if (el) el.textContent = t + " IST";
+                }
+                tick(); setInterval(tick, 15000);
+            }
+
+            /* ── HAMBURGER ── */
+            function initHamburger() {
+                const hamburgerMenu = document.getElementById("hamburger-menu");
+                const mobileNav = document.getElementById("main-nav");
+                if (hamburgerMenu && mobileNav) {
+                    hamburgerMenu.addEventListener("click", () => mobileNav.classList.toggle("active"));
+                }
+            }
+
+            /* ── SCROLL REVEAL ── */
+            function initReveal() {
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+                }, { threshold: .12 });
+                document.querySelectorAll("[data-reveal]").forEach(el => io.observe(el));
+            }
+
+            /* ── COUNTERS ── */
+            function initCounters() {
+                const counterElements = document.querySelectorAll(".metric-number");
+                const counterObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animateSingleCounter(entry.target, parseInt(entry.target.getAttribute("data-target"), 10));
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                counterElements.forEach(el => counterObserver.observe(el));
+            }
+
+            function animateSingleCounter(element, target) {
+                let startValue = 0;
+                const totalDuration = 2000;
+                const frameInterval = 1000 / 60;
+                const totalSteps = totalDuration / frameInterval;
+                const incrementValue = target / totalSteps;
+                const counterTimer = setInterval(() => {
+                    startValue += incrementValue;
+                    if (startValue >= target) { element.textContent = target; clearInterval(counterTimer); }
+                    else { element.textContent = Math.floor(startValue); }
+                }, frameInterval);
+            }
+
+            /* ── MAP ── */
+            function generatePerfectMap() {
+                const officeCoords = [18.5076, 73.7918];
+                const map = L.map('live-leaflet-map', { zoomControl: true, attributionControl: false })
+                    .setView(officeCoords, 16);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+                const officeMarker = L.marker(officeCoords).addTo(map);
+                officeMarker.bindPopup("<b>SAP Headquarters Branch</b><br>Office No. 6, K.P.C.S House,<br>Paud Road, Kothrud, Pune").openPopup();
+                setTimeout(() => map.invalidateSize(true), 200);
+            }
+
+        });
+    </script>
+</body>
+
+</html>

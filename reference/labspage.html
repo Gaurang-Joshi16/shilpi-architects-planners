@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="index, follow">
+    <meta name="Description"
+        content="Areas of Expertise - Architecture | Project Management | Engineering | Sustainability. We've designed many eye-catching, award-winning buildings.">
+    <meta name="Keywords" content="Architecture Expertise">
+    <title>Architecture Expertise - CP Kukreja Architects</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+        rel="stylesheet">
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Heebo", sans-serif;
+            color: #444;
+            background: #fff;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* ===== HEADER TOP BAR ===== */
+        .header-top {
+            width: 100%;
+            background-color: #efefef;
+            padding: 4px 0 2px;
+        }
+
+        .header-top-inner {
+            width: 92%;
+            margin: 0 auto;
+        }
+
+        .header-top ul {
+            text-align: right;
+            margin-bottom: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .header-top ul li {
+            display: inline-block;
+            line-height: 1.1;
+            margin-left: 10px;
+        }
+
+        .header-top ul li a {
+            color: rgb(81, 81, 81);
+            font-weight: normal;
+            font-size: 14px;
+        }
+
+        .header-top ul li a:hover {
+            color: #d61e1e;
+        }
+
+        .header-top svg {
+            width: 20px;
+            position: relative;
+            top: 5px;
+        }
+
+        .header-top .email-icon {
+            top: 6px;
+        }
+
+        /* ===== MAIN NAV ===== */
+        .main-nav {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .main-nav .navbar {
+            padding: 0 30px;
+            background: #fff !important;
+        }
+
+        .main-nav .navbar-brand img {
+            width: 230px;
+            height: auto;
+        }
+
+        .main-nav .navbar-brand img+img {
+            display: none;
+        }
+
+        .main-nav .nav-link {
+            font-size: 14px;
+            font-weight: 500;
+            color: #444 !important;
+            padding: 20px 14px !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+        }
+
+        .main-nav .nav-link:hover,
+        .main-nav .nav-item.active .nav-link {
+            color: #d61e1e !important;
+        }
+
+        .main-nav .nav-item.active .nav-link {
+            border-bottom: 2px solid #d61e1e;
+        }
+
+        .main-nav .search-icon {
+            color: #d61e1e;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 20px 10px;
+        }
+
+        .navbar-toggler {
+            border: none;
+            outline: none;
+        }
+
+        .navbar-toggler span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: #444;
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        /* ===== MOBILE HAMBURGER HEADER ===== */
+        .mobile-header {
+            display: none;
+            background: #fff;
+            padding: 12px 20px;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+        }
+
+        .mobile-header img {
+            width: 160px;
+        }
+
+        .bar-menu {
+            font-size: 24px;
+            cursor: pointer;
+            color: #444;
+        }
+
+        /* ===== SIDE MENU (mobile overlay) ===== */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 300px;
+            height: 100vh;
+            background: #222;
+            z-index: 9999;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .side-menu.open {
+            right: 0;
+        }
+
+        .side-menu .close-btn {
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px 25px;
+            display: block;
+            text-align: right;
+        }
+
+        .side-menu .menu-list {
+            list-style: none;
+            padding: 10px 25px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .side-menu .menu-list li a {
+            color: #ccc;
+            font-size: 15px;
+            padding: 10px 0;
+            display: block;
+            border-bottom: 1px solid #333;
+            transition: color 0.2s;
+        }
+
+        .side-menu .menu-list li a:hover,
+        .side-menu .menu-list li.active a {
+            color: #d61e1e;
+        }
+
+        .side-menu .menu-footer {
+            padding: 20px 25px;
+        }
+
+        .side-menu .menu-footer .social-list a {
+            color: #ccc;
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        .side-menu .menu-footer .copy {
+            color: #777;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .click-capture {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .click-capture.active {
+            display: block;
+        }
+
+        /* ===== EXPERTISE TITLE SECTION ===== */
+        .expertise-title-section {
+            background: #f5f5f0;
+            padding: 0 30px;
+            min-height: 160px;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .expertise-title-section h1 {
+            color: #928d8a;
+            font-size: 2.4rem;
+            font-weight: 400;
+            padding: 40px 0 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ===== PROJECT GRID (4 images) ===== */
+        .ms-project-area {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0;
+        }
+
+        .ms-p-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .ms-p-item img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .ms-p-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .ms-p-item .hover-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(214, 30, 30, 0.75);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 25px;
+        }
+
+        .ms-p-item:hover .hover-overlay {
+            opacity: 1;
+        }
+
+        .ms-p-item .hover-overlay h5 {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 2;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* ===== DESCRIPTION SECTION ===== */
+        .desc-section {
+            padding: 40px 0;
+        }
+
+        .desc-section p {
+            font-size: 18px;
+            text-align: justify;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        /* ===== BLOG SECTION ===== */
+        #blog-area {
+            padding: 35px 0;
+        }
+
+        #blog-area .section-heading {
+            margin-bottom: 30px;
+        }
+
+        #blog-area .section-heading h2 {
+            color: #928d8a;
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            line-height: 30px;
+            text-transform: uppercase;
+        }
+
+        .single-blog {
+            transition: transform 0.3s ease;
+        }
+
+        .single-blog:hover {
+            transform: translateY(-10px);
+        }
+
+        .single-blog .post-img {
+            position: relative;
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .single-blog .post-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .single-blog .post-img::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            background: rgba(255, 69, 0, 0.6);
+            transition: opacity 0.3s ease;
+        }
+
+        .single-blog:hover .post-img::after {
+            opacity: 1;
+        }
+
+        .single-blog .single-blog-inner {
+            border-top: none;
+            padding: 25px 20px;
+            background: #fff;
+        }
+
+        .single-blog .post-title {
+            margin: 0 0 15px;
+            font-size: 18px;
+            color: #333;
+            display: inline-block;
+            text-transform: capitalize;
+            transition: color 0.3s;
+        }
+
+        .single-blog .post-title:hover {
+            color: #d61e1e;
+        }
+
+        .single-blog .blog-text {
+            font-size: 14px;
+            line-height: 23px;
+            margin: 7px 0 10px;
+            color: #666;
+        }
+
+        .icon-area {
+            list-style: none;
+            font-size: 13px;
+            padding: 0;
+            margin-bottom: 8px;
+        }
+
+        .icon-area li {
+            display: inline-block;
+            margin-right: 8px;
+            color: #555;
+            font-style: italic;
+        }
+
+        .icon-area li i {
+            color: #ff4500;
+            margin-right: 4px;
+        }
+
+        .btn-area a {
+            display: inline-block;
+            background: linear-gradient(to right, #ff512f, #f09819);
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            padding: 9px 20px;
+            margin: 8px 0;
+            color: #fff;
+            text-transform: capitalize;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .btn-area a:hover {
+            opacity: 0.85;
+        }
+
+        .btn-view-all {
+            display: block;
+            width: 125px;
+            margin: 20px auto 0;
+            text-align: center;
+        }
+
+        /* Owl carousel nav */
+        #blog-area .owl-prev,
+        #blog-area .owl-next {
+            position: absolute;
+            font-size: 15px !important;
+            color: #fff !important;
+            background: #d61e1e !important;
+            padding: 6px 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #blog-area .owl-prev {
+            left: -15px;
+        }
+
+        #blog-area .owl-next {
+            right: -15px;
+        }
+
+        #blog-area .owl-stage-outer {
+            position: relative;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-area {
+            background: #222;
+            padding: 50px 0 0;
+        }
+
+        .footer-widgets {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0 30px 30px;
+            gap: 0;
+        }
+
+        .f-widgets-item {
+            flex: 1;
+            min-width: 180px;
+            padding: 0 20px;
+        }
+
+        .f-title h3 {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .f-title h3 a {
+            color: #fff;
+        }
+
+        .f-title h3 a:hover {
+            color: #d61e1e;
+        }
+
+        .f-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .f-list li {
+            color: #aaa;
+            font-size: 13px;
+            padding: 4px 0;
+            line-height: 1.6;
+        }
+
+        .f-list li a {
+            color: #aaa;
+            transition: color 0.2s;
+        }
+
+        .f-list li a:hover {
+            color: #d61e1e;
+        }
+
+        .footer-copyright {
+            background: #1a1a1a;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .footer-copyright .left-text p {
+            color: #777;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .footer-copyright .left-text a {
+            color: #aaa;
+        }
+
+        .footer-copyright .left-text a:hover {
+            color: #d61e1e;
+        }
+
+        .footer-bottom-contact {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 8px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .footer-bottom-contact li a {
+            font-size: 13px;
+            color: #aaa;
+            font-family: "Heebo", sans-serif;
+        }
+
+        .footer-bottom-contact li a:hover {
+            color: #d61e1e;
+        }
+
+        .footer-bottom-contact svg {
+            width: 18px;
+            position: relative;
+            top: 4px;
+        }
+
+        .social-icons-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 8px;
+        }
+
+        .social-icons-list li a {
+            color: #d31e1c;
+            font-size: 20px;
+        }
+
+        .social-icons-list li a:hover {
+            color: #ff6b6b;
+        }
+
+        .right-footer-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        /* ===== MODAL ===== */
+        .search-modal .modal-dialog {
+            max-width: 800px;
+            margin-top: 150px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 991px) {
+            .main-nav {
+                display: none;
+            }
+
+            .mobile-header {
+                display: flex;
+            }
+
+            .ms-project-area {
+                grid-template-columns: 1fr;
+            }
+
+            .ms-p-item img {
+                height: 260px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .ms-p-item img {
+                height: 220px;
+            }
+
+            .expertise-title-section h1 {
+                font-size: 1.6rem;
+            }
+
+            .footer-widgets {
+                flex-direction: column;
+            }
+
+            .f-widgets-item {
+                padding: 10px 20px;
+            }
+
+            .footer-copyright {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .right-footer-wrap {
+                align-items: flex-start;
+            }
+
+            .footer-bottom-contact {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ms-p-item img {
+                height: 180px;
+            }
+        }
+
+        /* hide double logo (second img tag is original site's scroll behavior, we simplify) */
+        .navbar-brand img+img {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="mobile-header" id="mobileHeader">
+        <a href="https://www.cpkukreja.com/">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=230&q=80"
+                style="height:40px; width:auto; object-fit:contain;" alt="CPKA Logo Placeholder">
+        </a>
+        <div class="bar-menu" id="barMenu">&#9776;</div>
+    </div>
+
+    <div class="click-capture" id="clickCapture"></div>
+    <div class="side-menu" id="sideMenu">
+        <span class="close-btn" id="closeMenu">&times;</span>
+        <ul class="menu-list">
+            <li><a href="https://www.cpkukreja.com/">Home</a></li>
+            <li><a href="https://www.cpkukreja.com/projects.html">Projects</a></li>
+            <li class="active"><a href="https://www.cpkukreja.com/expertise.html">Expertise</a></li>
+            <li><a href="https://www.cpkukreja.com/media.html">News</a></li>
+            <li><a href="https://www.cpkukreja.com/blogs.html">Blogs</a></li>
+            <li><a href="https://www.cpkukreja.com/about-us.html">About Us</a></li>
+            <li><a href="https://www.cpkukreja.com/contact.html">Contact</a></li>
+            <li><a href="#" onclick="return showJobPopup(event)">Job Opportunity</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#searchModal"><i class="icon ion-search"
+                        style="color:#d61e1e;"></i></a></li>
+        </ul>
+        <div class="menu-footer">
+            <div class="social-list">
+                <a href="https://x.com/DikshuCKukreja" class="icon ion-social-twitter" target="_blank"
+                    rel="nofollow"></a>
+                <a href="https://www.facebook.com/CPKukrejaArchitects/" class="icon ion-social-facebook" target="_blank"
+                    rel="nofollow" style="margin:0 10px;"></a>
+                <a href="https://www.instagram.com/cpkukrejaarchitects/" class="icon ion-social-instagram"
+                    target="_blank" rel="nofollow"></a>
+            </div>
+            <div class="copy">© CPKA 2021. All Rights Reserved.</div>
+        </div>
+    </div>
+
+    <div class="header-top d-none d-lg-block">
+        <div class="header-top-inner">
+            <ul>
+                <li>
+                    <a href="tel:011-41759907">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path
+                                d="M451 374c-15.88-16-54.34-39.35-73-48.76-24.3-12.24-26.3-13.24-45.4.95-12.74 9.47-21.21 17.93-36.12 14.75s-47.31-21.11-75.68-49.39-47.34-61.62-50.53-76.48 5.41-23.23 14.79-36c13.22-18 12.22-21 .92-45.3-8.81-18.9-32.84-57-48.9-72.8C119.9 44 119.9 47 108.83 51.6A160.15 160.15 0 0083 65.37C67 76 58.12 84.83 51.91 98.1s-9 44.38 23.07 102.64 54.57 88.05 101.14 134.49S258.5 406.64 310.85 436c64.76 36.27 89.6 29.2 102.91 23s22.18-15 32.83-31a159.09 159.09 0 0013.8-25.8C465 391.17 468 391.17 451 374z"
+                                fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"></path>
+                        </svg>
+                        011-41759907
+                    </a>
+                </li>
+                <li>
+                    <a href="mailto:cpka@cpkukreja.com">
+                        <svg class="email-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <rect x="48" y="96" width="416" height="320" rx="40" ry="40" fill="none"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32">
+                            </rect>
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="32" d="M112 160l144 112 144-112"></path>
+                        </svg>
+                        cpka@cpkukreja.com
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-nav d-none d-lg-block">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand" href="https://www.cpkukreja.com/">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=230&q=80"
+                    style="height:45px; width:auto; object-fit:contain;" alt="CPKA Logo Placeholder">
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="https://www.cpkukreja.com/projects.html">Projects</a>
+                    </li>
+                    <li class="nav-item active"><a class="nav-link"
+                            href="https://www.cpkukreja.com/expertise.html">Expertise</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://www.cpkukreja.com/media.html">News</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://www.cpkukreja.com/blogs.html">Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://www.cpkukreja.com/about-us.html">About Us</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="https://www.cpkukreja.com/contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="return showJobPopup(event)">Job
+                            Opportunity</a></li>
+                    <li class="nav-item">
+                        <i class="icon ion-search search-icon" data-toggle="modal" data-target="#searchModal"></i>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <section class="expertise-title-section">
+        <div>
+            <h1>Expertise</h1>
+        </div>
+    </section>
+
+    <section class="ms-project-area">
+        <div class="ms-p-item">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80"
+                alt="Master Planning & Urban Design">
+            <div class="hover-overlay">
+                <h5>
+                    Master Planning<br>
+                    Urban Design<br>
+                    Infrastructure Planning<br>
+                    Architectural Design<br>
+                    Interior Design
+                </h5>
+            </div>
+        </div>
+        <div class="ms-p-item">
+            <img src="https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=800&q=80"
+                alt="Sustainable Architecture">
+            <div class="hover-overlay">
+                <h5>
+                    Energy Simulations<br>
+                    Energy Audits<br>
+                    Green Certification<br>
+                    Net Zero Designs<br>
+                    Innovative technologies
+                </h5>
+            </div>
+        </div>
+        <div class="ms-p-item">
+            <img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=800&q=80"
+                alt="Infrastructure Engineering">
+            <div class="hover-overlay">
+                <h5>
+                    Structure<br>
+                    Mechanical<br>
+                    Electrical<br>
+                    Plumbing<br>
+                    Fire Protection
+                </h5>
+            </div>
+        </div>
+        <div class="ms-p-item">
+            <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80"
+                alt="Project Management">
+            <div class="hover-overlay">
+                <h5>
+                    Construction Administration<br>
+                    Project Management<br>
+                    Value Engineering<br>
+                    Quantity Estimation<br>
+                    Quality Control
+                </h5>
+            </div>
+        </div>
+    </section>
+
+    <br><br>
+
+    <section class="desc-section">
+        <div class="container">
+            <p>Architecture is not just about making impressive buildings on paper, but more importantly to deliver
+                projects which are functional, safe, easy to maintain, sustainable and long lasting. We have been
+                engaging with architecture in a holistic manner since the inception of the firm and have all allied
+                services like Structure, Engineering, Project Management, Value Engineering and Green Building as an
+                integral part of the organisation.</p>
+        </div>
+    </section>
+
+    <section id="blog-area">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Our blog</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="blog-slider owl-carousel">
+
+                        <div class="box-area">
+                            <div class="single-blog">
+                                <div class="post-img">
+                                    <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=500&q=80"
+                                        alt="Tropical Architecture">
+                                </div>
+                                <div class="single-blog-inner">
+                                    <a
+                                        href="https://www.cpkukreja.com/blogs/what-makes-tropical-architecture-by-cp-kukreja-a-timeless-treatise.html">
+                                        <h3 class="post-title">What Makes 'Tropical Architecture' By C P Kukreja A
+                                            Timeless Treatise</h3>
+                                    </a>
+                                    <ul class="icon-area">
+                                        <li><i class="fa fa-users"></i>BLOGS</li>
+                                        <li><i class="fa fa-clock-o"></i>NOVEMBER 11, 2022</li>
+                                    </ul>
+                                    <p class="blog-text">Published in 1978, the book 'Tropical Architecture', is based
+                                        on our founder CP Kukreja's master's thesis at the University of Manitoba,
+                                        Canada - 'Design of Buildings in the Tropics.' It brings to attention many
+                                        design solutions as a reference for designing in tropical climates or regions.
+                                    </p>
+                                    <div class="btn-area">
+                                        <a
+                                            href="https://www.cpkukreja.com/blogs/what-makes-tropical-architecture-by-cp-kukreja-a-timeless-treatise.html">read
+                                            more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-area">
+                            <div class="single-blog">
+                                <div class="post-img">
+                                    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=500&q=80"
+                                        alt="Flood Resilient Cities">
+                                </div>
+                                <div class="single-blog-inner">
+                                    <a
+                                        href="https://www.cpkukreja.com/blogs/how-can-we-shape-flood-resilient-cities.html">
+                                        <h3 class="post-title">How Can We Shape Flood-Resilient Cities</h3>
+                                    </a>
+                                    <ul class="icon-area">
+                                        <li><i class="fa fa-users"></i>BLOGS</li>
+                                        <li><i class="fa fa-clock-o"></i>OCTOBER 20, 2022</li>
+                                    </ul>
+                                    <p class="blog-text">The India Meteorological Department (IMD) recorded 7% surplus
+                                        rainfall during Monsoon in India this year, which left many cities submerged.
+                                        Earlier, only rural areas and unplanned cities fell prey to floods because of
+                                        the lack of proper stormwater infrastructure.</p>
+                                    <div class="btn-area">
+                                        <a
+                                            href="https://www.cpkukreja.com/blogs/how-can-we-shape-flood-resilient-cities.html">read
+                                            more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-area">
+                            <div class="single-blog">
+                                <div class="post-img">
+                                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=500&q=80"
+                                        alt="Infrastructural Growth">
+                                </div>
+                                <div class="single-blog-inner">
+                                    <a
+                                        href="https://www.cpkukreja.com/blogs/how-can-india-push-its-infrastructural-growth-to-the-next-level.html">
+                                        <h3 class="post-title">How Can India Push Its Infrastructural Growth to the Next
+                                            Level</h3>
+                                    </a>
+                                    <ul class="icon-area">
+                                        <li><i class="fa fa-users"></i>BLOGS</li>
+                                        <li><i class="fa fa-clock-o"></i>SEPTEMBER 09, 2022</li>
+                                    </ul>
+                                    <p class="blog-text">The key to India's transformation from a developing nation to a
+                                        developed one lies in strengthening its infrastructure across sectors.</p>
+                                    <div class="btn-area">
+                                        <a
+                                            href="https://www.cpkukreja.com/blogs/how-can-india-push-its-infrastructural-growth-to-the-next-level.html">read
+                                            more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-area">
+                            <div class="single-blog">
+                                <div class="post-img">
+                                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80"
+                                        alt="Dehradun Urbanisation">
+                                </div>
+                                <div class="single-blog-inner">
+                                    <a
+                                        href="https://www.cpkukreja.com/blogs/why-the-smart-cities-mission-has-not-solved-dehradun-urbanisation-woes.html">
+                                        <h3 class="post-title">Why the Smart Cities Mission Has Not Solved Dehradun's
+                                            Urbanisation Woes</h3>
+                                    </a>
+                                    <ul class="icon-area">
+                                        <li><i class="fa fa-users"></i>BLOGS</li>
+                                        <li><i class="fa fa-clock-o"></i>SEPTEMBER 09, 2022</li>
+                                    </ul>
+                                    <p class="blog-text">Himalayan foothills in India are replete with scenic cities,
+                                        towns and villages. Dehradun, the capital of the mountainous state of
+                                        Uttarakhand, is one such city.</p>
+                                    <div class="btn-area">
+                                        <a
+                                            href="https://www.cpkukreja.com/blogs/why-the-smart-cities-mission-has-not-solved-dehradun-urbanisation-woes.html">read
+                                            more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-area">
+                            <div class="single-blog">
+                                <div class="post-img">
+                                    <img src="https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=500&q=80"
+                                        alt="Transport Hub">
+                                </div>
+                                <div class="single-blog-inner">
+                                    <a
+                                        href="https://www.cpkukreja.com/blogs/how-to-design-a-new-age-transport-hub.html">
+                                        <h3 class="post-title">How to Design a New-Age Transport Hub</h3>
+                                    </a>
+                                    <ul class="icon-area">
+                                        <li><i class="fa fa-users"></i>BLOGS</li>
+                                        <li><i class="fa fa-clock-o"></i>SEPTEMBER 09, 2022</li>
+                                    </ul>
+                                    <p class="blog-text">A transportation hub is an area where passengers and goods
+                                        transition between different modes of transportation. Some examples include bus
+                                        terminals, railway stations, metro stations and airports.</p>
+                                    <div class="btn-area">
+                                        <a
+                                            href="https://www.cpkukreja.com/blogs/how-to-design-a-new-age-transport-hub.html">read
+                                            more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box-area">
+                            <div class="single-blog">
+                                <div class="post-img">
+                                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=500&q=80"
+                                        alt="Learning Environments">
+                                </div>
+                                <div class="single-blog-inner">
+                                    <a
+                                        href="https://www.cpkukreja.com/blogs/three-ways-to-create-holistic-learning-environments.html">
+                                        <h3 class="post-title">Three Ways to Create Holistic Learning Environments</h3>
+                                    </a>
+                                    <ul class="icon-area">
+                                        <li><i class="fa fa-users"></i>BLOGS</li>
+                                        <li><i class="fa fa-clock-o"></i>SEPTEMBER 09, 2022</li>
+                                    </ul>
+                                    <p class="blog-text">Educational institutes are the basic building block of any
+                                        civil society. They extend opportunities for students who, as citizens, steer a
+                                        nation towards its growth.</p>
+                                    <div class="btn-area">
+                                        <a
+                                            href="https://www.cpkukreja.com/blogs/three-ways-to-create-holistic-learning-environments.html">read
+                                            more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="btn-view-all">
+                <div class="btn-area" style="text-align:center;">
+                    <a href="https://www.cpkukreja.com/media.html">View All</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-area">
+        <div class="footer-widgets">
+            <div class="f-widgets-item">
+                <div class="f-title">
+                    <a href="https://www.cpkukreja.com/expertise.html">
+                        <h3>Expertise</h3>
+                    </a>
+                </div>
+                <ul class="f-list">
+                    <li>Master Planning</li>
+                    <li>Urban Planning</li>
+                    <li>Smart City Planning</li>
+                    <li>Infrastructure Planning</li>
+                    <li>Architectural Design</li>
+                    <li>Interior Design</li>
+                    <li>Structural Design</li>
+                    <li>Sustainability</li>
+                </ul>
+            </div>
+            <div class="f-widgets-item">
+                <div class="f-title">
+                    <h3>&nbsp;</h3>
+                </div>
+                <ul class="f-list">
+                    <li>Structural Engineering</li>
+                    <li>Electrical Design</li>
+                    <li>Mechanical Design</li>
+                    <li>Plumbing Design</li>
+                    <li>Fire Protection Design</li>
+                    <li>Project Management / EPC</li>
+                    <li>Construction Administration</li>
+                    <li>Mechanical Design</li>
+                </ul>
+            </div>
+            <div class="f-widgets-item">
+                <div class="f-title">
+                    <a href="https://www.cpkukreja.com/projects.html">
+                        <h3>Project Categories</h3>
+                    </a>
+                </div>
+                <ul class="f-list">
+                    <li><a href="https://www.cpkukreja.com/projects/master-planning.html">Master Planning</a></li>
+                    <li><a href="https://www.cpkukreja.com/projects/commercial-architecture.html">Offices</a></li>
+                    <li><a href="https://www.cpkukreja.com/projects/foreign-missions.html">Foreign Missions</a></li>
+                    <li><a href="https://www.cpkukreja.com/projects/health-care-architecture.html">Health Care</a></li>
+                    <li><a href="https://www.cpkukreja.com/projects/hospitality-architecture.html">Hospitality</a></li>
+                    <li><a href="https://www.cpkukreja.com/projects/housing-architecture.html">Residential</a></li>
+                </ul>
+            </div>
+            <div class="f-widgets-item">
+                <div class="f-title">
+                    <h3>&nbsp;</h3>
+                </div>
+                <ul class="f-list">
+                    <li><a href="https://www.cpkukreja.com/projects/redevelopment-architecture.html">Redevelopment</a>
+                    </li>
+                    <li><a href="https://www.cpkukreja.com/projects/industrial-architecture.html">Industrial</a></li>
+                    <li><a href="https://www.cpkukreja.com/projects/institutional-architecture.html">Institutional</a>
+                    </li>
+                    <li><a href="https://www.cpkukreja.com/projects/retail-architecture.html">Retail</a></li>
+                    <li><a href="https://www.cpkukreja.com/projects/transportation-architecture.html">Transportation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-copyright">
+            <div class="left-text">
+                <p>© CPKA 2026. All Rights Reserved. Designed by <a href="http://wearebluedrop.com/" target="_blank"
+                        rel="nofollow">Blue Ex. Designs</a><br>
+                    <a href="https://www.cpkukreja.com/architecture/terms-of-use.html">Terms of Use.</a>
+                    <a href="https://www.cpkukreja.com/architecture/disclaimer.html">Disclaimer.</a>
+                </p>
+            </div>
+            <div class="right-footer-wrap">
+                <ul class="footer-bottom-contact">
+                    <li>
+                        <a href="tel:011-41759907">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path
+                                    d="M451 374c-15.88-16-54.34-39.35-73-48.76-24.3-12.24-26.3-13.24-45.4.95-12.74 9.47-21.21 17.93-36.12 14.75s-47.31-21.11-75.68-49.39-47.34-61.62-50.53-76.48 5.41-23.23 14.79-36c13.22-18 12.22-21 .92-45.3-8.81-18.9-32.84-57-48.9-72.8C119.9 44 119.9 47 108.83 51.6A160.15 160.15 0 0083 65.37C67 76 58.12 84.83 51.91 98.1s-9 44.38 23.07 102.64 54.57 88.05 101.14 134.49S258.5 406.64 310.85 436c64.76 36.27 89.6 29.2 102.91 23s22.18-15 32.83-31a159.09 159.09 0 0013.8-25.8C465 391.17 468 391.17 451 374z"
+                                    fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"></path>
+                            </svg>
+                            011-41759907
+                        </a>
+                        </weight-svg>
+                    <li>
+                        <a href="mailto:cpka@cpkukreja.com">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="top:6px;">
+                                <rect x="48" y="96" width="416" height="320" rx="40" ry="40" fill="none"
+                                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="32"></rect>
+                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="32" d="M112 160l144 112 144-112"></path>
+                            </svg>
+                            cpka@cpkukreja.com
+                        </a>
+                    </li>
+                </ul>
+                <ul class="social-icons-list">
+                    <li><a href="https://x.com/cpkukreja" class="icon ion-social-twitter" target="_blank"
+                            rel="nofollow"></a></li>
+                    <li><a href="https://www.facebook.com/CPKukrejaArchitects/" class="icon ion-social-facebook"
+                            target="_blank" rel="nofollow"></a></li>
+                    <li><a href="https://www.instagram.com/cpkukrejaarchitects/" class="icon ion-social-instagram"
+                            target="_blank" rel="nofollow"></a></li>
+                    <li><a href="https://www.youtube.com/channel/UCwokC7_Xeq2wO2pOFp4XyJw"
+                            class="icon ion-social-youtube" target="_blank" rel="nofollow"></a></li>
+                    <li><a href="https://www.linkedin.com/company/cp-kukreja-architect/?originalSubdomain=in"
+                            class="icon ion-social-linkedin" target="_blank" rel="nofollow"></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal fade search-modal" id="searchModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Search on the website</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <script async src="https://cse.google.com/cse.js?cx=f5fdbe7da77bb096c"></script>
+                            <div class="gcse-search"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #jobPopup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2147483647;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #jobPopup.active {
+            display: flex;
+        }
+
+        #jobPopup .popup-inner {
+            background: transparent;
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 700px;
+            width: 90%;
+            position: relative;
+        }
+
+        #jobPopup h3 {
+            margin: 0 0 20px;
+            color: #fff;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        #jobPopup .slider-wrap {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        #jobSlider {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+
+        #jobSlider img {
+            min-width: 100%;
+            height: 550px;
+            object-fit: cover;
+            display: block;
+            border-radius: 8px;
+        }
+
+        #jobPopup .close-popup {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #fff;
+            z-index: 2;
+            background: none;
+            border: none;
+        }
+
+        #jobPopup .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #fff;
+            color: #000;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 0;
+        }
+
+        #jobPopup .prev-btn {
+            left: 15px;
+        }
+
+        #jobPopup .next-btn {
+            right: 15px;
+        }
+
+        #jobPopup .dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        #jobPopup .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            border: none;
+        }
+
+        #jobPopup .dot.active {
+            background: #d61e1e;
+        }
+
+        @media (max-width:768px) {
+            #jobSlider img {
+                height: 55vh;
+            }
+
+            #jobPopup .popup-inner {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width:480px) {
+            #jobSlider img {
+                height: 45vh;
+            }
+        }
+    </style>
+
+    <div id="jobPopup">
+        <div class="popup-inner">
+            <button class="close-popup" onclick="closeJobPopup()">&times;</button>
+            <h3>Job Opportunities</h3>
+            <div class="slider-wrap">
+                <div id="jobSlider">
+                    <img loading="lazy"
+                        src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=700&q=80"
+                        alt="Job Opportunity 1">
+                    <img loading="lazy"
+                        src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=700&q=80"
+                        alt="Job Opportunity 2">
+                </div>
+                <button class="nav-btn prev-btn" onclick="prevSlide()">&#8249;</button>
+                <button class="nav-btn next-btn" onclick="nextSlide()">&#8250;</button>
+            </div>
+            <div class="dots">
+                <button class="dot active" onclick="goToSlide(0)"></button>
+                <button class="dot" onclick="goToSlide(1)"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <script>
+        // ===== MOBILE MENU =====
+        const barMenu = document.getElementById('barMenu');
+        const sideMenu = document.getElementById('sideMenu');
+        const clickCapture = document.getElementById('clickCapture');
+        const closeMenu = document.getElementById('closeMenu');
+
+        function openSideMenu() {
+            sideMenu.classList.add('open');
+            clickCapture.classList.add('active');
+        }
+        function closeSideMenu() {
+            sideMenu.classList.remove('open');
+            clickCapture.classList.remove('active');
+        }
+        if (barMenu) barMenu.addEventListener('click', openSideMenu);
+        if (closeMenu) closeMenu.addEventListener('click', closeSideMenu);
+        if (clickCapture) clickCapture.addEventListener('click', closeSideMenu);
+
+        // ===== BLOG CAROUSEL =====
+        $(document).ready(function () {
+            $(".blog-slider").owlCarousel({
+                autoplay: true,
+                slideSpeed: 900,
+                items: 3,
+                loop: true,
+                nav: true,
+                navText: ["<span><i class='ion-ios-arrow-left'></i></span>", "<span><i class='ion-ios-arrow-right'></i></span>"],
+                margin: 30,
+                dots: false,
+                responsive: {
+                    320: { items: 1 },
+                    600: { items: 2 },
+                    767: { items: 2 },
+                    1000: { items: 3 }
+                }
+            });
+        });
+
+        // ===== JOB POPUP SLIDER =====
+        let currentSlide = 0;
+        const totalSlides = 2;
+
+        function showJobPopup(e) {
+            if (e) e.preventDefault();
+            currentSlide = 0;
+            updateSlider();
+            document.getElementById('jobPopup').classList.add('active');
+            return false;
+        }
+        function closeJobPopup() {
+            document.getElementById('jobPopup').classList.remove('active');
+            currentSlide = 0;
+        }
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        }
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        }
+        function goToSlide(idx) {
+            currentSlide = idx;
+            updateSlider();
+        }
+        function updateSlider() {
+            const slider = document.getElementById('jobSlider');
+            if (slider) {
+                slider.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+                document.querySelectorAll('#jobPopup .dot').forEach(function (dot, i) {
+                    dot.classList.toggle('active', i === currentSlide);
+                });
+            }
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeJobPopup();
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'ArrowRight') nextSlide();
+        });
+    </script>
+
+</body>
+
+</html>

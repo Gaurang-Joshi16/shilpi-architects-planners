@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=1">
+    <title>Our Team - CLOU architects</title>
+    <style>
+        /* --- Exact Geometric Typography & Global Letter-Spacing Rules --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.02em;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            overflow-x: hidden;
+            padding: 0 45px;
+        }
+
+        /* --- Header Navigation Interface --- */
+        header.header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 45px;
+            z-index: 1000;
+        }
+
+        .header-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #000000;
+        }
+
+        .clou-logo-shapes {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+        }
+
+        .clou-shape {
+            background-color: #000000;
+            display: inline-block;
+        }
+
+        .shape-c {
+            width: 22px;
+            height: 22px;
+            border-radius: 11px 0 0 11px;
+        }
+
+        .shape-l {
+            width: 8px;
+            height: 22px;
+        }
+
+        .shape-o {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+        }
+
+        .shape-u {
+            width: 22px;
+            height: 22px;
+            border-radius: 0 0 11px 11px;
+        }
+
+        .logo-text-label {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .header-nav {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+        }
+
+        .nav-link {
+            font-size: 15px;
+            text-decoration: none;
+            color: #000000;
+        }
+
+        /* --- Page Top Structure --- */
+        .intro-header-wrapper {
+            margin-top: 140px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 18px;
+        }
+
+        .intro-h1 {
+            font-size: 72px;
+            font-weight: 400;
+            letter-spacing: -3px;
+        }
+
+        .intro-clipup {
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .divider-line {
+            width: 100%;
+            height: 1px;
+            background-color: #000000;
+            margin-bottom: 35px;
+        }
+
+        .asymmetric-row-grid {
+            display: flex;
+            width: 100%;
+            gap: 80px;
+            align-items: flex-start;
+            margin-bottom: 60px;
+        }
+
+        .text-pane-50 {
+            width: 48%;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .media-pane-50 {
+            width: 52%;
+        }
+
+        .intro-subheading {
+            font-size: 28px;
+            line-height: 1.35;
+            font-weight: 400;
+        }
+
+        .narrative-paragraph {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #333333;
+        }
+
+        /* --- Full Width Large Image Row --- */
+        .full-width-gallery-row {
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        /* --- Image Wrappers & Monochrome Hover Logic --- */
+        .img-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #f7f7f7;
+            position: relative;
+        }
+
+        .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(100%);
+            transition: filter 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .img-wrapper:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.01);
+        }
+
+        /* --- Static Directors Layout --- */
+        .leadership-container {
+            width: 100%;
+            padding: 50px 0;
+            border-top: 1px solid #000000;
+            display: flex;
+            gap: 40px;
+        }
+
+        .leadership-title-pane {
+            width: 25%;
+            font-size: 44px;
+            font-weight: 400;
+            letter-spacing: -2px;
+        }
+
+        .directors-asymmetric-wrapper {
+            width: 75%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 50px 32px;
+        }
+
+        .director-profile-node {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .director-profile-node .img-wrapper {
+            aspect-ratio: 208 / 280;
+            width: 100%;
+        }
+
+        .profile-title-name {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .profile-title-role {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .profile-title-role span {
+            color: #797979;
+            font-weight: 400;
+        }
+
+        /* --- Fixed Spacing Buffer --- */
+        .scroller-spacer-buffer {
+            width: 100%;
+            height: 120px;
+            background-color: #ffffff;
+        }
+
+        /* --- HARDWARE-ACCELERATED HIGH-SPEED LOOP SCROLLER --- */
+        .infinite-scroller-window {
+            width: 100vw;
+            margin-left: -45px;
+            overflow: visible;
+            /* CRITICAL FIX: Changed to visible to let speech bubbles overflow without clipping */
+            background: #ffffff;
+            padding: 160px 0 80px 0;
+            /* Added top padding padding to cleanly give space for top-row popups */
+            position: relative;
+            display: flex;
+        }
+
+        .infinite-marquee-track {
+            display: flex;
+            width: max-content;
+            overflow: visible;
+        }
+
+        .marquee-group {
+            display: flex;
+            animation: trackGlidesLoop 14s linear infinite;
+            overflow: visible;
+        }
+
+        .infinite-scroller-window.paused .marquee-group {
+            animation-play-state: paused !important;
+        }
+
+        .infinite-scroller-window.spotlight-active .matrix-cell:not(.active-focused) {
+            filter: opacity(0.3) blur(2px) grayscale(100%);
+            transition: filter 0.4s ease;
+        }
+
+        .infinite-scroller-window.spotlight-active .matrix-cell.active-focused .img-wrapper img {
+            filter: grayscale(0%);
+        }
+
+        /* Stack blocks rearranged dynamically from image_e341c6.jpg mapping blueprints */
+        .asymmetric-matrix-block {
+            display: grid;
+            grid-template-rows: repeat(3, 280px);
+            grid-auto-flow: column;
+            grid-auto-columns: 208px;
+            gap: 24px 32px;
+            padding-right: 32px;
+            overflow: visible;
+        }
+
+        .matrix-cell {
+            width: 208px;
+            height: 280px;
+            position: relative;
+            transition: filter 0.4s ease;
+        }
+
+        .matrix-cell.blank-node {
+            background: transparent;
+            pointer-events: none;
+        }
+
+        @keyframes trackGlidesLoop {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+
+            100% {
+                transform: translate3d(-100%, 0, 0);
+            }
+        }
+
+        /* --- INLINE FLOATING POPUP BUBBLE (Image 1 Blueprint Fixed) --- */
+        .popup-bubble-speech {
+            position: absolute;
+            bottom: calc(100% + 20px);
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #000000;
+            color: #ffffff;
+            padding: 18px 26px;
+            white-space: nowrap;
+            z-index: 99999 !important;
+            /* Forces layout rendering above every other element */
+            display: none;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
+            border-radius: 2px;
+        }
+
+        .popup-bubble-speech.active {
+            display: block;
+        }
+
+        .popup-bubble-speech::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px;
+            border-style: solid;
+            border-color: #000000 transparent transparent transparent;
+        }
+
+        .popup-title-line {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 6px;
+            padding-right: 20px;
+        }
+
+        .popup-name {
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .popup-role {
+            font-size: 12px;
+            color: #999999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .popup-quote-body {
+            font-size: 14px;
+            font-style: italic;
+            color: #cccccc;
+            line-height: 1.4;
+        }
+
+        .popup-close-x {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 18px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        /* --- HIGH FIDELITY EXECUTIVE LIGHTBOX OVERLAY WITH BLACK BACKGROUND --- */
+        .lightbox-modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 90000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .lightbox-modal-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-card-frame {
+            background: #000000;
+            color: #ffffff;
+            width: 90%;
+            max-width: 950px;
+            height: 70vh;
+            display: flex;
+            position: relative;
+            padding: 40px;
+            gap: 50px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid #222222;
+        }
+
+        .lightbox-close-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 300;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .lightbox-left-img {
+            width: 42%;
+            height: 100%;
+        }
+
+        .lightbox-left-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .lightbox-split-right {
+            width: 58%;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-right: 15px;
+        }
+
+        .lightbox-director-name {
+            font-size: 36px;
+            font-weight: 400;
+            letter-spacing: -1px;
+            margin-bottom: 6px;
+            color: #ffffff;
+        }
+
+        .lightbox-director-role {
+            font-size: 14px;
+            font-weight: 700;
+            color: #999999;
+            margin-bottom: 24px;
+        }
+
+        .lightbox-director-bio {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #cccccc;
+            text-align: justify;
+        }
+
+        /* --- Philosophy Quote --- */
+        .philosophy-container {
+            width: 100%;
+            padding: 100px 0;
+            border-top: 1px solid #eaeaea;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .philosophy-box {
+            width: 50%;
+            border-left: 2px solid #000000;
+            padding-left: 35px;
+        }
+
+        .philosophy-text {
+            font-size: 22px;
+            line-height: 1.65;
+            font-weight: 300;
+            text-align: justify;
+        }
+
+        /* --- CLOU LAYOUT ALIGNED FOOTER BLOCK --- */
+        .site-footer {
+            width: 100%;
+            padding: 80px 0 40px 0;
+            border-top: 1px solid #eaeaea;
+            position: relative;
+        }
+
+        .back-to-top-trigger {
+            position: absolute;
+            top: 30px;
+            right: 0;
+            background: none;
+            border: none;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .footer-columns-grid {
+            display: grid;
+            grid-template-columns: 2.5fr 1.5fr 1.5fr 1.5fr 1.5fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .footer-brand-shapes {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .footer-brand-shapes .clou-shape {
+            background-color: #000000;
+        }
+
+        .footer-col-header {
+            font-size: 13px;
+            color: #797979;
+            margin-bottom: 25px;
+        }
+
+        .footer-nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .footer-nav-links a {
+            font-size: 32px;
+            font-weight: 600;
+            color: #000000;
+            text-decoration: none;
+            border-bottom: 2px solid #000000;
+            display: inline-block;
+            line-height: 1.1;
+        }
+
+        .footer-bottom-line-item {
+            margin-top: 100px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-bottom-links a {
+            color: #000000;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="#" class="header-logo-container">
+            <div class="clou-logo-shapes">
+                <div class="clou-shape shape-c"></div>
+                <div class="clou-shape shape-l"></div>
+                <div class="clou-shape shape-o"></div>
+                <div class="clou-shape shape-u"></div>
+            </div>
+            <div class="logo-text-label">CLOU</div>
+        </a>
+        <nav>
+            <ul class="header-nav">
+                <li><a href="#" class="nav-link">Projects</a></li>
+                <li><a href="#" class="nav-link" style="font-weight:700;">About</a></li>
+                <li><a href="#" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="header-right">En / 中文</div>
+    </header>
+
+    <main>
+
+        <div class="intro-header-wrapper">
+            <h1 class="intro-h1">Our team.</h1>
+            <div class="intro-clipup">A collective of passionate architects & designers.</div>
+        </div>
+        <div class="divider-line"></div>
+
+        <section class="asymmetric-row-grid">
+            <div class="text-pane-50">
+                <h2 class="intro-subheading">At CLOU, we have a team of more than 70 experienced architects and
+                    designers, who enjoy working collaboratively and imaginatively on our extensive range of projects.
+                </h2>
+                <p class="narrative-paragraph">Led by Jan Clostermann, the CLOU team is a community of talents from all
+                    over the world, a new generation of extremely creative yet commercially experienced designers who
+                    actively seek to promote architecture’s power to connect people.</p>
+            </div>
+            <div class="media-pane-50">
+                <div class="img-wrapper" style="aspect-ratio: 1.6 / 1;">
+                    <img src="https://www.clouarchitects.com/wp-content/uploads/2022/05/clou-architects-team-portraits05-1000x1000.jpg"
+                        alt="Team Lineup Horizon Grid">
+                </div>
+            </div>
+        </section>
+
+        <section class="full-width-gallery-row">
+            <div class="img-wrapper" style="aspect-ratio: 21 / 9; max-height: 480px;">
+                <img src="https://www.clouarchitects.com/wp-content/uploads/2022/03/2_small-2000x1125.jpg"
+                    alt="CLOU Architecture Large Collaborative Workspace Landscape">
+            </div>
+        </section>
+
+        <section class="asymmetric-row-grid">
+            <div class="text-pane-50" style="width: 42%;">
+                <div class="img-wrapper" style="aspect-ratio: 1 / 1.35;">
+                    <img src="https://www.clouarchitects.com/wp-content/uploads/2022/03/3_smallish-1000x1000.jpg"
+                        alt="Studio Workshop Floor View">
+                </div>
+            </div>
+            <div class="media-pane-50" style="width: 58%;">
+                <div class="img-wrapper" style="aspect-ratio: 1.4 / 1;">
+                    <img src="https://www.clouarchitects.com/wp-content/uploads/2022/05/clou-architects-team-portraits13-1000x1000.jpg"
+                        alt="Design Alternative Context Secondary Asset Grid">
+                </div>
+            </div>
+        </section>
+
+        <section class="leadership-container">
+            <div class="leadership-title-pane">Team.</div>
+            <div class="directors-asymmetric-wrapper">
+                <div class="director-profile-node"
+                    onclick="triggerDirectorModal('Jan Clostermann', 'Founding Director - AA Dipl SBA', 'Jan Clostermann is the Founding Director of CLOU and an award-winning architect with 20 years of international experience. Following his architectural studies at the Technical University in Berlin, Jan received his Diploma from the Architectural Association in London.', 'https://www.clouarchitects.com/wp-content/uploads/2022/03/clou-architects-team-jan-clostermann-600x872.jpg')">
+                    <div class="img-wrapper"><img
+                            src="https://www.clouarchitects.com/wp-content/uploads/2022/03/clou-architects-team-jan-clostermann-600x872.jpg"
+                            alt="Jan Clostermann"></div>
+                    <div class="profile-title-name">Jan Clostermann</div>
+                    <div class="profile-title-role">Founding Director <span>- AA Dipl SBA</span></div>
+                </div>
+                <div class="director-profile-node"
+                    onclick="triggerDirectorModal('Lin Li', 'Executive Director', 'Lin Li is Executive Director and Head of CLOU’s Shanghai office. Having collaborated with Jan since 2012, she has been instrumental in conceiving and communicating CLOU’s signature architectures.', 'https://www.clouarchitects.com/wp-content/uploads/2022/03/clou-architects-team-lin-li-600x872.jpg')">
+                    <div class="img-wrapper"><img
+                            src="https://www.clouarchitects.com/wp-content/uploads/2022/03/clou-architects-team-lin-li-600x872.jpg"
+                            alt="Lin Li"></div>
+                    <div class="profile-title-name">Lin Li</div>
+                    <div class="profile-title-role">Executive Director</div>
+                </div>
+                <div class="director-profile-node"
+                    onclick="triggerDirectorModal('Zhi Zhang', 'Director - Class 1 Architect', 'Zhi Zhang is Director at CLOU. As a Class A licensed architect and a LEED BD+C Accredited Professional (USGBC), Zhi combines his extensive technical and statutory knowledge.', 'https://www.clouarchitects.com/wp-content/uploads/2022/03/clou-architects-team-zhi-zhang-600x872.jpg')">
+                    <div class="img-wrapper"><img
+                            src="https://www.clouarchitects.com/wp-content/uploads/2022/03/clou-architects-team-zhi-zhang-600x872.jpg"
+                            alt="Zhi Zhang"></div>
+                    <div class="profile-title-name">Zhi Zhang</div>
+                    <div class="profile-title-role">Director <span>- Class 1 Architect</span></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="scroller-spacer-buffer"></div>
+
+        <section class="infinite-scroller-window" id="marquee-viewport-window">
+            <div class="infinite-marquee-track">
+
+                <div class="marquee-group">
+                    <div class="asymmetric-matrix-block">
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Valentin ', 'Senior Designer', 'Balancing contextual landscape logic with structure.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/03/clou-architects-team117-1-e1656401068909-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Julien Douillet', 'Architect', 'Space is an continuous envelope waiting to unfold.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/03/Julien-Douillet_Seb_01-e1656405010986-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell blank-node"></div>
+
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Yuelun Yang', 'Model Maker', 'Crafting prototypes bridges mathematical theories with real texture.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/03/Yuelun-Yang_Seb_01-e1656405284825-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell blank-node"></div>
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Yadi Zhong', 'Project Interior Designer', 'Every interior edge scales down directly to refine human volume space.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/04/IMG_9447-scaled-e1656401302735-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Linyu Li', 'Architect', 'Architecture creates physical platforms for meaningful communities.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/06/Linyu-Li_shu-1-e1656392499531-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Weiqing Wang', 'Senior Visualiser', 'Render artwork brings digital simulation clarity onto layout pipelines.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/06/Weiqing-Wang_Seb_01-e1656403968737-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Dongfang Xie', 'Architect', 'Design maps out the hidden possibilities of physical blueprint lines.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/06/Dongfang-Xie2_shu-1-e1656392208387-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+
+                        <div class="matrix-cell blank-node"></div>
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Mengmeng Zhao', 'Senior Architect', 'Optimism translates challenging requirements into highly clear environments.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/03/Mengmeng-Zhao_Seb_01-e1656401512972-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell blank-node"></div>
+
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Qiaoyi Wu', 'Architect', 'Refining details is where geometry gains commercial longevity.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/06/Qiaoyi-Wu_Seb_01-e1656404751950-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell blank-node"></div>
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Ani Safaryan', 'Project Architect', 'Unveiling systemic structural patterns within urban projects.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/06/Ani-Safaryan_Seb_01-e1656404566887-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="marquee-group">
+                    <div class="asymmetric-matrix-block">
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Valentin ', 'Senior Designer', 'Balancing contextual landscape logic with structure.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/03/clou-architects-team117-1-e1656401068909-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Julien Douillet', 'Architect', 'Space is an continuous envelope waiting to unfold.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/03/Julien-Douillet_Seb_01-e1656405010986-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell blank-node"></div>
+
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Yuelun Yang', 'Model Maker', 'Crafting prototypes bridges mathematical theories with real texture.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/03/Yuelun-Yang_Seb_01-e1656405284825-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell blank-node"></div>
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Yadi Zhong', 'Project Interior Designer', 'Every interior edge scales down directly to refine human volume space.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/04/IMG_9447-scaled-e1656401302735-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Linyu Li', 'Architect', 'Architecture creates physical platforms for meaningful communities.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/06/Linyu-Li_shu-1-e1656392499531-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Weiqing Wang', 'Senior Visualiser', 'Render artwork brings digital simulation clarity onto layout pipelines.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/06/Weiqing-Wang_Seb_01-e1656403968737-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Dongfang Xie', 'Architect', 'Design maps out the hidden possibilities of physical blueprint lines.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/06/Dongfang-Xie2_shu-1-e1656392208387-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+
+                        <div class="matrix-cell blank-node"></div>
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Mengmeng Zhao', 'Senior Architect', 'Optimism translates challenging requirements into highly clear environments.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/03/Mengmeng-Zhao_Seb_01-e1656401512972-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell blank-node"></div>
+
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Qiaoyi Wu', 'Architect', 'Refining details is where geometry gains commercial longevity.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/06/Qiaoyi-Wu_Seb_01-e1656404751950-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                        <div class="matrix-cell blank-node"></div>
+                        <div class="matrix-cell"
+                            onclick="toggleSpotlightSpot(this, 'Ani Safaryan', 'Project Architect', 'Unveiling systemic structural patterns within urban projects.')">
+                            <div class="img-wrapper"><img
+                                    src="https://www.clouarchitects.com/wp-content/uploads/2022/06/Ani-Safaryan_Seb_01-e1656404566887-208x280.jpg"
+                                    alt="Portrait"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="popup-bubble-speech" id="global-speech-bubble">
+                <button class="popup-close-x" onclick="clearSpotlightFocus(event)">&times;</button>
+                <div class="popup-title-line">
+                    <div class="popup-name" id="bubble-name-target"></div>
+                    <div class="popup-role" id="bubble-role-target"></div>
+                </div>
+                <p class="popup-quote-body" id="bubble-quote-target"></p>
+            </div>
+        </section>
+
+
+        <footer class="site-footer">
+            <button class="back-to-top-trigger" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Back to top
+                ↑</button>
+            <div class="footer-columns-grid">
+                <div class="footer-logo-panel">
+                    <div class="footer-brand-shapes">
+                        <div class="clou-shape shape-c"></div>
+                        <div class="clou-shape shape-l"></div>
+                        <div class="clou-shape shape-o"></div>
+                        <div class="clou-shape shape-u"></div>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <div class="footer-col-header">Navigation</div>
+                    <ul class="footer-nav-links">
+                        <li><a href="#">Projects</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Team</a></li>
+                        <li><a href="#">Awards</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <div class="footer-col-header">&nbsp;</div>
+                    <ul class="footer-nav-links">
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <div class="footer-col-header">Social</div>
+                    <ul class="footer-nav-links">
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">Telegram</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <div class="footer-col-header">&nbsp;</div>
+                    <ul class="footer-nav-links">
+                        <li><a href="#">WeChat</a></li>
+                        <li><a href="#">Pinterest</a></li>
+                        <li><a href="#">Newsletter</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom-bar-line footer-bottom-line-item">
+                <div>CLOU architects | All rights reserved &copy;2026</div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms & Conditions</a>
+                    <a href="#" style="color:#797979; text-decoration:none;">Website by Unseen Studio</a>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <div class="lightbox-modal-backdrop" id="director-modal" onclick="closeDirectorModal()">
+        <div class="lightbox-card-frame" onclick="event.stopPropagation()">
+            <button class="lightbox-close-btn" onclick="closeDirectorModal()">&times;</button>
+            <div class="lightbox-left-img">
+                <img id="d-modal-img" src="" alt="Director Fullsize Portrait">
+            </div>
+            <div class="lightbox-split-right">
+                <h2 id="d-modal-name" class="lightbox-director-name"></h2>
+                <div id="d-modal-role" class="lightbox-director-role"></div>
+                <p id="d-modal-bio" class="lightbox-director-bio"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentlyFocusedCell = null;
+
+        function triggerDirectorModal(name, role, biography, imagePath) {
+            document.getElementById('d-modal-name').textContent = name;
+            document.getElementById('d-modal-role').textContent = role;
+            document.getElementById('d-modal-bio').textContent = biography;
+            document.getElementById('d-modal-img').src = imagePath;
+
+            document.getElementById('director-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDirectorModal() {
+            document.getElementById('director-modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleSpotlightSpot(cellElement, name, role, quote) {
+            const viewportWindow = document.getElementById('marquee-viewport-window');
+            const bubble = document.getElementById('global-speech-bubble');
+
+            if (currentlyFocusedCell) {
+                currentlyFocusedCell.classList.remove('active-focused');
+            }
+
+            currentlyFocusedCell = cellElement;
+            currentlyFocusedCell.classList.add('active-focused');
+
+            document.getElementById('bubble-name-target').textContent = name;
+            document.getElementById('bubble-role-target').textContent = role;
+            document.getElementById('bubble-quote-target').textContent = `"${quote}"`;
+
+            currentlyFocusedCell.appendChild(bubble);
+            bubble.classList.add('active');
+
+            viewportWindow.classList.add('paused', 'spotlight-active');
+        }
+
+        function clearSpotlightFocus(event) {
+            event.stopPropagation();
+            const viewportWindow = document.getElementById('marquee-viewport-window');
+
+            document.getElementById('global-speech-bubble').classList.remove('active');
+
+            if (currentlyFocusedCell) {
+                currentlyFocusedCell.classList.remove('active-focused');
+                currentlyFocusedCell = null;
+            }
+
+            viewportWindow.classList.remove('paused', 'spotlight-active');
+        }
+    </script>
+</body>
+
+</html>
