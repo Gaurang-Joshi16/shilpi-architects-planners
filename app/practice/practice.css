@@ -798,20 +798,6 @@ body.dark-mode .prac-scroller-window {
     height: 175px;
   }
 
-  .prac-popup-bubble {
-    position: fixed;
-    bottom: 24px;
-    left: 20px;
-    right: 20px;
-    width: auto;
-    max-width: none;
-    transform: none;
-    z-index: 100000 !important;
-  }
-
-  .prac-popup-bubble::after {
-    display: none; /* hide triangle on mobile */
-  }
 
   .prac-scroller-window {
     margin-left: calc(-20px);

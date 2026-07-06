@@ -106,22 +106,6 @@ export default function Practice() {
   }
 
   useEffect(() => {
-    const handleOutsideClick = (e) => {
-      // Ignore clicks/taps inside any grid cell (let the cell onClick handle it)
-      if (e.target.closest('.prac-matrix-cell')) return;
-      if (activeBubble) {
-        clearSpotlight();
-      }
-    };
-    document.addEventListener('click', handleOutsideClick);
-    document.addEventListener('touchstart', handleOutsideClick, { passive: true });
-    return () => {
-      document.removeEventListener('click', handleOutsideClick);
-      document.removeEventListener('touchstart', handleOutsideClick);
-    };
-  }, [activeBubble]);
-
-  useEffect(() => {
     // ── DARK MODE INIT ──
     const themeToggle = document.getElementById('themeToggle');
     const toggleLabel = document.getElementById('toggleLabel');
@@ -336,6 +320,15 @@ export default function Practice() {
     <>
       <div className="cursor" id="cur" style={{ opacity: 0 }}></div>
       <div className="cursor ring" id="curRing" style={{ opacity: 0 }}></div>
+
+      {/* ── INVISIBLE SPOTLIGHT OVERLAY (FOR MOBILE OUTSIDE-TAP) ── */}
+      {activeBubble && (
+        <div 
+          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 99900, cursor: 'pointer' }}
+          onClick={clearSpotlight}
+          onTouchStart={clearSpotlight}
+        />
+      )}
 
       {/* ── NAVBAR (news-nav with prac-nav wrapper) ── */}
       <nav id="nav" className="news-nav prac-nav">
