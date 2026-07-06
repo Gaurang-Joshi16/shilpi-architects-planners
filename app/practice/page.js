@@ -106,6 +106,16 @@ export default function Practice() {
   }
 
   useEffect(() => {
+    const handleOutsideClick = () => {
+      if (activeBubble) {
+        clearSpotlight();
+      }
+    };
+    document.addEventListener('click', handleOutsideClick);
+    return () => document.removeEventListener('click', handleOutsideClick);
+  }, [activeBubble]);
+
+  useEffect(() => {
     // ── DARK MODE INIT ──
     const themeToggle = document.getElementById('themeToggle');
     const toggleLabel = document.getElementById('toggleLabel');
@@ -490,7 +500,7 @@ export default function Practice() {
                   <div
                     key={`g1-${cell.key}`}
                     className={`prac-matrix-cell${cell.blank ? ' blank-node' : ''}${activeBubble === `g1-${cell.key}` ? ' active-focused' : ''}`}
-                    onClick={!cell.blank ? () => toggleSpotlight(cell, `g1-${cell.key}`) : undefined}
+                    onClick={!cell.blank ? (e) => { e.stopPropagation(); toggleSpotlight(cell, `g1-${cell.key}`); } : undefined}
                   >
                     {!cell.blank && (
                       <>
@@ -523,7 +533,7 @@ export default function Practice() {
                   <div
                     key={`g2-${cell.key}`}
                     className={`prac-matrix-cell${cell.blank ? ' blank-node' : ''}${activeBubble === `g2-${cell.key}` ? ' active-focused' : ''}`}
-                    onClick={!cell.blank ? () => toggleSpotlight(cell, `g2-${cell.key}`) : undefined}
+                    onClick={!cell.blank ? (e) => { e.stopPropagation(); toggleSpotlight(cell, `g2-${cell.key}`); } : undefined}
                   >
                     {!cell.blank && (
                       <>
