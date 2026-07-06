@@ -1321,6 +1321,16 @@ body.dark-mode .trace-text-element {
     98%, 100% { stroke-dashoffset: 120; fill: transparent; }
 }
 
+@media (max-width: 768px) {
+    .trace-text-element {
+        font-size: 14px;
+        stroke-width: 1.2px;
+    }
+    .category-name {
+        font-size: 0.85rem;
+    }
+}
+
 .category-desc {
     font-family: "JetBrains Mono", monospace;
     font-size: 0.75rem;

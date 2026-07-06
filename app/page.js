@@ -909,18 +909,21 @@ export default function Home() {
                 tag="EP 01"
                 defaultTitle="Aalap Garden | An Inclusive Musical Garden | Wakad, Pune | Shilpi Architects and Planners"
                 date="MAY 2026"
+                duration="04:15"
               />
               <YouTubeVideoCard
                 url="https://youtu.be/-AW-KNb1Zxo"
                 tag=" EP 02"
                 defaultTitle="Badhekar Horizon | Mixed-Use Development | Karve Road, Pune | Shilpi Architects and Planners"
                 date="APR 2026"
+                duration="03:22"
               />
               <YouTubeVideoCard
                 url="https://youtu.be/qsuv0L5aKhE"
                 tag="EP 03"
                 defaultTitle="Shaheed Ashok Kamte Udyan | Landscape Architecture | Pimple Nilakh | Shilpi Architects and Planners"
                 date="MAR 2026"
+                duration="02:50"
               />
             </div>
           </section>

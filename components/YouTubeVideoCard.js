@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 
-export default function YouTubeVideoCard({ url, tag, defaultTitle, date }) {
-  const [data, setData] = useState({ title: defaultTitle || 'Loading...', duration: '--:--', id: '' });
+export default function YouTubeVideoCard({ url, tag, defaultTitle, date, duration }) {
+  const [data, setData] = useState({ title: defaultTitle, duration: duration || '--:--', id: '' });
   
   useEffect(() => {
     if (!url) return;
@@ -14,16 +14,6 @@ export default function YouTubeVideoCard({ url, tag, defaultTitle, date }) {
     
     if (videoId) {
       setData(prev => ({ ...prev, id: videoId }));
-      
-      // Fetch dynamic title and duration from our API route
-      fetch(`/api/youtube?videoId=${videoId}`)
-        .then(res => res.json())
-        .then(info => {
-          if (info.success) {
-            setData(prev => ({ ...prev, title: info.title, duration: info.duration }));
-          }
-        })
-        .catch(console.error);
     }
   }, [url]);
 
