@@ -6,57 +6,13 @@ import NewsletterForm from '../../components/NewsletterForm'
 import '../news/news.css'
 import './practice.css'
 
-/* ── TEAM DATA (SAP-branded with demo Unsplash images) ── */
-const DIRECTORS = [
-  {
-    name: 'Ar. Paras Subhash Netragaonkar',
-    role: 'Founder and Principal Architect',
-    img: '/Teams/Team grid/Ar. Paras Netragaonkar.jpeg',
-    bio: `Ar. Paras Subhash Netragaonkar specializes in Urban Design, Landscape Design, and Strategic Planning. A graduate of MMCOA, one of the oldest and most respected institutions affiliated with Savitribai Phule Pune University, he has witnessed and contributed to the evolution of the built environment—from securing one of the earliest sanctioned plans in PCMC to leading projects across India and internationally.
-
-He currently serves as the Chairman of the Indian Institute of Architects (IIA), Pimpri Chinchwad Centre, and has built a distinguished career working across multiple scales of design—from individual spaces and buildings to urban systems, regional planning, and resource allocation strategies.
-
-Throughout his career, he has collaborated extensively with state governments, private developers, public institutions, NGOs, civil society organizations, and social welfare sectors. His work spans global metropolitan regions, emerging cities, regional growth centers, and rural development initiatives.
-
-Guided by the belief that the true measure of design lies in the lives it impacts, he continues to champion purposeful, context-sensitive, and future-focused solutions that create lasting social, economic, and environmental value.`,
-    email: 'pshilpiarchplann@gmail.com',
-    linkedin: 'https://www.linkedin.com/in/ar-paras-s-netragaonkar-46470435/'
-  },
-  {
-    name: 'Ar. Atharvi Paras Netragaonkar',
-    role: 'Lead Architect and Urban Planner',
-    img: '/Teams/Team grid/Ar. Atharvi Netragaonkar.jpeg',
-    bio: `Ar. & Urban Planner Atharvi Netragaonkar is an architect, urban planner, researcher, and educator with expertise spanning architecture, urban planning, policy, and design. She holds a Bachelor’s degree in Architecture from VIT's PVPCOA, Savitribai Phule Pune University and a Master’s degree in Urban Planning from CEPT University, Ahmedabad.
-
-Her professional experience includes working with state and city governments on urban planning, development strategies, policy research, and institutional projects. She has contributed to initiatives in collaboration with organizations such as UNICEF and the World Resources Institute (WRI), focusing on sustainable, inclusive, and resilient urban development.
-
-Atharvi is a Public Policy Fellow with Young Leaders for Active Citizenship (YLAC) and has been associated with leadership and governance programs through KILA, further strengthening her understanding of public policy and participatory development. Alongside professional practice, she is actively involved in academia as a visiting faculty and mentor for postgraduate planning programs, contributing to the education of future architects and urban planners.
-
-She is passionate about shaping cities that are inclusive, equitable, and people-centric. Her work is driven by the belief that thoughtful planning and design can create meaningful social, economic, and environmental impact, helping communities and cities thrive in an increasingly urban future.`,
-    email: 'shilpi.arch.plann@gmail.com',
-    linkedin: 'https://www.linkedin.com/in/atharvi-netragaonkar-381b791ba/'
-  }
-]
-
-const baseTeamMembers = [
-  { name: 'Ar. Paras Subhash Netragaonkar', role: 'Founder and Principal Architect', quote: 'Great architecture is not a singular act of design, but the seamless integration of people, systems, and environments into a meaningful whole.', img: '/Teams/Team grid/Ar. Paras Netragaonkar.jpeg' },
-  { name: 'Ar. Mihir Ghotankar', role: 'Architect', quote: 'I see architecture as a living system—shaped by data, driven by innovation, and designed to adapt to an ever-changing world.', img: '/Teams/Team grid/Ar.Mihr Ghotankar.jpg' },
-  { name: 'Sagar Kalekar', role: 'Licensing Head', quote: 'Projects succeed when relationships are built on trust, communication remains open, and every challenge is approached with a solution-oriented mindset.', img: '/Teams/Team grid/Sagar Kalekar.jpeg' },
-  { name: 'Ar. Akshata Mule', role: 'Architect', quote: 'Architecture succeeds when movement feels effortless, character feels authentic, and nature remains an integral part of the experience.', img: '/Teams/Team grid/Ar. Akshata Mule.jpeg' },
-  { name: 'Mangesh Godse', role: 'Technical Expert', quote: 'Where disciplined thinking and technical clarity come together to create simple, effective solutions.', img: '/Teams/Team grid/Mangesh Godse.jpeg' },
-  { name: 'Ar. Jigar Bhise', role: 'Architect', quote: 'Great design lies at the intersection of aesthetic clarity, seamless coordination, and a vision for the future.', img: '/Teams/Team grid/Ar. Jigar Bhise.jpeg' },
-  { name: 'Kunal Kadu', role: 'Technical Expert', quote: 'Architecture succeeds when creativity is grounded in accuracy, discipline, and timely execution.', img: '/Teams/Team grid/Kunal Kadu.jpeg' },
-  { name: 'Ar. Falguni Joshi', role: 'Architect', quote: 'I believe great design begins with empathy—placing ourselves in the shoes of those who will ultimately call a space their own.', img: '/Teams/Team grid/Ar. Falguni Joshi.jpeg' },
-  { name: 'Er. Sumitraj Shinde', role: 'Engineer', quote: 'The foundation of a successful project lies in balancing design ambition with practical and economic realities.', img: '/Teams/Team grid/Er. Sumitraj Shinde.jpeg' },
-  { name: 'Er. Aditya Tupe', role: 'Engineer', quote: 'Engineering excellence lies in delivering maximum performance with optimum resources and minimum waste.', img: '/Teams/Team grid/Er. Aditya Tupe.jpeg' },
-  { name: 'Pravin Padawal', role: 'Licensing Head', quote: 'The most valuable skill in project delivery is the ability to connect people, resolve complexities, and move ideas forward.', img: '/Teams/Team grid/Pravin Padawal.jpeg' },
-  { name: 'Ar. Atharvi Paras Netragaonkar', role: 'Architect & Urban Planner', quote: 'I bring the ability to think simultaneously at the scale of a room, a building, a neighborhood, and a city.', img: '/Teams/Team grid/Ar. Atharvi Netragaonkar.jpeg' }
-];
-
-// Duplicate the array to populate the 24-slot marquee block (12 unique members * 2)
-const TEAM_MEMBERS = [...baseTeamMembers, ...baseTeamMembers];
+import { createClient } from '../../utils/supabase/client'
 
 function buildMarqueeGrid(members) {
+  if (!members || members.length === 0) return [];
+  // Duplicate the array to populate the 24-slot marquee block
+  const TEAM_MEMBERS = [...members, ...members, ...members].slice(0, 24);
+
   // 12 columns, 24 slots. Repeats the 6-column visual pattern exactly twice per group block.
   const pattern = [
     [false, true, true],
@@ -76,8 +32,8 @@ function buildMarqueeGrid(members) {
   let mi = 0
   for (let col = 0; col < pattern.length; col++) {
     for (let row = 0; row < 3; row++) {
-      if (pattern[col][row] && mi < members.length) {
-        cells.push({ ...members[mi], key: `member-${mi}` })
+      if (pattern[col][row] && mi < TEAM_MEMBERS.length) {
+        cells.push({ ...TEAM_MEMBERS[mi], key: `member-${mi}` })
         mi++
       } else {
         cells.push({ blank: true, key: `blank-${col}-${row}` })
@@ -87,10 +43,39 @@ function buildMarqueeGrid(members) {
   return cells
 }
 
+
 export default function Practice() {
+  const supabase = createClient()
   const [modalData, setModalData] = useState(null)
   const [activeBubble, setActiveBubble] = useState(null)
   const scrollerRef = useRef(null)
+
+  // Supabase Data State
+  const [directors, setDirectors] = useState([])
+  const [staff, setStaff] = useState([])
+  const [settings, setSettings] = useState({
+    title: 'Our Practice.',
+    subtitle: 'Architects, urbanists, thinkers, facilitators and resource strategists.',
+    introHeading: 'At SAP, We don\'t just design spaces; we design the future relationships between people, place, and possibility. We see every project as a thread in a much larger urban tapestry. By connecting human aspirations with the dynamics of cities, landscapes, and economies, we create places that contribute not just to skylines, but to the future of society itself.',
+    introParagraph: 'Led by Principal Architect Paras Netragaonkar, our team brings together architects, urban planners, engineers, technicians, facilitators, resource strategists, and AI artisans. Together, we connect ideas, people, technology, and resources to shape places that perform at every scale— from buildings to cities.',
+    mainImage: '/Teams/main team image.jpeg',
+    portraitImage: '/Teams/principal architects.jpeg',
+    slideshow: ['/Teams/slideshow/1.jpeg', '/Teams/slideshow/2.jpeg', '/Teams/slideshow/3.jpeg', '/Teams/slideshow/4.jpeg']
+  })
+
+  useEffect(() => {
+    async function fetchData() {
+      const { data: dData } = await supabase.from('team_members').select('*').eq('type', 'director').order('order_index');
+      if (dData) setDirectors(dData);
+
+      const { data: sData } = await supabase.from('team_members').select('*').eq('type', 'staff').order('order_index');
+      if (sData) setStaff(sData);
+
+      const { data: setts } = await supabase.from('site_settings').select('value').eq('key', 'practice_page').single();
+      if (setts?.value) setSettings(prev => ({ ...prev, ...setts.value }));
+    }
+    fetchData();
+  }, [])
 
   function openDirectorModal(director) {
     setModalData(director)
@@ -329,7 +314,7 @@ export default function Practice() {
     }
   }, []);
 
-  const marqueeGridCells = buildMarqueeGrid(TEAM_MEMBERS)
+  const marqueeGridCells = buildMarqueeGrid(staff)
 
   return (
     <>
@@ -394,9 +379,9 @@ export default function Practice() {
 
         {/* ── INTRO HEADER ── */}
         <div className="prac-intro-header">
-          <h1 className="prac-title">Our Practice.</h1>
+          <h1 className="prac-title">{settings.title}</h1>
           <div className="prac-subtitle">
-            Architects, urbanists, thinkers, facilitators and resource strategists.
+            {settings.subtitle}
           </div>
         </div>
         <div className="prac-divider"></div>
@@ -407,16 +392,10 @@ export default function Practice() {
           <section className="prac-asymmetric-row">
             <div className="prac-text-pane">
               <h2 className="prac-intro-subheading">
-                At SAP, We don't just design spaces; we design the future relationships between people, place, and
-                possibility. We see every project as a thread in a much larger urban tapestry. By connecting
-                human aspirations with the dynamics of cities, landscapes, and economies, we create places
-                that contribute not just to skylines, but to the future of society itself.
+                {settings.introHeading}
               </h2>
               <p className="prac-narrative">
-                Led by Principal Architect Paras Netragaonkar, our team brings together architects, urban
-                planners, engineers, technicians, facilitators, resource strategists, and AI artisans. Together, we
-                connect ideas, people, technology, and resources to shape places that perform at every scale—
-                from buildings to cities.
+                {settings.introParagraph}
               </p>
             </div>
             <div className="prac-media-pane prac-hide-on-mobile">
@@ -427,7 +406,7 @@ export default function Practice() {
           <section className="prac-full-width-gallery">
             <div className="prac-img-wrapper" style={{ aspectRatio: 'auto', maxHeight: 'none' }}>
               <img
-                src="/Teams/main team image.jpeg"
+                src={settings.mainImage}
                 alt="SAP Studio Team"
               />
             </div>
@@ -438,7 +417,7 @@ export default function Practice() {
             <div className="prac-text-pane">
               <div className="prac-img-wrapper prac-stretch-img">
                 <img
-                  src="/Teams/principal architects.jpeg"
+                  src={settings.portraitImage}
                   alt="Principal Architects"
                   style={{ objectFit: 'cover', objectPosition: 'top center', backgroundColor: 'var(--paper)' }}
                 />
@@ -446,10 +425,9 @@ export default function Practice() {
             </div>
             <div className="prac-media-pane">
               <div className="prac-img-wrapper prac-stretch-img prac-slideshow">
-                <img src="/Teams/slideshow/1.jpeg" alt="Slideshow Image 1" />
-                <img src="/Teams/slideshow/2.jpeg" alt="Slideshow Image 2" />
-                <img src="/Teams/slideshow/3.jpeg" alt="Slideshow Image 3" />
-                <img src="/Teams/slideshow/4.jpeg" alt="Slideshow Image 4" />
+                {settings.slideshow.map((img, idx) => (
+                  <img key={idx} src={img} alt={`Slideshow Image ${idx+1}`} />
+                ))}
               </div>
             </div>
           </section>
@@ -458,14 +436,14 @@ export default function Practice() {
           <section className="prac-leadership">
             <div className="prac-leadership-title">Team.</div>
             <div className="prac-directors-grid">
-              {DIRECTORS.map((d, i) => (
+              {directors.map((d, i) => (
                 <div
                   key={i}
                   className="prac-director-card"
                   onClick={() => openDirectorModal(d)}
                 >
                   <div className="prac-img-wrapper">
-                    <img src={d.img} alt={d.name} />
+                    <img src={d.image_url} alt={d.name} />
                   </div>
                   <div className="prac-profile-name">{d.name}</div>
                   <div className="prac-profile-role">
@@ -515,7 +493,7 @@ export default function Practice() {
                     {!cell.blank && (
                       <>
                         <div className="prac-img-wrapper">
-                          <img src={cell.img} alt={cell.name} />
+                          <img src={cell.image_url} alt={cell.name} />
                         </div>
                         {activeBubble === `g1-${cell.key}` && (
                           <div className="prac-popup-bubble active">
@@ -548,7 +526,7 @@ export default function Practice() {
                     {!cell.blank && (
                       <>
                         <div className="prac-img-wrapper">
-                          <img src={cell.img} alt={cell.name} />
+                          <img src={cell.image_url} alt={cell.name} />
                         </div>
                         {activeBubble === `g2-${cell.key}` && (
                           <div className="prac-popup-bubble active">
@@ -591,7 +569,7 @@ export default function Practice() {
           <div className="prac-lightbox-card" onClick={(e) => e.stopPropagation()}>
             <button className="prac-lightbox-close" onClick={closeDirectorModal}>×</button>
             <div className="prac-lightbox-img">
-              <img src={modalData.img} alt={modalData.name} />
+              <img src={modalData.image_url} alt={modalData.name} />
             </div>
             <div className="prac-lightbox-info">
               <div className="prac-lightbox-info-inner">

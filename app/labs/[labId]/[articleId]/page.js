@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from 'react'
 import Link from 'next/link'
 import { getLabArticleById } from '../../../../lib/labsData'
+import { createClient } from '../../../../utils/supabase/client'
 import '../../../news/news.css'
 import '../../../news/[slug]/newsArticle.css'
 
@@ -10,9 +11,38 @@ export default function LabArticle({ params }) {
   const resolvedParams = use(params)
   const labId = resolvedParams?.labId
   const articleId = resolvedParams?.articleId
-  const article = getLabArticleById(labId, articleId)
+  const [article, setArticle] = useState(getLabArticleById(labId, articleId))
   const [lightboxImg, setLightboxImg] = useState(null)
   const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    async function loadDynamicArticle() {
+      if (!articleId) return;
+      const supabase = createClient();
+      const { data } = await supabase.from('labs').select('*').eq('slug', articleId).single();
+      
+      if (data) {
+        setArticle({
+          id: data.slug,
+          title: data.title,
+          sub: data.subcategory,
+          year: data.year,
+          texts: data.texts,
+          imgs: data.images,
+          videos: data.videos,
+          heroImage: data.hero_image,
+          loc: data.location,
+          client: data.client,
+          typology: data.typology,
+          size: data.size,
+          status: data.status,
+          icon: data.icon_url,
+          isCertificates: data.is_certificates
+        });
+      }
+    }
+    loadDynamicArticle();
+  }, [articleId]);
 
   useEffect(() => {
     if (!article) return

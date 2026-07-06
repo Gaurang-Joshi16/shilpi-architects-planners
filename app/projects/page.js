@@ -2,11 +2,49 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
-import { DATA } from '../../lib/projectsData'
+import { createClient } from '../../utils/supabase/client'
 import './projects.css'
 
 export default function Projects() {
+  const supabase = createClient()
   useEffect(() => {
+    let cleanupFn = null;
+    async function initProjects() {
+      // Fetch dynamic data from Supabase
+      const { data: projectsData, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
+      
+      const DATA = {
+        architecture: { subs: ['Commerce', 'Residential', 'Mixed Use', 'Culture', 'Religious', 'Education', 'Infrastructure', 'Sports', 'Health', 'Un-built'], projects: [] },
+        interiors: { subs: ['Residential', 'Hospitality', 'Work', 'Retail'], projects: [] },
+        landscape: { subs: ['Civic Spaces', 'Gardens&Parks', 'Terrace&Balconies'], projects: [] },
+        urbanism: { subs: ['Campus', 'City', 'Region'], projects: [] },
+        art: { subs: ['Furniture', 'Installations', 'Products'], projects: [] }
+      };
+
+      if (projectsData) {
+        projectsData.forEach(p => {
+          let cat = p.category;
+          if (cat === 'urban-planning') cat = 'urbanism';
+          if (DATA[cat]) {
+            DATA[cat].projects.push({
+              id: p.slug,
+              title: p.title,
+              loc: p.location || '',
+              sub: p.subcategory || '',
+              year: p.year || '',
+              icon: p.icon_url || '',
+              imgs: p.images || [],
+              videos: p.videos || [],
+              Use: p.use_type || '',
+              typology: p.typology || '',
+              size: p.size || '',
+              status: p.status || '',
+              texts: p.texts || [],
+              client: p.client || ''
+            });
+          }
+        });
+      }
 
     /* ── DARK MODE INIT ── */
     const themeToggle = document.getElementById('themeToggle');
@@ -33,9 +71,6 @@ export default function Projects() {
     if (themeToggle) {
       themeToggle.addEventListener('click', onThemeToggle);
     }
-
-    /* ── DATA ── */
-    /* DATA moved to lib/projectsData */
 
     /* ── PALETTE ── */
     const PH = [
@@ -944,7 +979,7 @@ export default function Projects() {
       b.classList.toggle('active', b.dataset.cat === activeCat)
     })
 
-    return () => {
+    cleanupFn = () => {
       window.removeEventListener('resize', handleResize);
       if (themeToggle) themeToggle.removeEventListener('click', onThemeToggle);
       if (hamburger) hamburger.removeEventListener('click', onHamburgerClick);
@@ -960,7 +995,13 @@ export default function Projects() {
 
       if (cleanupCursor) cleanupCursor(); // Safely teardown event targets to block memory leaks
     }
+    } // End of initProjects()
+    
+    initProjects();
 
+    return () => {
+      if (cleanupFn) cleanupFn();
+    }
   }, [])
 
   return (

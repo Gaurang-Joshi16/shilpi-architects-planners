@@ -3,15 +3,37 @@
 import { useEffect, useState, use } from 'react'
 import Link from 'next/link'
 import { getArticleBySlug } from '../../../lib/newsData'
+import { createClient } from '../../../utils/supabase/client'
 import '../news.css'
 import './newsArticle.css'
 
 export default function NewsArticle({ params }) {
   const resolvedParams = use(params)
   const slug = resolvedParams?.slug
-  const article = getArticleBySlug(slug)
+  const [article, setArticle] = useState(getArticleBySlug(slug))
   const [lightboxImg, setLightboxImg] = useState(null)
   const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    async function fetchArticle() {
+      if (!slug) return;
+      const supabase = createClient();
+      const { data } = await supabase.from('news').select('*').eq('slug', slug).single();
+      if (data) {
+        setArticle({
+          slug: data.slug,
+          title: data.title,
+          date: data.date,
+          location: data.location,
+          year: data.year,
+          heroImage: data.hero_image,
+          objectPosition: data.object_position,
+          content: data.content
+        });
+      }
+    }
+    fetchArticle();
+  }, [slug]);
 
   useEffect(() => {
     if (!article) return

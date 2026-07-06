@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import NewsletterForm from '../../components/NewsletterForm'
 import { NEWS_ARTICLES } from '../../lib/newsData'
+import { createClient } from '../../utils/supabase/client'
+import NewsletterForm from '../../components/NewsletterForm'
 import './news.css'
 
 
@@ -11,6 +12,26 @@ import './news.css'
 export default function News() {
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [newsList, setNewsList] = useState(NEWS_ARTICLES)
+
+  useEffect(() => {
+    async function fetchNews() {
+      const supabase = createClient();
+      const { data } = await supabase.from('news').select('*').order('created_at', { ascending: false });
+      if (data && data.length > 0) {
+        setNewsList(data.map(p => ({
+          slug: p.slug,
+          title: p.title,
+          date: p.date,
+          location: p.location,
+          year: p.year,
+          heroImage: p.hero_image,
+          objectPosition: p.object_position
+        })));
+      }
+    }
+    fetchNews();
+  }, []);
 
   useEffect(() => {
     // ── DARK MODE INIT ──
@@ -298,9 +319,9 @@ export default function News() {
 
           {/* NEWS GRID */}
           <div className="news-grid-container">
-            {NEWS_ARTICLES.filter(article => 
+            {newsList.filter(article => 
               article.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-              article.date.toLowerCase().includes(searchQuery.toLowerCase())
+              (article.date && article.date.toLowerCase().includes(searchQuery.toLowerCase()))
             ).map((article, idx) => (
               <Link
                 key={idx}

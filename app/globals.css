@@ -1204,23 +1204,55 @@ body.dark-mode .site-footer {
 }
 
 .category-icon {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    background: #000000;
-    border: 1px solid rgba(255,255,255,0.1);
+    width: 90px;
+    height: 90px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 24px;
-    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-    color: #ffffff;
 }
 
-.category-card:hover .category-icon {
-    background: #45A8A1; /* Teal color */
-    border-color: #45A8A1;
-    color: #ffffff;
+.shape-icon-svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+    transition: opacity 0.4s, transform 0.6s cubic-bezier(.2, .7, .1, 1);
+}
+
+.category-card:hover .shape-icon-svg {
+    opacity: 1;
+    transform: rotate(90deg);
+}
+
+.shape-icon-svg .inner-ring {
+    transition: transform 0.6s cubic-bezier(.2, .7, .1, 1);
+}
+
+.category-card:hover .shape-icon-svg .inner-ring {
+    transform: rotate(-180deg);
+}
+
+.shape-icon-svg path,
+.shape-icon-svg rect,
+.shape-icon-svg line,
+.shape-icon-svg circle,
+.shape-icon-svg polygon,
+.shape-icon-svg ellipse,
+.shape-icon-svg polyline {
+    fill: none;
+    stroke: var(--teal);
+    stroke-width: 3;
+    vector-effect: non-scaling-stroke;
+}
+
+body.dark-mode .shape-icon-svg path,
+body.dark-mode .shape-icon-svg rect,
+body.dark-mode .shape-icon-svg line,
+body.dark-mode .shape-icon-svg circle,
+body.dark-mode .shape-icon-svg polygon,
+body.dark-mode .shape-icon-svg ellipse,
+body.dark-mode .shape-icon-svg polyline {
+    stroke: var(--teal);
 }
 
 .category-bg-image {
@@ -1255,8 +1287,8 @@ body.dark-mode .category-name {
 }
 
 .trace-text-element {
-    font-family: "Jost", "Space Grotesk", sans-serif;
-    font-size: 19px;
+    font-family: "Futura", "Trebuchet MS", sans-serif;
+    font-size: 24px;
     font-weight: 400;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -1265,28 +1297,28 @@ body.dark-mode .category-name {
     stroke-width: 1.8px;
     stroke-dasharray: 120;
     stroke-dashoffset: 120;
-    animation: trace-light 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: trace-light 6s ease-out infinite;
     animation-fill-mode: both;
 }
 
 body.dark-mode .trace-text-element {
     stroke: #ffffff;
-    animation: trace-dark 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: trace-dark 6s ease-out infinite;
     animation-fill-mode: both;
 }
 
 @keyframes trace-light {
     0% { stroke-dashoffset: 120; fill: transparent; }
-    35% { stroke-dashoffset: 0; fill: transparent; }
-    50%, 85% { stroke-dashoffset: 0; fill: #000000; }
-    100% { stroke-dashoffset: 120; fill: transparent; }
+    15% { stroke-dashoffset: 0; fill: transparent; }
+    20%, 92% { stroke-dashoffset: 0; fill: #000000; }
+    98%, 100% { stroke-dashoffset: 120; fill: transparent; }
 }
 
 @keyframes trace-dark {
     0% { stroke-dashoffset: 120; fill: transparent; }
-    35% { stroke-dashoffset: 0; fill: transparent; }
-    50%, 85% { stroke-dashoffset: 0; fill: #ffffff; }
-    100% { stroke-dashoffset: 120; fill: transparent; }
+    15% { stroke-dashoffset: 0; fill: transparent; }
+    20%, 92% { stroke-dashoffset: 0; fill: #ffffff; }
+    98%, 100% { stroke-dashoffset: 120; fill: transparent; }
 }
 
 .category-desc {

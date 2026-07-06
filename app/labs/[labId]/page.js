@@ -2,7 +2,8 @@
 
 import { useEffect, useState, use } from 'react'
 import Link from 'next/link'
-import { getLabById } from '../../../lib/labsData'
+import { getLabById, LABS_DATA } from '../../../lib/labsData'
+import { createClient } from '../../../utils/supabase/client'
 import '../../news/news.css'
 import './lab.css'
 import NewsletterForm from '../../../components/NewsletterForm'
@@ -10,9 +11,43 @@ import NewsletterForm from '../../../components/NewsletterForm'
 export default function LabPage({ params }) {
   const resolvedParams = use(params)
   const labId = resolvedParams?.labId
-  const lab = getLabById(labId)
+  const [lab, setLab] = useState(getLabById(labId))
   const [searchQuery, setSearchQuery] = useState('')
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+
+  useEffect(() => {
+    async function loadDynamicLab() {
+      if (!labId) return;
+      const supabase = createClient();
+      const { data } = await supabase.from('labs').select('*').eq('category', labId).order('created_at', { ascending: false });
+      
+      if (data && data.length > 0) {
+        const fallback = LABS_DATA[labId];
+        setLab({
+          title: fallback ? fallback.title : labId,
+          subs: fallback ? fallback.subs : [],
+          projects: data.map(p => ({
+            id: p.slug,
+            title: p.title,
+            sub: p.subcategory,
+            year: p.year,
+            texts: p.texts,
+            imgs: p.images,
+            videos: p.videos,
+            heroImage: p.hero_image,
+            loc: p.location,
+            client: p.client,
+            typology: p.typology,
+            size: p.size,
+            status: p.status,
+            icon: p.icon_url,
+            isCertificates: p.is_certificates
+          }))
+        });
+      }
+    }
+    loadDynamicLab();
+  }, [labId]);
 
   useEffect(() => {
     if (!lab) return

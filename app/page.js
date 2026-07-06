@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import NewsletterForm from '../components/NewsletterForm'
 import { NEWS_ARTICLES } from '../lib/newsData'
+import { LABS_DATA } from '../lib/labsData'
+import { createClient } from '../utils/supabase/client'
 import YouTubeVideoCard from '../components/YouTubeVideoCard'
 
 function SVGTraceText({ text }) {
@@ -27,6 +29,67 @@ function SVGTraceText({ text }) {
 let _loaderHasRun = false
 
 export default function Home() {
+  const [hoveredIndex, setHoveredIndex] = useState(null)
+  const [dynamicLabsData, setDynamicLabsData] = useState(null)
+  const [dynamicNewsData, setDynamicNewsData] = useState(null)
+  const [loaderVisible, setLoaderVisible] = useState(!_loaderHasRun)
+  
+  // Dynamic stats calculation for labs
+  const getLabStats = (labId) => {
+    const lab = dynamicLabsData ? dynamicLabsData[labId] : LABS_DATA[labId];
+    if (!lab) return [];
+    
+    const counts = {};
+    lab.subs.forEach(sub => counts[sub] = 0);
+    lab.projects.forEach(p => {
+      counts[p.sub] = (counts[p.sub] || 0) + 1;
+    });
+
+    return Object.entries(counts)
+      .map(([label, count]) => ({ label, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 3);
+  };
+
+  useEffect(() => {
+    const supabase = createClient();
+    async function fetchData() {
+      // Fetch Labs
+      const { data: labsData } = await supabase.from('labs').select('*').order('created_at', { ascending: false });
+      if (labsData) {
+        const grouped = {
+          'ai-computation': { title: 'AI & computation', subs: ['Innovation', 'Tools', 'Pedagogy'], projects: [] },
+          'civic-reform': { title: 'Civic reform studio', subs: ['Engagements', 'Academia', 'Media', 'Recognition'], projects: [] },
+          'urban-futures': { title: 'Urban futures lab', subs: ['Exhibition', 'Research', 'Publications'], projects: [] }
+        };
+        labsData.forEach(p => {
+          if (grouped[p.category]) {
+            grouped[p.category].projects.push({
+              id: p.slug,
+              title: p.title,
+              sub: p.subcategory,
+              year: p.year,
+              texts: p.texts
+            });
+          }
+        });
+        setDynamicLabsData(grouped);
+      }
+
+      // Fetch News
+      const { data: newsData } = await supabase.from('news').select('*').order('created_at', { ascending: false });
+      if (newsData && newsData.length > 0) {
+        setDynamicNewsData(newsData.map(n => ({
+          slug: n.slug,
+          title: n.title,
+          date: n.date,
+          heroImage: n.hero_image
+        })));
+      }
+    }
+    fetchData();
+  }, []);
+
   useEffect(() => {
 
     /* ── MODULE-LEVEL LOADER GUARD ────────────────────────────────────────
@@ -39,20 +102,8 @@ export default function Home() {
        the JavaScript environment, resetting _loaderHasRun to false and 
        naturally playing the loader exactly when it should. ── */
 
-    if (_loaderHasRun) {
-      const loaderEl = document.getElementById('loader-layer')
-      const contentEl = document.getElementById('main-content')
-      const navLogo = document.querySelector('.nav-logo-placeholder')
-      const logoImg = document.querySelector('.sap-logo-img')
-
-      if (loaderEl) loaderEl.style.display = 'none'
-      if (contentEl) {
-        contentEl.classList.remove('hidden')
-        contentEl.classList.add('visible')
-      }
-      if (navLogo) navLogo.style.opacity = '1'
-      if (logoImg) logoImg.style.opacity = '1'
-
+    if (_loaderHasRun && !loaderVisible) {
+      // If we navigate back, we just initialize the DOM stuff
       initCounters()
       generatePerfectMap()
       initHamburger()
@@ -111,12 +162,8 @@ export default function Home() {
           loaderLayer.style.opacity = '0';
           loaderLayer.style.transition = 'opacity 0.8s ease';
 
-          mainContent.classList.remove('hidden');
-          void mainContent.offsetWidth;
-          mainContent.classList.add('visible');
-
           setTimeout(() => {
-            loaderLayer.style.display = 'none';
+            setLoaderVisible(false);
 
             const actualNavText = targetNavbarLogo
               .querySelector('.nav-logo-placeholder');
@@ -125,9 +172,6 @@ export default function Home() {
 
             const logoImage = document.querySelector('.sap-logo-img');
             if (logoImage) logoImage.style.opacity = '1';
-
-            if (loaderFlightCapsule)
-              loaderFlightCapsule.remove();
 
             initCounters();
             generatePerfectMap();
@@ -357,7 +401,7 @@ export default function Home() {
       <div className="sheet-frame" aria-hidden="true"></div>
 
       {/* LOADER */}
-      <div id="loader-layer" className="loader-layer" style={{ display: _loaderHasRun ? 'none' : 'flex' }}>
+      <div id="loader-layer" className="loader-layer" style={{ display: loaderVisible ? 'flex' : 'none' }}>
         <div
           id="loader-flight-capsule"
           style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '32px' }}
@@ -386,9 +430,8 @@ export default function Home() {
       </div>
 
       {/* MAIN CONTENT */}
-      <div id="main-content" className={`main-content ${_loaderHasRun ? 'visible' : 'hidden'}`}>
+      <div id="main-content" className={`main-content ${loaderVisible ? 'hidden' : 'visible'}`}>
 
-        {/* HEADER */}
         <header className="site-header">
           <div
             className="logo-box-destination"
@@ -396,8 +439,8 @@ export default function Home() {
             onClick={() => window.location.href = '/'}
             style={{ cursor: 'pointer' }}
           >
-            <img src="/logo.png" alt="Shilpi Architects & Planners" className="sap-logo-img" style={{ opacity: _loaderHasRun ? 1 : 0 }} />
-            <div className="nav-logo-placeholder" style={{ opacity: _loaderHasRun ? 1 : 0 }}>
+            <img src="/logo.png" alt="Shilpi Architects & Planners" className="sap-logo-img" style={{ opacity: loaderVisible ? 0 : 1 }} />
+            <div className="nav-logo-placeholder" style={{ opacity: loaderVisible ? 0 : 1 }}>
               SHILPI ARCHITECTS &amp;&nbsp;PLANNERS
             </div>
           </div>
@@ -493,7 +536,9 @@ export default function Home() {
                 <div className="category-bg-image"></div>
                 <div className="category-content-wrapper">
                   <div className="category-icon">
-                    <img src="/Architecture.png" alt="Architecture icon" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px', filter: 'brightness(0) invert(1) drop-shadow(0 0 0 #fff) drop-shadow(0 0 0 #fff) drop-shadow(0 0 0 #fff) drop-shadow(0 0 0 #fff)' }} />
+                    <svg viewBox="0 0 100 100" className="shape-icon-svg">
+                      <rect x="25" y="25" width="50" height="50"></rect>
+                    </svg>
                   </div>
                   <h3 className="category-name"><SVGTraceText text="Architecture" /></h3>
                   {/* <div className="category-desc">6 Projects</div> */}
@@ -503,7 +548,9 @@ export default function Home() {
                 <div className="category-bg-image"></div>
                 <div className="category-content-wrapper">
                   <div className="category-icon">
-                    <img src="/Interiors.png" alt="Interiors icon" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px', filter: 'brightness(0) invert(1) drop-shadow(0 0 0 #fff) drop-shadow(0 0 0 #fff)' }} />
+                    <svg viewBox="0 0 100 100" className="shape-icon-svg">
+                      <polygon points="50,20 80,75 20,75"></polygon>
+                    </svg>
                   </div>
                   <h3 className="category-name"><SVGTraceText text="Interiors" /></h3>
                   {/* <div className="category-desc">2 Projects</div> */}
@@ -513,7 +560,9 @@ export default function Home() {
                 <div className="category-bg-image"></div>
                 <div className="category-content-wrapper">
                   <div className="category-icon">
-                    <img src="/landscape.png" alt="Landscape icon" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px', filter: 'brightness(0) invert(1) drop-shadow(0 0 0 #fff) drop-shadow(0 0 0 #fff) drop-shadow(0 0 0 #fff) drop-shadow(0 0 0 #fff)' }} />
+                    <svg viewBox="0 0 100 100" className="shape-icon-svg">
+                      <polygon points="50,15 83,39 71,78 29,78 17,39"></polygon>
+                    </svg>
                   </div>
                   <h3 className="category-name"><SVGTraceText text="Landscape" /></h3>
                   {/* <div className="category-desc">1 Project</div> */}
@@ -523,12 +572,9 @@ export default function Home() {
                 <div className="category-bg-image"></div>
                 <div className="category-content-wrapper">
                   <div className="category-icon">
-                    <div style={{ display: 'grid', width: '100%', height: '100%', padding: '8px' }}>
-                      <img src="/urbanism.jpg" alt="Urbanism icon" style={{ gridArea: '1/1', width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'screen', filter: 'grayscale(100%) brightness(200%)' }} />
-                      <img src="/urbanism.jpg" alt="" style={{ gridArea: '1/1', width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'screen', filter: 'grayscale(100%) brightness(200%)' }} />
-                      <img src="/urbanism.jpg" alt="" style={{ gridArea: '1/1', width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'screen', filter: 'grayscale(100%) brightness(200%)' }} />
-                      <img src="/urbanism.jpg" alt="" style={{ gridArea: '1/1', width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'screen', filter: 'grayscale(100%) brightness(200%)' }} />
-                    </div>
+                    <svg viewBox="0 0 100 100" className="shape-icon-svg">
+                      <polygon points="37,18 63,18 82,37 82,63 63,82 37,82 18,63 18,37"></polygon>
+                    </svg>
                   </div>
                   <h3 className="category-name"><SVGTraceText text="Urbanism" /></h3>
                   {/* <div className="category-desc">2 Projects</div> */}
@@ -538,7 +584,9 @@ export default function Home() {
                 <div className="category-bg-image"></div>
                 <div className="category-content-wrapper">
                   <div className="category-icon">
-                    <img src="/art.png" alt="Art icon" style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '8px', filter: 'brightness(0) invert(1) drop-shadow(0 0 0 #fff) drop-shadow(0 0 0 #fff) drop-shadow(0 0 0 #fff) drop-shadow(0 0 0 #fff)' }} />
+                    <svg viewBox="0 0 100 100" className="shape-icon-svg">
+                      <polygon points="50,15 80,45 50,85 20,45"></polygon>
+                    </svg>
                   </div>
                   <h3 className="category-name"><SVGTraceText text="Art" /></h3>
                   {/* <div className="category-desc">2 Projects</div> */}
@@ -676,25 +724,23 @@ export default function Home() {
                   and reason about land, climate, and policy together.
                 </p>
                 <div className="stats">
-                  <div><span className="v">05</span>
-                    <span className="l">Tools</span></div>
-                  <div><span className="v">11</span>
-                    <span className="l">Models</span></div>
-                  <div><span className="v">2</span>
-                    <span className="l">Researchers</span></div>
+                  {getLabStats('ai-computation').map((stat, idx) => (
+                    <div key={idx}>
+                      <span className="v">{stat.count.toString().padStart(2, '0')}</span>
+                      <span className="l">{stat.label}</span>
+                    </div>
+                  ))}
                 </div>
                 <div className="recent">
                   <span className="h">▌ Recent</span>
                   <ul>
-                    <li>Intelligence Aggregation Architecture{' '}
-                      <em>/ Pedagogy</em>
-                      <span>2023</span></li>
-                    <li>Antithesys Labs{' '}
-                      <em>/ Tools</em>
-                      <span>2024</span></li>
-                    <li>Exploring Artificial Intelligence...{' '}
-                      <em>/ Tools</em>
-                      <span>2024</span></li>
+                    {(dynamicLabsData ? dynamicLabsData['ai-computation'] : LABS_DATA['ai-computation']).projects.slice(0, 3).map((p, idx) => (
+                      <li key={idx}>
+                        {p.title.length > 35 ? p.title.substring(0, 35) + '...' : p.title}{' '}
+                        <em>/ {p.sub}</em>
+                        <span>{p.year}</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
                 <Link href="/labs/ai-computation" className="enter">
@@ -726,25 +772,23 @@ export default function Home() {
                   pilots — and teach the cadres who use them.
                 </p>
                 <div className="stats">
-                  <div><span className="v">09</span>
-                    <span className="l">Engagements</span></div>
-                  <div><span className="v">22</span>
-                    <span className="l">Officials</span></div>
-                  <div><span className="v">4</span>
-                    <span className="l">States</span></div>
+                  {getLabStats('civic-reform').map((stat, idx) => (
+                    <div key={idx}>
+                      <span className="v">{stat.count.toString().padStart(2, '0')}</span>
+                      <span className="l">{stat.label}</span>
+                    </div>
+                  ))}
                 </div>
                 <div className="recent">
                   <span className="h">▌ Recent</span>
                   <ul>
-                    <li>Certificates &amp; Recognition{' '}
-                      <em>/ Recognition</em>
-                      <span>2024</span></li>
-                    <li>Bridging Academia and Practice...{' '}
-                      <em>/ Academia</em>
-                      <span>2024</span></li>
-                    <li>Empowering Future Architects...{' '}
-                      <em>/ Academia</em>
-                      <span>2024</span></li>
+                    {(dynamicLabsData ? dynamicLabsData['civic-reform'] : LABS_DATA['civic-reform']).projects.slice(0, 3).map((p, idx) => (
+                      <li key={idx}>
+                        {p.title.length > 35 ? p.title.substring(0, 35) + '...' : p.title}{' '}
+                        <em>/ {p.sub}</em>
+                        <span>{p.year}</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
                 <Link href="/labs/civic-reform" className="enter">
@@ -779,22 +823,23 @@ export default function Home() {
                   occasional buildings.
                 </p>
                 <div className="stats">
-                  <div><span className="v">07</span>
-                    <span className="l">Studies</span></div>
-                  <div><span className="v">14</span>
-                    <span className="l">Published</span></div>
-                  <div><span className="v">3</span>
-                    <span className="l">Fellows</span></div>
+                  {getLabStats('urban-futures').map((stat, idx) => (
+                    <div key={idx}>
+                      <span className="v">{stat.count.toString().padStart(2, '0')}</span>
+                      <span className="l">{stat.label}</span>
+                    </div>
+                  ))}
                 </div>
                 <div className="recent">
                   <span className="h">✦ Recent</span>
                   <ul>
-                    <li>Thiruvananthapuram Peace Index 2023{' '}
-                      <em>/ Publications</em>
-                      <span>2023</span></li>
-                    <li>Research on Vastu Shastra Explores Its Relevance...{' '}
-                      <em>/ Research</em>
-                      <span>2023</span></li>
+                    {(dynamicLabsData ? dynamicLabsData['urban-futures'] : LABS_DATA['urban-futures']).projects.slice(0, 3).map((p, idx) => (
+                      <li key={idx}>
+                        {p.title.length > 35 ? p.title.substring(0, 35) + '...' : p.title}{' '}
+                        <em>/ {p.sub}</em>
+                        <span>{p.year}</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
                 <Link href="/labs/urban-futures" className="enter">
@@ -827,7 +872,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="news-matrix-carousel">
-              {NEWS_ARTICLES.slice(0, 4).map((article, idx) => (
+              {(dynamicNewsData || NEWS_ARTICLES).slice(0, 4).map((article, idx) => (
                 <Link key={idx} href={`/news/${article.slug}`} className="news-card" data-reveal="" style={{ textDecoration: 'none' }}>
                   <div className="news-img-frame">
                     <img src={article.heroImage} alt={article.title} loading="lazy" />
