@@ -106,13 +106,19 @@ export default function Practice() {
   }
 
   useEffect(() => {
-    const handleOutsideClick = () => {
+    const handleOutsideClick = (e) => {
+      // Ignore clicks/taps inside any grid cell (let the cell onClick handle it)
+      if (e.target.closest('.prac-matrix-cell')) return;
       if (activeBubble) {
         clearSpotlight();
       }
     };
     document.addEventListener('click', handleOutsideClick);
-    return () => document.removeEventListener('click', handleOutsideClick);
+    document.addEventListener('touchstart', handleOutsideClick, { passive: true });
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+      document.removeEventListener('touchstart', handleOutsideClick);
+    };
   }, [activeBubble]);
 
   useEffect(() => {
@@ -500,7 +506,7 @@ export default function Practice() {
                   <div
                     key={`g1-${cell.key}`}
                     className={`prac-matrix-cell${cell.blank ? ' blank-node' : ''}${activeBubble === `g1-${cell.key}` ? ' active-focused' : ''}`}
-                    onClick={!cell.blank ? (e) => { e.stopPropagation(); toggleSpotlight(cell, `g1-${cell.key}`); } : undefined}
+                    onClick={!cell.blank ? () => toggleSpotlight(cell, `g1-${cell.key}`) : undefined}
                   >
                     {!cell.blank && (
                       <>
@@ -533,7 +539,7 @@ export default function Practice() {
                   <div
                     key={`g2-${cell.key}`}
                     className={`prac-matrix-cell${cell.blank ? ' blank-node' : ''}${activeBubble === `g2-${cell.key}` ? ' active-focused' : ''}`}
-                    onClick={!cell.blank ? (e) => { e.stopPropagation(); toggleSpotlight(cell, `g2-${cell.key}`); } : undefined}
+                    onClick={!cell.blank ? () => toggleSpotlight(cell, `g2-${cell.key}`) : undefined}
                   >
                     {!cell.blank && (
                       <>
