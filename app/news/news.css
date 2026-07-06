@@ -415,9 +415,26 @@ body.dark-mode .news-card-date {
   }
   .news-nav {
     grid-template-columns: 1fr auto;
+    padding-right: 16px;
+  }
+  .news-nav-right {
+    gap: 16px;
+  }
+  .news-logo-area {
+    padding-left: 16px;
+  }
+  .news-logo-text {
+    font-size: 13px;
+  }
+  .news-logo-area img {
+    width: 40px;
+    height: 40px;
   }
   .news-hamburger {
     display: flex; /* Show hamburger on mobile */
+  }
+  .news-nav-srch {
+    display: none !important;
   }
 }
 

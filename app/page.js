@@ -214,6 +214,8 @@ export default function Home() {
           hamburgerMenu.addEventListener('click', () => {
             mobileNav.classList.toggle('active');
             hamburgerMenu.classList.toggle('active');
+            const header = document.querySelector('.site-header');
+            if(header) header.classList.toggle('menu-open');
           });
 
           const navLinks = mobileNav.querySelectorAll('.nav-link');
@@ -221,6 +223,8 @@ export default function Home() {
             link.addEventListener('click', () => {
               mobileNav.classList.remove('active');
               hamburgerMenu.classList.remove('active');
+              const header = document.querySelector('.site-header');
+              if(header) header.classList.remove('menu-open');
             });
           });
         }
@@ -496,10 +500,11 @@ export default function Home() {
                 muted
                 loop
                 playsInline
+                preload="auto"
+                disablePictureInPicture
                 style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                onLoadedMetadata={(e) => { e.target.currentTime = 0; }}
               >
-                <source src="/homepage.mp4#t=0.001" type="video/mp4" />
+                <source src="/homepage.mp4" type="video/mp4" />
               </video>
               <button
                 id="hero-video-toggle"

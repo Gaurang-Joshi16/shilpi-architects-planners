@@ -321,43 +321,45 @@ export default function Practice() {
       <div className="cursor" id="cur" style={{ opacity: 0 }}></div>
       <div className="cursor ring" id="curRing" style={{ opacity: 0 }}></div>
 
-      {/* ── NAVBAR (SAME AS NEWS, Practice ACTIVE) ── */}
-      <nav id="nav" className="news-nav">
-        <div className="news-logo-wrapper">
-          <Link className="news-logo-area" href="/">
-            <img src="/logo.png" alt="SAP" />
-            <div className="news-logo-text">
-              SHILPI
-              <small>ARCHITECTS &amp;&nbsp;PLANNERS</small>
-            </div>
-          </Link>
-        </div>
-
-        <div id="nav-tabs" className="news-nav-tabs">
-          <Link href="/practice" className="news-ntab active" style={{ textDecoration: 'none' }}>Practice</Link>
-          <Link href="/projects" className="news-ntab" style={{ textDecoration: 'none' }}>Projects</Link>
-          <div className="labs-dropdown-wrapper">
-            <Link href="/#labs" className="news-ntab" style={{ textDecoration: 'none' }}>Labs</Link>
-            <div className="labs-dropdown-menu">
-              <Link href="/labs/ai-computation">AI & Computation</Link>
-              <Link href="/labs/civic-reform">Civic Reform Studio</Link>
-              <Link href="/labs/urban-futures">Urban Futures Lab</Link>
-            </div>
+      {/* ── NAVBAR (news-nav with prac-nav wrapper) ── */}
+      <nav id="nav" className="news-nav prac-nav">
+        <div className="prac-nav-inner">
+          <div className="news-logo-wrapper">
+            <Link className="news-logo-area" href="/">
+              <img src="/logo.png" alt="SAP" />
+              <div className="news-logo-text">
+                SHILPI
+                <small>ARCHITECTS &amp;&nbsp;PLANNERS</small>
+              </div>
+            </Link>
           </div>
-          <Link href="/news" className="news-ntab" style={{ textDecoration: 'none' }}>News</Link>
-          <Link href="/contact" className="news-ntab" style={{ textDecoration: 'none' }}>Contact</Link>
-        </div>
 
-        <div id="nav-right" className="news-nav-right">
-          <button className="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" suppressHydrationWarning>
-            <span className="toggle-icon">◑</span>
-            <span className="toggle-label" id="toggleLabel">DARK</span>
-          </button>
-          <button className="news-hamburger" id="mob-hamburger" aria-label="Menu" suppressHydrationWarning>
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
+          <div id="nav-tabs" className="news-nav-tabs">
+            <Link href="/practice" className="news-ntab active" style={{ textDecoration: 'none' }}>Practice</Link>
+            <Link href="/projects" className="news-ntab" style={{ textDecoration: 'none' }}>Projects</Link>
+            <div className="labs-dropdown-wrapper">
+              <Link href="/#labs" className="news-ntab" style={{ textDecoration: 'none' }}>Labs</Link>
+              <div className="labs-dropdown-menu">
+                <Link href="/labs/ai-computation">AI & Computation</Link>
+                <Link href="/labs/civic-reform">Civic Reform Studio</Link>
+                <Link href="/labs/urban-futures">Urban Futures Lab</Link>
+              </div>
+            </div>
+            <Link href="/news" className="news-ntab" style={{ textDecoration: 'none' }}>News</Link>
+            <Link href="/contact" className="news-ntab" style={{ textDecoration: 'none' }}>Contact</Link>
+          </div>
+
+          <div id="nav-right" className="news-nav-right">
+            <button className="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" suppressHydrationWarning>
+              <span className="toggle-icon">◑</span>
+              <span className="toggle-label" id="toggleLabel">DARK</span>
+            </button>
+            <button className="news-hamburger" id="mob-hamburger" aria-label="Menu" suppressHydrationWarning>
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
         </div>
       </nav>
 
