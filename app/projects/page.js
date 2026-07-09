@@ -14,6 +14,7 @@ export default function Projects() {
       const { data: projectsData, error } = await supabase.from('projects').select('*').order('title', { ascending: true });
       
       const DATA = {
+        all: { subs: [], projects: [] },
         architecture: { subs: ['Commerce', 'Residential', 'Mixed Use', 'Culture', 'Religious', 'Education', 'Infrastructure', 'Sports', 'Health', 'Un-built'], projects: [] },
         interiors: { subs: ['Residential', 'Hospitality', 'Work', 'Retail'], projects: [] },
         landscape: { subs: ['Civic Spaces', 'Gardens&Parks', 'Terrace&Balconies'], projects: [] },
@@ -25,23 +26,34 @@ export default function Projects() {
         projectsData.forEach(p => {
           let cat = p.category;
           if (cat === 'urban-planning') cat = 'urbanism';
+          
+          const projObj = {
+            id: p.slug,
+            title: p.title,
+            loc: p.location || '',
+            sub: p.subcategory || '',
+            year: p.year || '',
+            icon: p.icon_url || '',
+            imgs: p.images || [],
+            videos: p.videos || [],
+            Use: p.use_type || '',
+            typology: p.typology || '',
+            size: p.size || '',
+            status: p.status || '',
+            texts: p.texts || [],
+            client: p.client || ''
+          };
+
+          // Deduplicate in the "all" category by checking if a project with the same title already exists
+          const existingInAll = DATA['all'].projects.find(
+            x => x.title.toLowerCase().trim() === p.title.toLowerCase().trim()
+          );
+          if (!existingInAll) {
+            DATA['all'].projects.push(projObj);
+          }
+
           if (DATA[cat]) {
-            DATA[cat].projects.push({
-              id: p.slug,
-              title: p.title,
-              loc: p.location || '',
-              sub: p.subcategory || '',
-              year: p.year || '',
-              icon: p.icon_url || '',
-              imgs: p.images || [],
-              videos: p.videos || [],
-              Use: p.use_type || '',
-              typology: p.typology || '',
-              size: p.size || '',
-              status: p.status || '',
-              texts: p.texts || [],
-              client: p.client || ''
-            });
+            DATA[cat].projects.push(projObj);
           }
         });
       }
@@ -80,7 +92,7 @@ export default function Projects() {
       'rgba(200,125,48,0.09)', 'rgba(69,168,161,0.06)'
     ]
 
-    let activeCat = 'architecture'
+    let activeCat = 'all'
     let activeSub = 'all'
     let openId = null
 
@@ -130,7 +142,6 @@ export default function Projects() {
           document.querySelectorAll('.stab')
             .forEach(x => x.classList.remove('active'))
           b.classList.add('active')
-          isIsolatedMode = true
           buildList()
           
           const targetSec = document.getElementById('section-' + activeCat)
@@ -145,26 +156,6 @@ export default function Projects() {
       })
     }
 
-    let observer = null;
-    function setupObserver() {
-      if (observer) observer.disconnect();
-      const options = { root: null, rootMargin: '-40% 0px -60% 0px', threshold: 0 };
-      observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const cat = entry.target.dataset.cat;
-            if (activeCat !== cat) {
-              activeCat = cat;
-              activeSub = 'all';
-              updateActiveTabUI(cat);
-              buildSubnav();
-            }
-          }
-        });
-      }, options);
-      document.querySelectorAll('.cat-section').forEach(sec => observer.observe(sec));
-    }
-
     function updateActiveTabUI(cat) {
       document.querySelectorAll('.ntab').forEach(x => x.classList.remove('active'));
       document.querySelectorAll(`.ntab[data-cat="${cat}"]`).forEach(x => x.classList.add('active'));
@@ -172,27 +163,13 @@ export default function Projects() {
       document.querySelectorAll(`.mob-cat-btn[data-cat="${cat}"]`).forEach(x => x.classList.add('active'));
     }
 
-    /* ── BUILD LIST WITH INFINITE SCROLL ── */
-    let renderedCats = []
-    let isIsolatedMode = false;
-    
+    /* ── BUILD LIST ── */
     function buildList() {
       const main = document.getElementById('proj-main')
       if (!main) return
       main.innerHTML = ''
       
-      setupObserver()
-      
-      renderedCats = [activeCat]
       appendCategory(activeCat)
-      
-      if (!isIsolatedMode) {
-        appendSentinel()
-      } else {
-        const sentinel = document.getElementById('infinite-sentinel')
-        if (sentinel) sentinel.remove()
-        if (sentinelObserver) sentinelObserver.disconnect()
-      }
     }
     
     function appendCategory(cat) {
@@ -214,49 +191,6 @@ export default function Projects() {
       )
       projs.forEach((p, i) => catSection.appendChild(makeBlock(p, i)))
       main.appendChild(catSection)
-      
-      if (observer) observer.observe(catSection);
-    }
-    
-    let sentinelObserver = null;
-    function appendSentinel() {
-      const main = document.getElementById('proj-main')
-      if (!main) return
-      
-      let sentinel = document.getElementById('infinite-sentinel')
-      if (sentinel) sentinel.remove()
-      
-      sentinel = document.createElement('div')
-      sentinel.id = 'infinite-sentinel'
-      sentinel.style.height = '10px'
-      main.appendChild(sentinel)
-      
-      if (!sentinelObserver) {
-        sentinelObserver = new IntersectionObserver((entries) => {
-          if (entries[0].isIntersecting) {
-            loadNextCategory();
-          }
-        }, { rootMargin: '500px' })
-      }
-      sentinelObserver.disconnect();
-      sentinelObserver.observe(sentinel);
-    }
-    
-    function loadNextCategory() {
-      const allCats = Object.keys(DATA);
-      const lastCat = renderedCats[renderedCats.length - 1];
-      const nextIdx = allCats.indexOf(lastCat) + 1;
-      
-      if (nextIdx < allCats.length) {
-        const nextCat = allCats[nextIdx];
-        renderedCats.push(nextCat);
-        
-        const sentinel = document.getElementById('infinite-sentinel')
-        if (sentinel) sentinel.remove()
-        
-        appendCategory(nextCat);
-        appendSentinel();
-      }
     }
 
     function makeBlock(p, idx) {
@@ -676,7 +610,6 @@ export default function Projects() {
       updateActiveTabUI(cat)
       buildSubnav()
       buildMobSubTabs()
-      isIsolatedMode = true
       buildList()
       window.scrollTo({ top: 0, behavior: 'auto' })
       
@@ -705,7 +638,6 @@ export default function Projects() {
         document.querySelectorAll('.mob-sub-btn')
           .forEach(b => b.classList.remove('active'))
         allBtn.classList.add('active')
-        isIsolatedMode = true
         buildList()
         const targetSec = document.getElementById('section-' + activeCat)
         if (targetSec) {
@@ -727,7 +659,6 @@ export default function Projects() {
           document.querySelectorAll('.mob-sub-btn')
             .forEach(b => b.classList.remove('active'))
           btn.classList.add('active')
-          isIsolatedMode = true
           buildList()
           const targetSec = document.getElementById('section-' + activeCat)
           if (targetSec) {
@@ -760,7 +691,6 @@ export default function Projects() {
           updateActiveTabUI(cat)
           buildSubnav()
           buildMobSubTabs()
-          isIsolatedMode = true
           buildList()
           window.scrollTo({ top: 0, behavior: 'auto' })
           
@@ -1023,7 +953,10 @@ export default function Projects() {
 
         {/* Category Tabs */}
         <div id="nav-tabs">
-          <button className="ntab active" data-cat="architecture">
+          <button className="ntab active" data-cat="all">
+            All
+          </button>
+          <button className="ntab" data-cat="architecture">
             Architecture
           </button>
           <button className="ntab" data-cat="interiors">
