@@ -13,9 +13,9 @@ function SVGTraceText({ text }) {
     <svg className="trace-text-svg" width="100%" height="36px" style={{ overflow: 'visible' }}>
       <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle">
         {text.split('').map((char, index) => (
-          <tspan 
-            key={index} 
-            className="trace-text-element" 
+          <tspan
+            key={index}
+            className="trace-text-element"
             style={{ animationDelay: `${index * 0.15}s` }}
           >
             {char}
@@ -33,12 +33,12 @@ export default function Home() {
   const [dynamicLabsData, setDynamicLabsData] = useState(null)
   const [dynamicNewsData, setDynamicNewsData] = useState(null)
   const [loaderVisible, setLoaderVisible] = useState(!_loaderHasRun)
-  
+
   // Dynamic stats calculation for labs
   const getLabStats = (labId) => {
     const lab = dynamicLabsData ? dynamicLabsData[labId] : LABS_DATA[labId];
     if (!lab) return [];
-    
+
     const counts = {};
     lab.subs.forEach(sub => counts[sub] = 0);
     lab.projects.forEach(p => {
@@ -215,7 +215,7 @@ export default function Home() {
             mobileNav.classList.toggle('active');
             hamburgerMenu.classList.toggle('active');
             const header = document.querySelector('.site-header');
-            if(header) header.classList.toggle('menu-open');
+            if (header) header.classList.toggle('menu-open');
           });
 
           const navLinks = mobileNav.querySelectorAll('.nav-link');
@@ -224,7 +224,7 @@ export default function Home() {
               mobileNav.classList.remove('active');
               hamburgerMenu.classList.remove('active');
               const header = document.querySelector('.site-header');
-              if(header) header.classList.remove('menu-open');
+              if (header) header.classList.remove('menu-open');
             });
           });
         }
@@ -681,32 +681,32 @@ export default function Home() {
                   fill="#C87D30" stroke="#163B5E" strokeWidth="1" />
                 <text x="250" y="285" textAnchor="middle"
                   fontFamily="JetBrains Mono, monospace"
-                  fontSize="9" letterSpacing="0.14em"
+                  fontSize="9" fontWeight="bold" letterSpacing="0.14em"
                   fill="#163B5E">SAP</text>
                 <text x="250" y="38" textAnchor="middle"
                   fontFamily="JetBrains Mono, monospace"
-                  fontSize="9" letterSpacing="0.14em"
+                  fontSize="9" fontWeight="bold" letterSpacing="0.14em"
                   fill="#163B5E">AI · COMPUTATION</text>
                 <text x="250" y="25" textAnchor="middle"
                   fontFamily="JetBrains Mono, monospace"
-                  fontSize="8" letterSpacing="0.14em"
-                  fill="#45A8A1">/ 01</text>
+                  fontSize="8" fontWeight="bold" letterSpacing="0.14em"
+                  fill="#45A8A1">01</text>
                 <text x="80" y="382" textAnchor="middle"
                   fontFamily="JetBrains Mono, monospace"
-                  fontSize="9" letterSpacing="0.14em"
+                  fontSize="9" fontWeight="bold" letterSpacing="0.14em"
                   fill="#163B5E">CIVIC REFORM</text>
                 <text x="80" y="397" textAnchor="middle"
                   fontFamily="JetBrains Mono, monospace"
-                  fontSize="8" letterSpacing="0.14em"
-                  fill="#45A8A1">/ 02</text>
+                  fontSize="8" fontWeight="bold" letterSpacing="0.14em"
+                  fill="#45A8A1">02</text>
                 <text x="420" y="382" textAnchor="middle"
                   fontFamily="JetBrains Mono, monospace"
-                  fontSize="9" letterSpacing="0.14em"
+                  fontSize="9" fontWeight="bold" letterSpacing="0.14em"
                   fill="#163B5E">URBAN FUTURES</text>
                 <text x="420" y="397" textAnchor="middle"
                   fontFamily="JetBrains Mono, monospace"
-                  fontSize="8" letterSpacing="0.14em"
-                  fill="#45A8A1">/ 03</text>
+                  fontSize="8" fontWeight="bold" letterSpacing="0.14em"
+                  fill="#45A8A1">03</text>
               </svg>
             </div>
 
