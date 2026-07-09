@@ -49,7 +49,6 @@ export default function LabArticle({ params }) {
 
     // ── DARK MODE INIT ──
     const themeToggle = document.getElementById('themeToggle')
-    const toggleLabel = document.getElementById('toggleLabel')
     const toggleIcon = document.querySelector('.toggle-icon')
 
     const isDarkSaved = localStorage.getItem('sap-theme') === 'dark'
@@ -58,14 +57,12 @@ export default function LabArticle({ params }) {
     } else {
       document.body.classList.remove('dark-mode')
     }
-    if (toggleLabel) toggleLabel.textContent = isDarkSaved ? 'LIGHT' : 'DARK'
-    if (toggleIcon) toggleIcon.textContent = isDarkSaved ? '○' : '◑'
+    if (toggleIcon) toggleIcon.innerHTML = isDarkSaved ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>` : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`
 
     const onThemeToggle = () => {
       document.body.classList.toggle('dark-mode')
       const isDark = document.body.classList.contains('dark-mode')
-      if (toggleLabel) toggleLabel.textContent = isDark ? 'LIGHT' : 'DARK'
-      if (toggleIcon) toggleIcon.textContent = isDark ? '○' : '◑'
+      if (toggleIcon) toggleIcon.innerHTML = isDark ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>` : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`
       localStorage.setItem('sap-theme', isDark ? 'dark' : 'light')
     }
 
@@ -297,8 +294,7 @@ export default function LabArticle({ params }) {
           </div>
           <div id="nav-right" className="news-nav-right">
             <button className="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-              <span className="toggle-icon">◑</span>
-              <span className="toggle-label" id="toggleLabel">DARK</span>
+              <span className="toggle-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
             </button>
           </div>
         </nav>
@@ -370,8 +366,7 @@ export default function LabArticle({ params }) {
           </button>
 
           <button className="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-            <span className="toggle-icon">◑</span>
-            <span className="toggle-label" id="toggleLabel">DARK</span>
+            <span className="toggle-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
           </button>
 
           <button className="news-hamburger" id="mob-hamburger" aria-label="Menu">

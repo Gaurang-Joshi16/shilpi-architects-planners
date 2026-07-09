@@ -331,7 +331,7 @@ a {
 .nav-mark {
     width: 22px;
     height: 22px;
-    border: 1px solid var(--ink);
+    border: none;
     position: relative;
     flex: none;
 }
@@ -418,7 +418,7 @@ a {
     gap: 8px;
     color: var(--ink);
     font-family: "JetBrains Mono", monospace;
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: .1em;
 }
 
@@ -439,8 +439,8 @@ a {
 }
 
 .commission-btn {
-    padding: 7px 12px;
-    border: 1px solid var(--ink);
+    padding: 4px;
+    border: none;
     color: var(--ink);
     font-family: "JetBrains Mono", monospace;
     font-size: 11px;
@@ -451,8 +451,8 @@ a {
 
 /* CHANGE 6: JetBrains Mono for theme toggle */
 .theme-toggle {
-    padding: 7px 12px;
-    border: 1px solid var(--ink);
+    padding: 4px;
+    border: none;
     color: var(--ink);
     font-family: "JetBrains Mono", monospace;
     font-size: 11px;
@@ -467,14 +467,22 @@ a {
 }
 
 .theme-toggle:hover {
-    background: var(--uv);
-    border-color: var(--uv);
-    color: var(--paper);
+    background: transparent; transform: scale(1.1);
+    
+    color: var(--uv);
 }
 
 .toggle-icon {
-    font-size: 13px;
-    line-height: 1;
+    font-size: 18px;
+    line-height: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-icon svg {
+    width: 18px !important;
+    height: 18px !important;
 }
 
 /* ─── DARK MODE OVERRIDES ─── */
@@ -522,7 +530,7 @@ body.dark-mode .vignette {
 }
 
 body.dark-mode .theme-toggle {
-    border-color: rgba(236, 232, 220, 0.4);
+    
     color: #ECE8DC;
 }
 
@@ -1550,7 +1558,7 @@ body.dark-mode .footer-icon {
     overflow: hidden;
     position: relative;
     background-color: var(--paper-3);
-    border: 1px solid var(--border-color);
+    border: none;
 }
 
 #live-leaflet-map {
@@ -1887,7 +1895,7 @@ body.dark-mode .footer-icon {
     width: 42px;
     height: 42px;
     background: transparent;
-    border: 1px solid var(--ink);
+    border: none;
     transition: transform .15s ease-out, width .25s, height .25s, border-color .25s;
 }
 

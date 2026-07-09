@@ -31,7 +31,7 @@ export default function ProjectsManager() {
   }, []);
 
   async function fetchProjects() {
-    const { data } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
+    const { data } = await supabase.from('projects').select('*').order('title', { ascending: true });
     if (data) setProjects(data);
     setLoading(false);
   }

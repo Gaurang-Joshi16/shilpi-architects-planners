@@ -314,7 +314,7 @@ body.dark-mode select.contact-input option {
   text-transform: uppercase;
   background: #F8F8F8;
   color: var(--ink);
-  border: 1px solid var(--border-color, rgba(0,0,0,0.15));
+  border: none;
   padding: 8px 16px;
   cursor: pointer;
   margin-right: 12px;
@@ -334,7 +334,7 @@ body.dark-mode .contact-file-input::file-selector-button {
   width: max-content;
   background-color: #F8F8F8;
   color: var(--ink);
-  border: 1px solid var(--border-color, rgba(0,0,0,0.1));
+  border: none;
   padding: 14px 36px;
   font-family: var(--mono);
   font-size: 13px;
@@ -394,7 +394,7 @@ body.dark-mode .contact-submit:hover:not(:disabled) {
   border-radius: 8px;
   overflow: hidden;
   line-height: 0;
-  border: 1px solid var(--border-color, rgba(0,0,0,0.1));
+  border: none;
 }
 .contact-map-wrapper iframe {
   display: block;
@@ -601,8 +601,8 @@ body.dark-mode #nav {
   align-items: center;
   gap: 6px;
   background: none;
-  border: 1px solid var(--border-color, rgba(0,0,0,0.15));
-  padding: 6px 12px;
+  border: none;
+  padding: 4px;
   cursor: pointer;
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
@@ -612,7 +612,7 @@ body.dark-mode #nav {
   color: var(--ink);
   transition: background 0.2s, color 0.2s;
 }
-.theme-toggle:hover { background: var(--ink); color: var(--paper); }
+.theme-toggle:hover { background: transparent; transform: scale(1.1); color: var(--uv); }
 .toggle-icon { font-size: 14px; }
 .toggle-label { font-size: 10px; }
 
