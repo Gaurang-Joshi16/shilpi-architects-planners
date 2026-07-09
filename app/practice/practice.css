@@ -123,6 +123,7 @@ body.dark-mode .prac-divider {
   font-weight: 400;
   color: var(--ink);
   letter-spacing: -0.01em;
+  white-space: pre-wrap;
 }
 
 .prac-narrative {
@@ -131,6 +132,7 @@ body.dark-mode .prac-divider {
   line-height: 1.75;
   color: var(--ink-2);
   font-weight: 400;
+  white-space: pre-wrap;
 }
 
 /* ── IMAGE WRAPPERS WITH GRAYSCALE HOVER ── */
@@ -440,6 +442,7 @@ body.dark-mode .prac-scroller-window {
   color: var(--paper);
   opacity: 0.95;
   line-height: 1.4;
+  white-space: pre-wrap;
 }
 
 .prac-popup-close {
