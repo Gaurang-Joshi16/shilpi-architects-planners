@@ -1902,11 +1902,11 @@ body.dark-mode .footer-icon {
 .cursor.hover {
     width: 72px;
     height: 72px;
-    border-color: var(--uv);
+    border-color: var(--ink);
 }
 
 .cursor.hover.dot {
-    background: var(--uv);
+    background: var(--ink);
 }
 
 @media (pointer: coarse) {

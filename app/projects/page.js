@@ -56,6 +56,29 @@ export default function Projects() {
             DATA[cat].projects.push(projObj);
           }
         });
+
+        // Group by subcategory in the predefined sequence, then title alphabetically (excluding "all" category)
+        Object.keys(DATA).forEach(cat => {
+          if (cat !== 'all') {
+            DATA[cat].projects.sort((a, b) => {
+              let idxA = DATA[cat].subs.indexOf(a.sub);
+              let idxB = DATA[cat].subs.indexOf(b.sub);
+              if (idxA === -1) idxA = 999;
+              if (idxB === -1) idxB = 999;
+              
+              if (idxA !== idxB) {
+                return idxA - idxB;
+              }
+              
+              const titleA = (a.title || '').toLowerCase();
+              const titleB = (b.title || '').toLowerCase();
+              if (titleA < titleB) return -1;
+              if (titleA > titleB) return 1;
+              
+              return 0;
+            });
+          }
+        });
       }
 
     /* ── DARK MODE INIT ── */
