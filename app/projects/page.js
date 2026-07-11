@@ -29,6 +29,7 @@ export default function Projects() {
           
           const projObj = {
             id: p.slug,
+            cat: cat,
             title: p.title,
             loc: p.location || '',
             sub: p.subcategory || '',
@@ -57,7 +58,9 @@ export default function Projects() {
           }
         });
 
-        // Group by subcategory in the predefined sequence, then title alphabetically (excluding "all" category)
+        const catOrder = ['architecture', 'interiors', 'landscape', 'urbanism', 'art'];
+
+        // Group by subcategory in the predefined sequence, then title alphabetically
         Object.keys(DATA).forEach(cat => {
           if (cat !== 'all') {
             DATA[cat].projects.sort((a, b) => {
@@ -70,6 +73,39 @@ export default function Projects() {
                 return idxA - idxB;
               }
               
+              const titleA = (a.title || '').toLowerCase();
+              const titleB = (b.title || '').toLowerCase();
+              if (titleA < titleB) return -1;
+              if (titleA > titleB) return 1;
+              
+              return 0;
+            });
+          } else {
+            DATA['all'].projects.sort((a, b) => {
+              // 1. Sort by category
+              let catIdxA = catOrder.indexOf(a.cat);
+              let catIdxB = catOrder.indexOf(b.cat);
+              if (catIdxA === -1) catIdxA = 999;
+              if (catIdxB === -1) catIdxB = 999;
+
+              if (catIdxA !== catIdxB) {
+                return catIdxA - catIdxB;
+              }
+
+              // 2. Sort by subcategory
+              let catName = a.cat; 
+              if (DATA[catName] && DATA[catName].subs) {
+                let subIdxA = DATA[catName].subs.indexOf(a.sub);
+                let subIdxB = DATA[catName].subs.indexOf(b.sub);
+                if (subIdxA === -1) subIdxA = 999;
+                if (subIdxB === -1) subIdxB = 999;
+
+                if (subIdxA !== subIdxB) {
+                  return subIdxA - subIdxB;
+                }
+              }
+
+              // 3. Sort by title
               const titleA = (a.title || '').toLowerCase();
               const titleB = (b.title || '').toLowerCase();
               if (titleA < titleB) return -1;
