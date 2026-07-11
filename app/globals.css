@@ -1158,7 +1158,13 @@ body.dark-mode .site-footer {
 
     .category-card {
         height: 280px !important;
-        padding: 24px !important;
+        padding: 44px 16px 16px 16px !important;
+    }
+
+    .category-card-badge {
+        top: 4px;
+        font-size: 11px;
+        padding: 4px;
     }
 
     .category-img-wrapper {
@@ -1407,7 +1413,7 @@ body.dark-mode .trace-text-element {
     top: 12px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: white;
+    background-color: transparent;
     padding: 6px 16px;
     color: black;
     font-weight: bold;
@@ -1415,7 +1421,7 @@ body.dark-mode .trace-text-element {
     font-family: "Jost", "Space Grotesk", sans-serif;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    transition: background-color 0.3s, color 0.3s;
+    transition: color 0.3s;
 }
 
 body.dark-mode .category-card-badge {

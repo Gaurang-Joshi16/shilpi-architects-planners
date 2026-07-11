@@ -534,7 +534,7 @@ export default function Home() {
 
           <section style={{ padding: "0 var(--pad) 60px" }}>
             <div className="category-matrix-grid">
-              <Link className="category-card" data-reveal="" href="/projects?cat=architecture" style={{ backgroundImage: 'url(/architecture.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundOrigin: 'content-box', backgroundClip: 'content-box', padding: '48px', position: 'relative' }}>
+              <Link className="category-card" data-reveal="" href="/projects?cat=architecture" style={{ backgroundImage: 'url(/Architecture.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundOrigin: 'content-box', backgroundClip: 'content-box', padding: '48px', position: 'relative' }}>
                 <div className="category-card-badge">
                   Architecture
                 </div>
