@@ -1,5 +1,6 @@
 /* ─── CSS VARIABLES ─── */
 @import './labsDropdown.css';
+
 :root {
     /* CHANGE 1: Pure white background + brand ivory tones */
     --paper: #FFFFFF;
@@ -49,8 +50,10 @@ body {
     background-color: var(--paper);
     color: var(--ink);
     overflow-x: hidden;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
     -webkit-font-smoothing: antialiased;
     scroll-behavior: smooth;
     font-family: var(--display);
@@ -467,8 +470,9 @@ a {
 }
 
 .theme-toggle:hover {
-    background: transparent; transform: scale(1.1);
-    
+    background: transparent;
+    transform: scale(1.1);
+
     color: var(--uv);
 }
 
@@ -530,7 +534,7 @@ body.dark-mode .vignette {
 }
 
 body.dark-mode .theme-toggle {
-    
+
     color: #ECE8DC;
 }
 
@@ -607,14 +611,16 @@ body.dark-mode .site-footer {
     position: relative;
     z-index: 2;
     overflow: hidden;
-    padding: 0 var(--pad); /* slight left right margin */
+    padding: 0 var(--pad);
+    /* slight left right margin */
 }
 
 .video-container-box {
     width: 100%;
     height: 100%;
     position: relative;
-    border-radius: 8px; /* Added border-radius to match typical margins */
+    border-radius: 8px;
+    /* Added border-radius to match typical margins */
     overflow: hidden;
 }
 
@@ -1135,11 +1141,24 @@ body.dark-mode .site-footer {
     }
 }
 
-/* Mobile: 2 columns */
+/* Mobile: 2 columns, last item centered */
 @media (max-width: 560px) {
     .category-matrix-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        gap: 20px;
+        max-width: 100%;
+        margin: 0;
+    }
+
+    .category-matrix-grid .category-card:last-child {
+        grid-column: 1 / -1;
+        width: calc(50% - 10px);
+        margin: 0 auto;
+    }
+
+    .category-card {
+        height: 280px !important;
+        padding: 24px !important;
     }
 
     .category-img-wrapper {
@@ -1176,7 +1195,8 @@ body.dark-mode .site-footer {
     background-size: cover;
     background-position: center;
     filter: blur(8px);
-    transform: scale(1.1); /* Prevent blurred edges from showing background */
+    transform: scale(1.1);
+    /* Prevent blurred edges from showing background */
     z-index: 1;
     transition: transform 0.6s ease;
 }
@@ -1283,7 +1303,7 @@ body.dark-mode .category-bg-image {
     font-weight: 900;
     letter-spacing: 0.05em;
     color: #000000;
-    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     margin-bottom: 8px;
     text-transform: uppercase;
     text-align: center;
@@ -1316,17 +1336,51 @@ body.dark-mode .trace-text-element {
 }
 
 @keyframes trace-light {
-    0% { stroke-dashoffset: 120; fill: transparent; }
-    15% { stroke-dashoffset: 0; fill: transparent; }
-    20%, 92% { stroke-dashoffset: 0; fill: #000000; }
-    98%, 100% { stroke-dashoffset: 120; fill: transparent; }
+    0% {
+        stroke-dashoffset: 120;
+        fill: transparent;
+    }
+
+    15% {
+        stroke-dashoffset: 0;
+        fill: transparent;
+    }
+
+    20%,
+    92% {
+        stroke-dashoffset: 0;
+        fill: #000000;
+    }
+
+    98%,
+    100% {
+        stroke-dashoffset: 120;
+        fill: transparent;
+    }
 }
 
 @keyframes trace-dark {
-    0% { stroke-dashoffset: 120; fill: transparent; }
-    15% { stroke-dashoffset: 0; fill: transparent; }
-    20%, 92% { stroke-dashoffset: 0; fill: #ffffff; }
-    98%, 100% { stroke-dashoffset: 120; fill: transparent; }
+    0% {
+        stroke-dashoffset: 120;
+        fill: transparent;
+    }
+
+    15% {
+        stroke-dashoffset: 0;
+        fill: transparent;
+    }
+
+    20%,
+    92% {
+        stroke-dashoffset: 0;
+        fill: #ffffff;
+    }
+
+    98%,
+    100% {
+        stroke-dashoffset: 120;
+        fill: transparent;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1334,6 +1388,7 @@ body.dark-mode .trace-text-element {
         font-size: 14px;
         stroke-width: 1.2px;
     }
+
     .category-name {
         font-size: 0.85rem;
     }
@@ -1346,6 +1401,28 @@ body.dark-mode .trace-text-element {
     letter-spacing: 0.05em;
     text-align: center;
 }
+
+.category-card-badge {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 6px 16px;
+    color: black;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: "Jost", "Space Grotesk", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode .category-card-badge {
+    background-color: transparent;
+    color: white;
+}
+
 
 /* ─── NEWS SECTION ─── */
 .news-header-row {
@@ -1772,6 +1849,7 @@ body.dark-mode .footer-icon {
         background: rgba(255, 255, 255, 0.98);
         border-bottom: 1px solid rgba(22, 59, 94, 0.12);
     }
+
     body.dark-mode .site-header.menu-open {
         background: rgba(7, 7, 10, 0.98);
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);

@@ -534,64 +534,29 @@ export default function Home() {
 
           <section style={{ padding: "0 var(--pad) 60px" }}>
             <div className="category-matrix-grid">
-              <Link className="category-card" data-reveal="" href="/projects?cat=architecture">
-                <div className="category-bg-image"></div>
-                <div className="category-content-wrapper">
-                  <div className="category-icon">
-                    <svg viewBox="0 0 100 100" className="shape-icon-svg">
-                      <rect x="25" y="25" width="50" height="50"></rect>
-                    </svg>
-                  </div>
-                  <h3 className="category-name"><SVGTraceText text="Architecture" /></h3>
-                  {/* <div className="category-desc">6 Projects</div> */}
+              <Link className="category-card" data-reveal="" href="/projects?cat=architecture" style={{ backgroundImage: 'url(/architecture.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundOrigin: 'content-box', backgroundClip: 'content-box', padding: '48px', position: 'relative' }}>
+                <div className="category-card-badge">
+                  Architecture
                 </div>
               </Link>
-              <Link className="category-card" data-reveal="" href="/projects?cat=interiors">
-                <div className="category-bg-image"></div>
-                <div className="category-content-wrapper">
-                  <div className="category-icon">
-                    <svg viewBox="0 0 100 100" className="shape-icon-svg">
-                      <polygon points="50,20 80,75 20,75"></polygon>
-                    </svg>
-                  </div>
-                  <h3 className="category-name"><SVGTraceText text="Interiors" /></h3>
-                  {/* <div className="category-desc">2 Projects</div> */}
+              <Link className="category-card" data-reveal="" href="/projects?cat=interiors" style={{ backgroundImage: 'url(/interior.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundOrigin: 'content-box', backgroundClip: 'content-box', padding: '48px', position: 'relative' }}>
+                <div className="category-card-badge">
+                  Interior
                 </div>
               </Link>
-              <Link className="category-card" data-reveal="" href="/projects?cat=landscape">
-                <div className="category-bg-image"></div>
-                <div className="category-content-wrapper">
-                  <div className="category-icon">
-                    <svg viewBox="0 0 100 100" className="shape-icon-svg">
-                      <polygon points="50,15 83,39 71,78 29,78 17,39"></polygon>
-                    </svg>
-                  </div>
-                  <h3 className="category-name"><SVGTraceText text="Landscape" /></h3>
-                  {/* <div className="category-desc">1 Project</div> */}
+              <Link className="category-card" data-reveal="" href="/projects?cat=landscape" style={{ backgroundImage: 'url(/landscape.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundOrigin: 'content-box', backgroundClip: 'content-box', padding: '48px', position: 'relative' }}>
+                <div className="category-card-badge">
+                  Landscape
                 </div>
               </Link>
-              <Link className="category-card" data-reveal="" href="/projects?cat=urbanism">
-                <div className="category-bg-image"></div>
-                <div className="category-content-wrapper">
-                  <div className="category-icon">
-                    <svg viewBox="0 0 100 100" className="shape-icon-svg">
-                      <polygon points="37,18 63,18 82,37 82,63 63,82 37,82 18,63 18,37"></polygon>
-                    </svg>
-                  </div>
-                  <h3 className="category-name"><SVGTraceText text="Urbanism" /></h3>
-                  {/* <div className="category-desc">2 Projects</div> */}
+              <Link className="category-card" data-reveal="" href="/projects?cat=urbanism" style={{ backgroundImage: 'url(/urbanism.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundOrigin: 'content-box', backgroundClip: 'content-box', padding: '48px', position: 'relative' }}>
+                <div className="category-card-badge">
+                  Urbanism
                 </div>
               </Link>
-              <Link className="category-card" data-reveal="" href="/projects?cat=art">
-                <div className="category-bg-image"></div>
-                <div className="category-content-wrapper">
-                  <div className="category-icon">
-                    <svg viewBox="0 0 100 100" className="shape-icon-svg">
-                      <polygon points="50,15 80,45 50,85 20,45"></polygon>
-                    </svg>
-                  </div>
-                  <h3 className="category-name"><SVGTraceText text="Art" /></h3>
-                  {/* <div className="category-desc">2 Projects</div> */}
+              <Link className="category-card" data-reveal="" href="/projects?cat=art" style={{ backgroundImage: 'url(/art.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundOrigin: 'content-box', backgroundClip: 'content-box', padding: '48px', position: 'relative' }}>
+                <div className="category-card-badge">
+                  Art
                 </div>
               </Link>
             </div>
