@@ -37,7 +37,8 @@ export default function LabArticle({ params }) {
           size: data.size,
           status: data.status,
           icon: data.icon_url,
-          isCertificates: data.is_certificates
+          isCertificates: data.is_certificates,
+          author: data.author
         });
       }
     }
@@ -415,6 +416,14 @@ export default function LabArticle({ params }) {
           <div className="article-meta-row">
             <span className="article-meta-tag">{article.sub}</span>
             <span className="article-meta-date">{article.year}</span>
+            {article.sub === 'Publications' && article.author && (
+              <span className="article-meta-tag" style={{ marginLeft: '12px', background: 'transparent', border: '1px solid currentColor', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '12px', height: '12px' }}>
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                {article.author}
+              </span>
+            )}
           </div>
 
           {/* Headline */}

@@ -41,7 +41,8 @@ export default function LabPage({ params }) {
             size: p.size,
             status: p.status,
             icon: p.icon_url,
-            isCertificates: p.is_certificates
+            isCertificates: p.is_certificates,
+            author: p.author
           }))
         });
       }
@@ -403,6 +404,14 @@ export default function LabPage({ params }) {
                       </svg>
                       {project.year}
                     </li>
+                    {project.sub === 'Publications' && project.author && (
+                      <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        {project.author}
+                      </li>
+                    )}
                   </ul>
                   <h4 className="post-title">
                     <Link href={`/labs/${labId}/${project.id}`}>{project.title}</Link>

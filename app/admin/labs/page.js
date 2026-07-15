@@ -13,7 +13,7 @@ export default function LabsManager() {
   const [formData, setFormData] = useState({
     title: '', slug: '', category: 'ai-computation', subcategory: '', location: '', year: '', 
     typology: '', size: '', status: '', client: '', icon_url: '', hero_image: '',
-    images: [], videos: [], texts: [], is_certificates: false
+    images: [], videos: [], texts: [], is_certificates: false, author: ''
   });
   const [saving, setSaving] = useState(false);
 
@@ -60,7 +60,8 @@ export default function LabsManager() {
             images: (p.imgs || []).map(img => img.startsWith('/') ? img : '/' + img),
             videos: (p.videos || []).map(vid => vid.startsWith('/') ? vid : '/' + vid),
             texts: p.texts || [],
-            is_certificates: p.isCertificates || false
+            is_certificates: p.isCertificates || false,
+            author: p.author || ''
           });
         });
       }
@@ -83,7 +84,7 @@ export default function LabsManager() {
       typology: p.typology || '', size: p.size || '',
       status: p.status || '', client: p.client || '', icon_url: p.icon_url || '',
       hero_image: p.hero_image || '', images: p.images || [], videos: p.videos || [], 
-      texts: p.texts || [], is_certificates: p.is_certificates || false
+      texts: p.texts || [], is_certificates: p.is_certificates || false, author: p.author || ''
     });
   }
 
@@ -92,7 +93,7 @@ export default function LabsManager() {
     setFormData({
       title: '', slug: '', category: 'ai-computation', subcategory: '', location: '', year: '', 
       typology: '', size: '', status: '', client: '', icon_url: '', hero_image: '',
-      images: [], videos: [], texts: [], is_certificates: false
+      images: [], videos: [], texts: [], is_certificates: false, author: ''
     });
   }
 
@@ -253,6 +254,9 @@ export default function LabsManager() {
                     </select>
                   </div>
                   <div><label style={{display:'block', fontSize:'12px', marginBottom:'4px'}}>Year</label><input value={formData.year} onChange={e=>setFormData({...formData, year: e.target.value})} style={{width:'100%', padding:'10px', borderRadius:'6px', border:'1px solid #ddd'}} /></div>
+                  {formData.subcategory === 'Publications' && (
+                    <div><label style={{display:'block', fontSize:'12px', marginBottom:'4px'}}>Author</label><input value={formData.author} onChange={e=>setFormData({...formData, author: e.target.value})} style={{width:'100%', padding:'10px', borderRadius:'6px', border:'1px solid #ddd'}} /></div>
+                  )}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', gridColumn: '1 / -1', marginTop: '8px' }}>
                     <input type="checkbox" id="certs" checked={formData.is_certificates} onChange={e=>setFormData({...formData, is_certificates: e.target.checked})} />
                     <label htmlFor="certs" style={{fontSize:'12px'}}>Is Certificates Grid?</label>
